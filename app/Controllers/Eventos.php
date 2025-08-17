@@ -42,6 +42,13 @@ class Eventos extends BaseController
         echo view('footer');
     }
 
+        public function agenda()
+    {
+
+
+        echo view('eventos/agenda');
+    }
+
     public function eliminados($activo = 0)
     {
         $eventos = $this->eventos->where('activo', $activo)->where('id_tienda', $this->session->id_tienda)->findAll();

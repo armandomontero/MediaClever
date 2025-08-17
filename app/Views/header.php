@@ -79,7 +79,15 @@ $user_session = session();
                 Opciones
             </div>
 
-            
+             <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="<?= base_url() ?>eventos"
+                    aria-expanded="true">
+                   <i class="far fa-calendar"></i>
+                    <span>Agenda</span>
+                </a>
+
+            </li>
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
