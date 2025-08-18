@@ -48,12 +48,17 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body p-4">
-                    <div class="text-info text-sm"><i class="fas fa-info"></i> Nuestro servicio de mediación privada le permite agendar mediación en un plazo máximo de 48 horas. Considerar que este servicio no es gratuito y tiene un costo asociado, un mediador se contactará para coordinar su día y hora de mediación.</div>
+                <div class="modal-body p-4 pl-4 ml-4 mr-4">
+                    <div style="background-color: #e6f2ff; color: blue; border: 1px solid #dee2e6;" class="rounded text-sm p-3 "><i class="fas fa-info mr-2"></i>
+                        Nuestro servicio de mediación privada le permite agendar mediación en un plazo máximo de <b>48 horas</b>. Considerar que este servicio
+                        <b>no es gratuito</b> y tiene un costo asociado, un mediador se contactará para coordinar su día y hora de mediación.
+                    </div>
                     <form method="POST" action="<?= base_url() ?>/clientes/insertar" autocomplete="off">
                         <?= csrf_field() ?>
                         <div class="form-group mt-4">
-                            <div class="">Datos Solicitante:</div>
+                            <h5 class="text-primary">Datos Solicitante:</h5>
+                            <hr class="mt-1 mb-2">
+
                             <div class="row">
                                 <div class="col-12 col-sm-6">
                                     <label>Nombre Completo: </label>
@@ -95,9 +100,12 @@
                                 </div>
                             </div>
                         </div>
+                        <hr class="mt-1 mb-3">
+                        <h5 class="text-primary">Datos Solicitado:</h5>
+                        <hr class="mt-1 mb-2">
+                        <div class="form-group mt-4">
 
-<div class="form-group mt-4">
-                            <div class="">Datos Solicitado:</div>
+
                             <div class="row">
                                 <div class="col-12 col-sm-6">
                                     <label>Nombre Completo: </label>
@@ -139,12 +147,52 @@
                                 </div>
                             </div>
                         </div>
+                        <hr class="mt-1 mb-3">
+                        <h5 class="text-primary">Datos de los beneficiarios (hijos)
+                            <input type="hidden" id="cuentaHijos" name="cuentaHijos" value="1"/>
+                        </h5>
+                        <hr class="mt-1 mb-2">
+                        <?php for($i = 1; $i<=6; $i++){ ?>
+                        <div id="hijo<?=$i?>"
+                        <?php if($i!=1){
+                        echo 'style="display: none;"';
+                        }else{
+                            echo 'style="display: block;"';
+                        } ?>
+                         class="form-group mt-4">
 
-
-
-                        <div class="d-flex gap-3 justify-content-center align-items-center">
-                            <a href="<?= base_url() ?>clientes" class="btn btn-primary mr-2"><i class="fas fa-arrow-left"></i> Volver</a>
-                            <button class="btn btn-success" type="submit"><i class="fas fa-save"></i> Guardar</button>
+                    
+                            <div  class="row">
+                               
+                                <div class="col-12 col-sm-4">
+                                    <label>Nombre Completo: </label>
+                                    <input required autofocus value="<?= set_value('nombre1') ?>" class="form-control" id="nombre1" name="nombre1" type="text" />
+                                </div>
+                                <div class="col-12 col-sm-3">
+                                    <label>RUT: </label>
+                                    <input required class="form-control" value="<?= set_value('rut1') ?>" id="rut1" name="rut2" type="text" />
+                                </div>
+                                <div class="col-12 col-sm-3">
+                                    <label>Fecha de Nacimiento: </label>
+                                    <input required class="form-control" value="<?= set_value('direccion') ?>" id="rut2" name="rut2" type="date" />
+                                </div>
+                                <div class="col-12 col-sm-2">
+                                    <label>Edad: </label>
+                                    <input required class="form-control" value="<?= set_value('direccion') ?>" id="rut2" name="rut2" type="text" />
+                                </div>
+                            </div>
+                        </div>
+                        <?php }
+                        ?>
+<div class="form-group mb-4 mt-2">
+                            <div class="row ">
+                                <div class="col-12 col-sm-6">
+                                    <button id="sumaHijo" class="btn btn-success" type="button">Agregar Beneficiario</button>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    
+                                </div>
+                            </div>
                         </div>
                     </form>
 
@@ -213,7 +261,7 @@
                 .then(res => res.json())
                 .then(data => {
                     $.each(data['regions'][region]['communes'], function(key, val) {
-                        $("#"+campo+"").append("<option value='" + key + "'>" + val['name'] + "</option>");
+                        $("#" + campo + "").append("<option value='" + key + "'>" + val['name'] + "</option>");
 
                     });
 
@@ -221,6 +269,12 @@
                 })
 
         }
+
+        $("#sumaHijo").click(function(){
+            let cuenta_hijos = parseInt($("#cuentaHijos").val())+1;
+            $("#hijo"+cuenta_hijos).css("display", "block");
+            $("#cuentaHijos").val(cuenta_hijos);
+        });
     </script>
 </body>
 
