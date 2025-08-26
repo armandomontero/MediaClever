@@ -56,6 +56,15 @@ $routes->get('/eventos', 'Eventos::index');
 $routes->get('/agenda', 'Eventos::agenda');
 
 
+//Google
+$routes->get('/google', 'Google::index');
+$routes->post('/google/generate_link', 'Google::generateLink');
+$routes->post('/google/storeToken', 'Google::storeToken');
+$routes->post('/google/storeEvent', 'Google::storeEvent');
+
+
+$routes->get('/agenda', 'Eventos::agenda');
+
 //Clientes
 $routes->get('/clientes', 'Clientes::index');
 $routes->get('/clientes/eliminados', 'Clientes::eliminados');

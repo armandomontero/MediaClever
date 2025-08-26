@@ -186,7 +186,7 @@
 
     </div>
 
- <div style="position: absolute; top:10%; right:30%;" class="toast  m-2" id="toast" role="alert" aria-live="assertive" aria-atomic="true">
+ <div style="position: absolute; top:10%; right:30%; z-index: 2;" class="toast  m-2" id="toast" role="alert" aria-live="assertive" aria-atomic="true">
   <div class="toast-header">
     <strong class="me-auto">Atención</strong>
     <small></small>

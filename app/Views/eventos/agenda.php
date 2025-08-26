@@ -1,6 +1,16 @@
 <html lang="es">
 
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Media Clever - Agenda</title>
+
+    <!-- Custom fonts for this template-->
+    <link rel="icon" type="image/vnd.icon" href="<?= base_url() ?>favicon.ico" />
     <!-- Custom styles for this template -->
     <link href="<?= base_url() ?>css/sb-admin-2.css" rel="stylesheet" />
     <!-- Jquery-Ui -->
@@ -24,6 +34,34 @@
     <!--fullcalandar-->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js'></script>
 
+    <!-- rut chileno -->
+    <script src="js/jquery.rut.js"></script>
+
+    <style>
+        .fc-bg-event {
+
+            z-index: 1 !important;
+            background-color: #000000 !important;
+            pointer-events: none !important;
+        }
+
+        .fc-event {
+            background-color: #9e9f9b !important;
+            width: 100% !important;
+            /* Force full width */
+            left: 0 !important;
+            /* Ensure it starts at the left edge */
+        }
+
+        .fc-timegrid-event {
+            position: relative;
+            width: 103% !important;
+            /* Force full width */
+            left: 0px !important;
+            right: 0px !important;
+            /* Ensure it starts at the left edge */
+        }
+    </style>
 </head>
 
 <body>
@@ -37,6 +75,47 @@
 
         </div>
     </main>
+
+
+    <!-- Modal confirmación -->
+    <div class="modal fade" id="modal-alerta" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">Atención</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="text-alerta"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modal-alerta-formulario" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">Atención</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="text-alert-form">El RUT ingresado no es</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="ok_form" class="btn btn-danger" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal formulario -->
     <div class="modal fade" id="modal-formulario" tabindex="-1">
@@ -53,7 +132,7 @@
                         Nuestro servicio de mediación privada le permite agendar mediación en un plazo máximo de <b>48 horas</b>. Considerar que este servicio
                         <b>no es gratuito</b> y tiene un costo asociado, un mediador se contactará para coordinar su día y hora de mediación.
                     </div>
-                    <form method="POST" action="<?= base_url() ?>/clientes/insertar" autocomplete="off">
+                    <form method="POST" action="<?= base_url() ?>/eventos/agendar" autocomplete="off">
                         <?= csrf_field() ?>
                         <div class="form-group mt-4">
                             <h5 class="text-primary">Datos Solicitante:</h5>
@@ -62,11 +141,11 @@
                             <div class="row">
                                 <div class="col-12 col-sm-6">
                                     <label>Nombre Completo: </label>
-                                    <input required autofocus value="<?= set_value('nombre') ?>" class="form-control" id="nombre" name="nombre" type="text" />
+                                    <input required autofocus value="<?= set_value('nombre_solicitante') ?>" class="form-control" id="nombre_solicitante" name="nombre_solicitante" type="text" />
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label>RUT: </label>
-                                    <input required class="form-control" value="<?= set_value('direccion') ?>" id="direccion" name="direccion" type="text" />
+                                    <input required class="form-control" value="<?= set_value('rut_solicitante') ?>" id="rut_solicitante" name="rut_solicitante" type="text" />
                                 </div>
                             </div>
                         </div>
@@ -75,11 +154,11 @@
                             <div class="row">
                                 <div class="col-12 col-sm-6">
                                     <label>Teléfono: </label>
-                                    <input required autofocus value="<?= set_value('telefono') ?>" class="form-control" id="telefono" name="telefono" type="text" />
+                                    <input required autofocus value="<?= set_value('telefono_solicitante') ?>" class="form-control" id="telefono_solicitante" name="telefono_solicitante" type="text" />
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label>E-Mail: </label>
-                                    <input class="form-control" value="<?= set_value('correo') ?>" id="correo" name="correo" type="email" />
+                                    <input class="form-control" value="<?= set_value('correo_solicitante') ?>" id="correo_solicitante" name="correo_solicitante" type="email" />
                                 </div>
                             </div>
                         </div>
@@ -109,11 +188,11 @@
                             <div class="row">
                                 <div class="col-12 col-sm-6">
                                     <label>Nombre Completo: </label>
-                                    <input required autofocus value="<?= set_value('nombre') ?>" class="form-control" id="nombre2" name="nombre2" type="text" />
+                                    <input required autofocus value="<?= set_value('nombre_solicitado') ?>" class="form-control" id="nombre_solicitado" name="nombre_solicitado" type="text" />
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label>RUT: </label>
-                                    <input required class="form-control" value="<?= set_value('direccion') ?>" id="rut2" name="rut2" type="text" />
+                                    <input required class="form-control rut" value="<?= set_value('rut_solicitado') ?>" id="rut_solicitado" name="rut_solicitado" type="text" />
                                 </div>
                             </div>
                         </div>
@@ -122,11 +201,11 @@
                             <div class="row">
                                 <div class="col-12 col-sm-6">
                                     <label>Teléfono: </label>
-                                    <input required autofocus value="<?= set_value('telefono2') ?>" class="form-control" id="telefono2" name="telefono2" type="text" />
+                                    <input required autofocus value="<?= set_value('telefono_solicitado') ?>" class="form-control" id="telefono_solicitado" name="telefono_solicitado" type="text" />
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label>E-Mail: </label>
-                                    <input class="form-control" value="<?= set_value('correo2') ?>" id="correo2" name="correo2" type="email" />
+                                    <input class="form-control" value="<?= set_value('correo_solicitado') ?>" id="correo_solicitado" name="correo_solicitado" type="email" />
                                 </div>
                             </div>
                         </div>
@@ -149,59 +228,155 @@
                         </div>
                         <hr class="mt-1 mb-3">
                         <h5 class="text-primary">Datos de los beneficiarios (hijos)
-                            <input type="hidden" id="cuentaHijos" name="cuentaHijos" value="1"/>
+                            <input type="hidden" id="cuentaHijos" name="cuentaHijos" value="1" />
                         </h5>
                         <hr class="mt-1 mb-2">
-                        <?php for($i = 1; $i<=6; $i++){ ?>
-                        <div id="hijo<?=$i?>"
-                        <?php if($i!=1){
-                        echo 'style="display: none;"';
-                        }else{
-                            echo 'style="display: block;"';
-                        } ?>
-                         class="form-group mt-4">
+                        <?php for ($i = 1; $i <= 6; $i++) { ?>
+                            <div id="hijo<?= $i ?>"
+                                <?php if ($i != 1) {
+                                    echo 'style="display: none;"';
+                                } else {
+                                    echo 'style="display: block;"';
+                                } ?>
+                                class="form-group mt-4">
 
-                    
-                            <div  class="row">
-                               
-                                <div class="col-12 col-sm-4">
-                                    <label>Nombre Completo: </label>
-                                    <input required autofocus value="<?= set_value('nombre1') ?>" class="form-control" id="nombre1" name="nombre1" type="text" />
-                                </div>
-                                <div class="col-12 col-sm-3">
-                                    <label>RUT: </label>
-                                    <input required class="form-control" value="<?= set_value('rut1') ?>" id="rut1" name="rut2" type="text" />
-                                </div>
-                                <div class="col-12 col-sm-3">
-                                    <label>Fecha de Nacimiento: </label>
-                                    <input required class="form-control" value="<?= set_value('direccion') ?>" id="rut2" name="rut2" type="date" />
-                                </div>
-                                <div class="col-12 col-sm-2">
-                                    <label>Edad: </label>
-                                    <input required class="form-control" value="<?= set_value('direccion') ?>" id="rut2" name="rut2" type="text" />
+
+                                <div class="row">
+
+                                    <div class="col-12 col-sm-4">
+                                        <label>Nombre Completo: </label>
+                                        <input required autofocus value="<?= set_value('nombre' . $i) ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
+                                    </div>
+                                    <div class="col-12 col-sm-3">
+                                        <label>RUT: </label>
+                                        <input required class="form-control rut" value="<?= set_value('rut' . $i) ?>" id="rut<?= $i ?>" name="rut<?= $i ?>" type="text" />
+                                    </div>
+                                    <div class="col-12 col-sm-3">
+                                        <label>Fecha de Nacimiento: </label>
+                                        <input required class="form-control" value="<?= set_value('fecha' . $i) ?>" id="fecha<?= $i ?>" name="fecha<?= $i ?>" type="date" />
+                                    </div>
+                                    <div class="col-12 col-sm-2">
+                                        <label>Edad: </label>
+                                        <input readonly required class="form-control" value="" id="edad<?= $i ?>" name="edad<?= $i ?>" type="text" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         <?php }
                         ?>
-<div class="form-group mb-4 mt-2">
+                        <div class="form-group mb-4 mt-2">
                             <div class="row ">
                                 <div class="col-12 col-sm-6">
                                     <button id="sumaHijo" class="btn btn-success" type="button">Agregar Beneficiario</button>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    
+
                                 </div>
                             </div>
                         </div>
+
+
+
+                        <div class="form-group mb-4 mt-2">
+                            <div class="row ">
+                                <div class="col-12 col-sm-6">
+                                    <hr class="mt-1 mb-3">
+                                    <h5 class="text-primary">Seleccione las materias a mediar
+                                    </h5>
+                                    <hr class="mt-1 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="alimentos" value="" id="alimentos" />
+                                        <label class="form-check-label" for="alimentos">Alimentos</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="alimentos_aumento" value="" id="alimentos_aumento" />
+                                        <label class="form-check-label" for="alimentos_aumento">Alimentos Aumento</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="alimentos_rebaja" value="" id="alimentos_rebaja" />
+                                        <label class="form-check-label" for="alimentos_rebaja">Alimentos Rebaja</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="deuda_alimentos" value="" id="deuda_alimentos" />
+                                        <label class="form-check-label" for="deuda_alimentos">Deuda por Pensión de Alimentos</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="cese_alimentos" value="" id="cese_alimentos" />
+                                        <label class="form-check-label" for="cese_alimentos">Cese Alimentos</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="cuidado_personal" value="" id="cuidado_personal" />
+                                        <label class="form-check-label" for="cuidado_personal">Cuidado Personal del Niño</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="cuidado_modifica" value="" id="cuidado_modifica" />
+                                        <label class="form-check-label" for="cuidado_modifica">Cuidado Personal Modificación</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="relacion_directa" value="" id="relacion_directa" />
+                                        <label class="form-check-label" for="relacion_directa">Relación Directa y Regular (Visitas)</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="relacion_modifica" value="" id="relacion_modifica" />
+                                        <label class="form-check-label" for="relacion_modifica">Relación Directa y Regular (Modificación)</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <hr class="mt-1 mb-3">
+                                    <h5 class="text-primary">Indique si existe causa vigente o denuncia por violencia intrafamiliar *
+
+                                    </h5>
+                                    <hr class="mt-1 mb-2">
+
+                                    <div class="form-radio">
+                                        <input class="form-radio-input" type="radio" name="violencia" value="si" id="violencia1" />
+                                        <label class="form-radio-label" for="violencia1">Si</label>
+                                    </div>
+                                    <div class="form-radio">
+                                        <input class="form-radio-input" type="radio" name="violencia" value="no" id="violencia2" />
+                                        <label class="form-radio-label" for="violencia2">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="mt-1 mb-3">
+                        <h5 class="text-primary">Fecha y Hora Sesión Telemática de Mediación
+                        </h5>
+                        <hr class="mt-1 mb-2">
+
+                        <div class="form-group mb-4 mt-2">
+                            <div class="row ">
+                                <div class="col-12 col-sm-3">
+                                    <label>Fecha de Sesión: </label>
+                                    <input required class="form-control" value="" id="fecha" name="fecha" type="datetime" />
+                                </div>
+                                <div class="col-12 col-sm-6">
+
+                                </div>
+                            </div>
+                        </div>
+
+                         <div class="modal-footer">
+                    <button type="submit" class="btn btn-success btn-ok">Agendar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+
+                </div>
                     </form>
 
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <a type="button" class="btn btn-danger btn-ok">Eliminar</a>
-                </div>
+               
             </div>
+        </div>
+    </div>
+
+    <div style="position: absolute; top:10%; right:30%;" class="toast  m-2" id="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Atención</strong>
+            <small></small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body alert alert-danger">
         </div>
     </div>
 
@@ -209,13 +384,22 @@
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
+
                 initialView: 'timeGridWeek',
+                slotEventOverlap: false,
+
+
                 allDaySlot: false,
-                slotMinTime: "08:00:00",
-                slotMaxTime: "19:30:00",
+                slotMinTime: "09:00:00",
+                slotMaxTime: "20:00:00",
                 locale: "esLocale",
                 firstDay: 1,
-                selectable: true,
+                //initialDate: '2025-08-22', 
+                expandRows: true,
+                height: '90%',
+
+                selectable: false,
+                slotDuration: '01:00', // 2 hours
                 themeSystem: 'bootstrap',
                 buttonText: {
                     today: 'Hoy',
@@ -224,18 +408,101 @@
                     day: 'day',
                     list: 'list'
                 },
-
+                displayEventEnd: true,
                 dateClick: function(info) {
+                    let ahora = new Date();
+                    //alert(ahora);
+                    //alert(info.date);
+                    if (info.date <= ahora) {
+                        $("#text-alerta").html('No se puede agendar para un horario anterior a la fecha y hora actual, por favor seleccione una fecha y horario posterior.');
+                        $("#modal-alerta").modal('show');
+                    } else {
+                        let date_selected = info.date.toLocaleString("es-ES");
+                        //alert(info);
+                        $("#modal-formulario").modal('show');
+                        // const opciones = { year: 'numeric', month: '2-digit', day: '2-digit' };
 
-                    $("#modal-formulario").modal('show');
-                    alert('Date: ' + info.dateStr);
+
+                        // alert(date_selected);
+                        // alert('Date: ' + info.dateStr);
+                        $("#fecha").val(date_selected);
+                    }
                     // alert('Resource ID: ' + info.resource.id);
-                }
+                },
+                events: [{ // this object will be "parsed" into an Event Object
+
+                        start: '2025-08-22T10:00:00',
+                        end: '2025-08-22T11:00:00',
+                        overlap: false,
+                        display: 'background',
+                        color: '#ff9f89'
+                    },
+                    { // this object will be "parsed" into an Event Object
+
+                        start: '2025-08-22T11:00:00',
+                        end: '2025-08-22T12:00:00',
+                        overlap: true,
+                        // display: 'block',
+                        color: '#9e9f9b',
+                        textColor: '#9e9f9b'
+                    }
+                ],
+                selectOverlap: false,
+                eventOverlap: false,
+                slotEventOverlap: false,
+                eventClick: function(info) {
+
+
+
+                    // change the border color just for fun
+                    //info.el.style.borderColor = 'red';
+                },
+
 
             });
             calendar.render();
         });
 
+
+
+        $("#rut_solicitante").rut({
+                formatOn: 'keyup',
+                validateOn: 'keyup'
+            })
+            .on('rutInvalido', function() {})
+            .on('rutValido', function() {});
+
+        $("#rut_solicitante").change(function() {
+
+            if (!$.validateRut($("#rut_solicitante").val())) {
+                alert('El RUT ingresado no es válido, favor revisar');
+                $("#rut_solicitante").val('');
+                $("#rut_solicitante").select();
+                $("#rut_solicitante").focus();
+
+
+            }
+        });
+
+
+                $("#rut_solicitado").rut({
+                formatOn: 'keyup',
+                validateOn: 'keyup'
+            })
+            .on('rutInvalido', function() {})
+            .on('rutValido', function() {});
+
+        $("#rut_solicitado").change(function() {
+
+            if (!$.validateRut($("#rut_solicitado").val())) {
+                alert('El RUT ingresado no es válido, favor revisar');
+                $("#rut_solicitado").val('');
+                $("#rut_solicitado").select();
+                $("#rut_solicitado").focus();
+
+
+            }
+        });
 
 
         fetch('<?= base_url() ?>json/regiones.json')
@@ -270,10 +537,21 @@
 
         }
 
-        $("#sumaHijo").click(function(){
-            let cuenta_hijos = parseInt($("#cuentaHijos").val())+1;
-            $("#hijo"+cuenta_hijos).css("display", "block");
+        $("#sumaHijo").click(function() {
+            let cuenta_hijos = parseInt($("#cuentaHijos").val()) + 1;
+            $("#hijo" + cuenta_hijos).css("display", "block");
             $("#cuentaHijos").val(cuenta_hijos);
+        });
+
+        $(document).ready(function() {
+
+            $(".fc-timegrid-event").css('width', '100% !important');
+
+            $(".fc-timegrid-bg-harness").click(function(event) {
+                alert('pq no funca');
+                $(".fc-timegrid-bg-harness").css('pointerEvents', 'none');
+                event.preventDefault();
+            });
         });
     </script>
 </body>

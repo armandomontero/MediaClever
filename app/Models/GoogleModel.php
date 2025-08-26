@@ -2,23 +2,22 @@
 namespace App\Models;
 use CodeIgniter\Model;
 
-class EventosModel extends Model{
-    protected $table      = 'eventos';
+class GoogleModel extends Model{
+    protected $table      = 'google';
     protected $primaryKey = 'id';
 
-    protected $useAutoIncrement = true;
+    protected $useAutoIncrement = true; 
 
     protected $returnType     = 'array';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['fecha_inicio', 'fecha_fin', 'id_solicitante', 'id_solicitado', 'id_usuario', 'state', 
-    'enlace', 'texto', 'firma_solicitante', 'firma_solicitado', 'id_tienda'];
+    protected $allowedFields = ['credentials', 'token'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
 
     // Dates
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
@@ -39,6 +38,21 @@ class EventosModel extends Model{
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-}
 
+
+
+ public function __getCredentials(){
+        $this->select('credentials');   
+        $datos = $this->first();
+
+        return $datos['credentials'];
+    }
+
+     public function __getToken(){
+        $this->select('token');   
+        $datos = $this->first();
+
+        return $datos['token'];
+    }
+}
 ?>
