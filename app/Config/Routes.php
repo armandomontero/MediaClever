@@ -53,7 +53,7 @@ $routes->get('/productos/generaReporteMinimo', 'Productos::generaReporteMinimo')
 
 //Eventos
 $routes->get('/eventos', 'Eventos::index');
-$routes->get('/agenda', 'Eventos::agenda');
+$routes->get('/agenda/(:num)/(:any)', 'Eventos::agenda/$1/$2');
 
 
 //Google

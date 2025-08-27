@@ -48,9 +48,13 @@ class Eventos extends BaseController
         //primero comprobamos valides de tienda y su pass unica para permitir la agenda
         $tienda = new TiendasModel();
 
-        $datos_tienda = $tienda->where('id_tienda', $id_tienda)->first();
-
+        $datos_tienda = $tienda->where('id', $id_tienda)->where('pass', $pass_tienda)->where('activo', 1)->first();
+        if($datos_tienda){
         echo view('eventos/agenda');
+        }
+        else{
+            echo 'Calendario no habilitado';
+        }
     }
 
     public function eliminados($activo = 0)
