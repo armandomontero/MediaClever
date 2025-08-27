@@ -533,7 +533,8 @@ class Usuarios extends BaseController
                         'region' => $this->request->getPost('region'),
                         'encargado' => $this->request->getPost('nombre'),
                         'fono' => $this->request->getPost('fono'),
-                        'correo' => $this->request->getPost('correo')
+                        'correo' => $this->request->getPost('correo'),
+                        'pass' => uniqid()
                     ];
                     $tienda->insert($insertTienda);
                     $id_tienda = $tienda->getInsertID();

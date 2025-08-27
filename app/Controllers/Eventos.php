@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\EventosModel;
+use App\Models\TiendasModel;
 
 class Eventos extends BaseController
 {
@@ -42,9 +43,12 @@ class Eventos extends BaseController
         echo view('footer');
     }
 
-        public function agenda()
+        public function agenda($id_tienda, $pass_tienda)
     {
+        //primero comprobamos valides de tienda y su pass unica para permitir la agenda
+        $tienda = new TiendasModel();
 
+        $datos_tienda = $tienda->where('id_tienda', $id_tienda)->first();
 
         echo view('eventos/agenda');
     }

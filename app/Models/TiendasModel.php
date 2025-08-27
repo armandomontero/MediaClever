@@ -11,7 +11,7 @@ class TiendasModel extends Model{
     protected $returnType     = 'array';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['rut', 'nombre', 'direccion', 'comuna', 'region', 'encargado', 'fono', 'correo'];
+    protected $allowedFields = ['rut', 'nombre', 'direccion', 'comuna', 'region', 'encargado', 'fono', 'correo', 'pass'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
