@@ -132,7 +132,7 @@
                         Nuestro servicio de mediación privada le permite agendar mediación en un plazo máximo de <b>48 horas</b>. Considerar que este servicio
                         <b>no es gratuito</b> y tiene un costo asociado, un mediador se contactará para coordinar su día y hora de mediación.
                     </div>
-                    <form method="POST" action="<?= base_url() ?>/eventos/agendar" autocomplete="off">
+                    <form method="POST" action="<?= base_url() ?>eventos/agendar" autocomplete="off">
                         <?= csrf_field() ?>
                         <div class="form-group mt-4">
                             <h5 class="text-primary">Datos Solicitante:</h5>
@@ -140,11 +140,11 @@
 
                             <div class="row">
                                 <div class="col-12 col-sm-6">
-                                    <label>Nombre Completo: </label>
+                                    <label>Nombre Completo<span class="text-danger">*</span> </label>
                                     <input required autofocus value="<?= set_value('nombre_solicitante') ?>" class="form-control" id="nombre_solicitante" name="nombre_solicitante" type="text" />
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <label>RUT: </label>
+                                    <label>RUT<span class="text-danger">*</span> </label>
                                     <input required class="form-control" value="<?= set_value('rut_solicitante') ?>" id="rut_solicitante" name="rut_solicitante" type="text" />
                                 </div>
                             </div>
@@ -153,11 +153,14 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-12 col-sm-6">
-                                    <label>Teléfono: </label>
-                                    <input required autofocus value="<?= set_value('telefono_solicitante') ?>" class="form-control" id="telefono_solicitante" name="telefono_solicitante" type="text" />
+                                    <label>Teléfono<span class="text-danger">*</span> </label>
+                                    <div class="input-group">
+                                    <span class="input-group-text"><img style="padding-right:5px;" width="25" src="<?=base_url()?>img/chile.png" alt="chile">+56</span>
+                                    <input required autofocus value="<?= set_value('telefono_solicitante') ?>" class="form-control" id="telefono_solicitante" name="telefono_solicitante" type="number" />
+                                    </div>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <label>E-Mail: </label>
+                                    <label>E-Mail<span class="text-danger">*</span> </label>
                                     <input class="form-control" value="<?= set_value('correo_solicitante') ?>" id="correo_solicitante" name="correo_solicitante" type="email" />
                                 </div>
                             </div>
@@ -166,13 +169,13 @@
                         <div class="form-group mb-4 mt-2">
                             <div class="row ">
                                 <div class="col-12 col-sm-6">
-                                    <label>Región: </label>
+                                    <label>Región </label>
                                     <select onchange="mostrar(this.value, 'comuna');" required class="form-control" name="region" id="region" required>
                                         <option value="">Selecciona</option>
                                     </select>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <label>Comuna: </label>
+                                    <label>Comuna </label>
                                     <select required class="form-control" name="comuna" id="comuna">
                                         <option value="">Selecciona</option>
                                     </select>
@@ -187,12 +190,12 @@
 
                             <div class="row">
                                 <div class="col-12 col-sm-6">
-                                    <label>Nombre Completo: </label>
+                                    <label>Nombre Completo<span class="text-danger">*</span> </label>
                                     <input required autofocus value="<?= set_value('nombre_solicitado') ?>" class="form-control" id="nombre_solicitado" name="nombre_solicitado" type="text" />
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <label>RUT: </label>
-                                    <input required class="form-control rut" value="<?= set_value('rut_solicitado') ?>" id="rut_solicitado" name="rut_solicitado" type="text" />
+                                    <label>RUT </label>
+                                    <input class="form-control rut" value="<?= set_value('rut_solicitado') ?>" id="rut_solicitado" name="rut_solicitado" type="text" />
                                 </div>
                             </div>
                         </div>
@@ -200,8 +203,11 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-12 col-sm-6">
-                                    <label>Teléfono: </label>
-                                    <input required autofocus value="<?= set_value('telefono_solicitado') ?>" class="form-control" id="telefono_solicitado" name="telefono_solicitado" type="text" />
+                                    <label>Teléfono </label>
+                                    <div class="input-group">
+                                    <span class="input-group-text"><img style="padding-right:5px;" width="25" src="<?=base_url()?>img/chile.png" alt="chile">+56</span>
+                                    <input required autofocus value="<?= set_value('telefono_solicitado') ?>" class="form-control" id="telefono_solicitado" name="telefono_solicitado" type="number" />
+                                    </div>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label>E-Mail: </label>
@@ -244,16 +250,22 @@
                                 <div class="row">
 
                                     <div class="col-12 col-sm-4">
-                                        <label>Nombre Completo: </label>
-                                        <input required autofocus value="<?= set_value('nombre' . $i) ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
+                                        <label>Nombre Completo:  <?php if($i==1){echo '<span class="text-danger">*</span>';} ?></label>
+                                        <input 
+                                        <?php if($i==1){echo 'required';} ?>
+                                        autofocus value="<?= set_value('nombre' . $i) ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
                                     </div>
                                     <div class="col-12 col-sm-3">
-                                        <label>RUT: </label>
-                                        <input required class="form-control rut" value="<?= set_value('rut' . $i) ?>" id="rut<?= $i ?>" name="rut<?= $i ?>" type="text" />
+                                        <label>RUT:<?php if($i==1){echo '<span class="text-danger">*</span>';} ?> </label>
+                                        <input 
+                                        <?php if($i==1){echo 'required';} ?>
+                                        class="form-control rut" value="<?= set_value('rut' . $i) ?>" id="rut<?= $i ?>" name="rut<?= $i ?>" type="text" />
                                     </div>
                                     <div class="col-12 col-sm-3">
-                                        <label>Fecha de Nacimiento: </label>
-                                        <input required class="form-control" value="<?= set_value('fecha' . $i) ?>" id="fecha<?= $i ?>" name="fecha<?= $i ?>" type="date" />
+                                        <label>Fecha de Nacimiento:<?php if($i==1){echo '<span class="text-danger">*</span>';} ?> </label>
+                                        <input onchange="calcularEdad(this, edad<?= $i ?>)"
+                                        <?php if($i==1){echo 'required';} ?>
+                                         class="form-control" value="<?= set_value('fecha' . $i) ?>" id="fecha<?= $i ?>" name="fecha<?= $i ?>" type="date" />
                                     </div>
                                     <div class="col-12 col-sm-2">
                                         <label>Edad: </label>
@@ -266,7 +278,7 @@
                         <div class="form-group mb-4 mt-2">
                             <div class="row ">
                                 <div class="col-12 col-sm-6">
-                                    <button id="sumaHijo" class="btn btn-success" type="button">Agregar Beneficiario</button>
+                                    <button id="sumaHijo" class="btn btn-success" type="button"><i class="fas fa-plus"></i> Agregar Beneficiario</button>
                                 </div>
                                 <div class="col-12 col-sm-6">
 
@@ -329,7 +341,7 @@
                                     <hr class="mt-1 mb-2">
 
                                     <div class="form-radio">
-                                        <input class="form-radio-input" type="radio" name="violencia" value="si" id="violencia1" />
+                                        <input class="form-radio-input" type="radio" required name="violencia" value="si" id="violencia1" />
                                         <label class="form-radio-label" for="violencia1">Si</label>
                                     </div>
                                     <div class="form-radio">
@@ -352,20 +364,23 @@
                                     <input required class="form-control" value="" id="fecha" name="fecha" type="datetime" />
                                 </div>
                                 <div class="col-12 col-sm-6">
-
+<div style="background-color: #e6f2ff; color: blue; border: 1px solid #dee2e6;" class="form-check mb-3 rounded text-sm p-3">
+        <input class="form-check-input ml-2" type="checkbox" value="" id="acepto" required="">
+        <label class="form-check-label ml-4" for="acepto"><b>NO AGENDES</b> sin estar en conocimiento de que el servicio de mediación está asociado a un cobro.</label>
+      </div>
                                 </div>
                             </div>
                         </div>
 
-                         <div class="modal-footer">
-                    <button type="submit" class="btn btn-success btn-ok">Agendar</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary btn-ok"><i class="fas fa-calendar-check"></i> Agendar</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-ban"></i> Cancelar</button>
 
-                </div>
+                        </div>
                     </form>
 
                 </div>
-               
+
             </div>
         </div>
     </div>
@@ -485,12 +500,13 @@
         });
 
 
-                $("#rut_solicitado").rut({
+        $("#rut_solicitado").rut({
                 formatOn: 'keyup',
                 validateOn: 'keyup'
             })
             .on('rutInvalido', function() {})
             .on('rutValido', function() {});
+            
 
         $("#rut_solicitado").change(function() {
 
@@ -504,6 +520,28 @@
             }
         });
 
+       <?php for ($i = 1; $i <= 6; $i++) { ?>
+         $("#rut<?=$i?>").rut({
+                formatOn: 'keyup',
+                validateOn: 'keyup'
+            })
+            .on('rutInvalido', function() {})
+            .on('rutValido', function() {});
+            
+
+        $("#rut<?=$i?>").change(function() {
+
+            if (!$.validateRut($("#rut<?=$i?>").val())) {
+                alert('El RUT ingresado no es válido, favor revisar');
+                $("#rut<?=$i?>").val('');
+                $("#rut<?=$i?>").select();
+                $("#rut<?=$i?>").focus();
+
+
+            }
+        });
+
+        <?php } ?>
 
         fetch('<?= base_url() ?>json/regiones.json')
             .then(res => res.json())
@@ -523,7 +561,7 @@
 
 
         function mostrar(region, campo) {
-            $("#comuna").find('option').not(':first').remove();
+            $("#"+campo).find('option').not(':first').remove();
             fetch('<?= base_url() ?>json/regiones.json')
                 .then(res => res.json())
                 .then(data => {
@@ -553,6 +591,82 @@
                 event.preventDefault();
             });
         });
+
+
+        function calcularEdad(campoFecha, campoEdad) {
+        // Si la fecha es correcta, calculamos la edad
+            var fecha = new Date(campoFecha.value);
+           // alert(fecha)
+       
+
+       // var values = fecha.split("-");
+        var dia = fecha.getDate();
+        var mes = fecha.getMonth();
+        var ano =fecha.getYear();
+//alert(ano);
+        // cogemos los valores actuales
+        var fecha_hoy = new Date();
+        var ahora_ano = fecha_hoy.getYear();
+        var ahora_mes = fecha_hoy.getMonth();
+        var ahora_dia = fecha_hoy.getDate();
+
+        // realizamos el calculo
+        var edad = (ahora_ano + 1900) - ano;
+        if (ahora_mes < mes) {
+            edad--;
+        }
+        if ((mes == ahora_mes) && (ahora_dia < dia)) {
+            edad--;
+        }
+        if (edad >= 1900) {
+            edad -= 1900;
+        }
+
+        // calculamos los meses
+        var meses = 0;
+
+        if (ahora_mes > mes && dia > ahora_dia)
+            meses = ahora_mes - mes - 1;
+        else if (ahora_mes > mes)
+            meses = ahora_mes - mes
+        if (ahora_mes < mes && dia < ahora_dia)
+            meses = 12 - (mes - ahora_mes);
+        else if (ahora_mes < mes)
+            meses = 12 - (mes - ahora_mes + 1);
+        if (ahora_mes == mes && dia > ahora_dia)
+            meses = 11;
+
+        // calculamos los dias
+        var dias = 0;
+        if (ahora_dia > dia)
+            dias = ahora_dia - dia;
+        if (ahora_dia < dia) {
+            ultimoDiaMes = new Date(ahora_ano, ahora_mes - 1, 0);
+            dias = ultimoDiaMes.getDate() - (dia - ahora_dia);
+        }
+        edadFinal = dias + " días";
+
+if( meses>1){
+    edadFinal = meses + " meses";
+}
+if(edad>=1){
+    edadFinal = edad + " años";
+}
+        campoEdad.value = edadFinal;
+    }
+
+
+    function esNumero(strNumber) {
+    if (strNumber == null) return false;
+    if (strNumber == undefined) return false;
+    if (typeof strNumber === "number" && !isNaN(strNumber)) return true;
+    if (strNumber == "") return false;
+    if (strNumber === "") return false;
+    var psInt, psFloat;
+    psInt = parseInt(strNumber);
+    psFloat = parseFloat(strNumber);
+    return !isNaN(strNumber) && !isNaN(psFloat);
+}
     </script>
 </body>
 
