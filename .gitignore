@@ -132,3 +132,6 @@ nb-configuration.xml
 #configuracion smtp
 /.php-cs-fixer.php
 app/Config/Email.php
+
+#google credentials
+app/Helpers/credentials.json

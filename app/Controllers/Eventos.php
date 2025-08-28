@@ -148,6 +148,8 @@ class Eventos extends BaseController
                 'fecha_fin' => $fechaFin,
                 'id_solicitante' => $id_solicitante,
                 'id_solicitado' => $id_solicitado,
+                'region_evento' => $this->request->getPost('region1h'),
+                'comuna_evento' => $this->request->getPost('comuna1h'),
                 'causa' => $this->request->getPost('violencia'),
                 'state' => 'Agendado',
                 'id_tienda' => $this->request->getPost('id_tienda')
