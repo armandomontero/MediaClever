@@ -16,7 +16,7 @@ use Firebase\JWT\JWT;
 
 class Usuarios extends BaseController
 {
-    protected $usuarios, $cajas, $roles, $log;
+    protected $usuarios, $cajas, $roles, $log, $configuracion;
     protected $reglas, $reglasLogin, $reglasCambiaPassword, $reglasUpdate, $reglasRegistro;
     use ResponseTrait;
 
@@ -26,6 +26,7 @@ class Usuarios extends BaseController
         $this->cajas = new CajasModel();
         $this->roles = new RolesModel();
         $this->log = new LogsModel();
+        $this->log = new ConfiguracionModel();
 
         helper(['form']);
 
@@ -56,7 +57,7 @@ class Usuarios extends BaseController
                     'required' => 'El campo {field} es obligatorio.'
                 ]
             ],
-            'id_caja' => [
+            'correo' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => 'El campo {field} es obligatorio.'
@@ -97,7 +98,7 @@ class Usuarios extends BaseController
                     'required' => 'El campo {field} es obligatorio.'
                 ]
             ],
-            'id_caja' => [
+            'correo' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => 'El campo {field} es obligatorio.'
@@ -213,7 +214,11 @@ class Usuarios extends BaseController
 
     public function index($activo = 1)
     {
-        $usuarios = $this->usuarios->where('activo', $activo)->where('id_tienda', $this->session->id_tienda)->findAll();
+
+         $usuarios = $this->usuarios->select('usuarios.id AS id, usuarios.nombre AS nombre, usuarios.usuario, roles.nombre AS rol, correo')->join('roles', 'usuarios.id_rol = roles.id')
+        ->where('usuarios.activo', $activo)->where('usuarios.id_tienda', $this->session->id_tienda)
+        ->orderBy('usuarios.id', 'DESC')->findAll();
+       
         $data = ['titulo' => 'Usuarios', 'datos' => $usuarios];
 
         echo view('header');
@@ -233,15 +238,14 @@ class Usuarios extends BaseController
 
     public function nuevo($valid = null)
     {
-        //llamamos cajas
-        $cajas = $this->cajas->where('activo', 1)->where('id_tienda', $this->session->id_tienda)->orderBy('nombre', 'asc')->findAll();
+
         //llamamos roles
-        $roles = $this->roles->where('activo', 1)->where('id_tienda', $this->session->id_tienda)->orderBy('nombre', 'asc')->findAll();
+        $roles = $this->roles->where('activo', 1)->orderBy('nombre', 'asc')->findAll();
 
         if ($valid != null) {
-            $data = ['titulo' => 'Agregar Usuario', 'cajas' => $cajas, 'roles' => $roles, 'validation' => $valid];
+            $data = ['titulo' => 'Agregar Usuario', 'roles' => $roles, 'validation' => $valid];
         } else {
-            $data = ['titulo' => 'Agregar Usuario', 'cajas' => $cajas, 'roles' => $roles];
+            $data = ['titulo' => 'Agregar Usuario', 'roles' => $roles];
         }
 
 
@@ -260,7 +264,7 @@ class Usuarios extends BaseController
                 'usuario' => $this->request->getPost('usuario'),
                 'nombre' => $this->request->getPost('nombre'),
                 'password' => $hash,
-                'id_caja' => $this->request->getPost('id_caja'),
+                'correo' => $this->request->getPost('correo'),
                 'id_rol' => $this->request->getPost('id_rol'),
                 'activo' => 1,
                 'id_tienda' => $this->session->id_tienda
@@ -274,10 +278,9 @@ class Usuarios extends BaseController
 
     public function editar($id, $valid = null)
     {
-        //llamamos cajas
-        $cajas = $this->cajas->where('activo', 1)->where('id_tienda', $this->session->id_tienda)->orderBy('nombre', 'asc')->findAll();
+        
         //llamamos roles
-        $roles = $this->roles->where('activo', 1)->where('id_tienda', $this->session->id_tienda)->orderBy('nombre', 'asc')->findAll();
+        $roles = $this->roles->where('activo', 1)->orderBy('nombre', 'asc')->findAll();
 
         try {
             $usuario = $this->usuarios->where('id', $id)->where('id_tienda', $this->session->id_tienda)->first();
@@ -285,11 +288,11 @@ class Usuarios extends BaseController
             exit($e->getMessage());
         }
         if ($valid != null) {
-            $data = ['titulo' => 'Editar Usuario', 'datos' => $usuario, 'cajas' => $cajas, 'roles' => $roles, 'validation' => $valid];
+            $data = ['titulo' => 'Editar Usuario', 'datos' => $usuario,  'roles' => $roles, 'validation' => $valid];
         } else {
 
 
-            $data = ['titulo' => 'Editar Usuario', 'datos' => $usuario, 'cajas' => $cajas, 'roles' => $roles];
+            $data = ['titulo' => 'Editar Usuario', 'datos' => $usuario,  'roles' => $roles];
         }
         echo view('header');
         echo view('usuarios/editar', $data);
@@ -309,7 +312,7 @@ class Usuarios extends BaseController
                 $this->usuarios->update($this->request->getPost('id'), [
                     'usuario' => $this->request->getPost('usuario'),
                     'nombre' => $this->request->getPost('nombre'),
-                    'id_caja' => $this->request->getPost('id_caja'),
+                    'correo' => $this->request->getPost('correo'),
                     'id_rol' => $this->request->getPost('id_rol'),
                     'password' => $hash
                 ]);
@@ -317,7 +320,7 @@ class Usuarios extends BaseController
                 $this->usuarios->update($this->request->getPost('id'), [
                     'usuario' => $this->request->getPost('usuario'),
                     'nombre' => $this->request->getPost('nombre'),
-                    'id_caja' => $this->request->getPost('id_caja'),
+                    'correo' => $this->request->getPost('correo'),
                     'id_rol' => $this->request->getPost('id_rol')
                 ]);
             }
@@ -372,18 +375,18 @@ class Usuarios extends BaseController
                         'id_usuario' => $datosUsuario['id'],
                         'nombre' => $datosUsuario['nombre'],
                         'user' => $datosUsuario['usuario'],
-                        'id_caja' => $datosUsuario['id_caja'],
                         'id_rol' => $datosUsuario['id_rol'],
                         'id_tienda' => $datosUsuario['id_tienda'],
                         'ruta_logo' => $logo['logo']
                     ];
 
-                    $this->log->save([
+                 /*   $this->log->save([
                         'id_usuario' => $datosUsuario['id'],
                         'evento' => 'Inicia Sesión',
                         'ip' => $_SERVER['REMOTE_ADDR'],
                         'device' => $_SERVER['HTTP_USER_AGENT']
                     ]);
+                    */
 
                     $session = session();
                     $session->set($datosSesion);
@@ -406,12 +409,12 @@ class Usuarios extends BaseController
 
     public function logout()
     {
-        $this->log->save([
+        /*$this->log->save([
             'id_usuario' => $this->session->id_usuario,
             'evento' => 'Cierra Sesión',
             'ip' => $_SERVER['REMOTE_ADDR'],
             'device' => $_SERVER['HTTP_USER_AGENT']
-        ]);
+        ]);*/
         $session = session();
         $session->destroy();
         return redirect()->to(base_url());
@@ -539,34 +542,35 @@ class Usuarios extends BaseController
                     $tienda->insert($insertTienda);
                     $id_tienda = $tienda->getInsertID();
 
-                    //Luego creamos caja nueva
-                    $caja = new CajasModel();
-                    $insertCaja = [
-                        'numero_caja' => 'Caja 1',
-                        'nombre' => 'Caja Principal',
-                        'folio' => 1,
-                        'activo' => 1,
-                        'id_tienda' => $id_tienda
-
-                    ];
-                    $caja->insert($insertCaja);
-                    $id_caja = $caja->getInsertID();
+                    
 
                     $hash = password_hash($this->request->getPost('password'), PASSWORD_DEFAULT);
-
+                    //insertamos usuario
                     $this->usuarios->save([
                         'usuario' => $this->request->getPost('usuario'),
                         'nombre' => $this->request->getPost('nombre'),
+                       'correo' => $this->request->getPost('correo'),
                         'password' => $hash,
-                        'id_caja' => $id_caja,
                         'id_rol' => 1, //admin
                         'activo' => 1,
                         'id_tienda' => $id_tienda
                     ]);
+
+
+                    //creamos configuracion inicial
+                    $this->configuracion->save([
+                        'id_tienda' => $id_tienda,
+                        'nombre' => $this->request->getPost('nombre_tienda'),
+                        'direccion' => $this->request->getPost('direccion'),
+                        'logo' => 'sinlogo.jpg'
+                       
+                    ]);
+
+
                     $email = \Config\Services::email();
                     $email->setFrom('cleverpos@infoclever.cl', 'CleverPOS');
                     $email->setTo($this->request->getPost('correo'));
-                    $email->setSubject('Bienvenido/a al sistema CleverPOS');
+                    $email->setSubject('Bienvenido/a al sistema MediaClever');
                     $email->setMessage('Para acceder debe entrar en este <a href="' . base_url() . '">link</a> e ingresar con los datos que definió al registrarse.');
                     $email->setMailType('html');
                     if ($email->send()) {

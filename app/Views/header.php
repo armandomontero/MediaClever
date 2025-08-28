@@ -32,11 +32,11 @@ $user_session = session();
     <link href="<?= base_url() ?>vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
 
     <!--Jquery y JQuery-Ui -->
-    <script src="<?=base_url()?>vendor/jquery/jquery.min.js"></script>
-    <script src="<?=base_url()?>js/jquery-ui/jquery-ui.min.js"></script>
+    <script src="<?= base_url() ?>vendor/jquery/jquery.min.js"></script>
+    <script src="<?= base_url() ?>js/jquery-ui/jquery-ui.min.js"></script>
 
     <!--Charts -->
-    <script src="<?=base_url()?>js/chart.js"></script>
+    <script src="<?= base_url() ?>js/chart.js"></script>
 
     <!--fullcalandar-->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js'></script>
@@ -54,10 +54,10 @@ $user_session = session();
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url() ?>">
                 <div class="sidebar-brand-icon ">
-                 <img width="70%" src="<?=base_url()?>img/logo_icon.png?"/>
+                    <img width="70%" src="<?= base_url() ?>img/logo_icon.png?" />
                 </div>
                 <div class="sidebar-brand-text ml-0 ">
-                    <img width="100%" src="<?=base_url()?>img/logo_ligth.png?"/>
+                    <img width="100%" src="<?= base_url() ?>img/logo_ligth.png?" />
                 </div>
             </a>
 
@@ -79,11 +79,11 @@ $user_session = session();
                 Opciones
             </div>
 
-             <!-- Nav Item - Pages Collapse Menu -->
+            <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="<?= base_url() ?>eventos"
                     aria-expanded="true">
-                   <i class="far fa-calendar"></i>
+                    <i class="far fa-calendar"></i>
                     <span>Agenda</span>
                 </a>
 
@@ -98,54 +98,21 @@ $user_session = session();
                 </a>
 
             </li>
+
+
+
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCompras"
-                    aria-expanded="true" aria-controls="collapseCompras">
-                    <i class="fas fa-truck"></i>
-                    <span>Compras</span>
-                </a>
-<div id="collapseCompras" class="collapse" aria-labelledby="headingCompras" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Opciones de Compra:</h6>
-                        <a class="collapse-item" href="<?= base_url() ?>compras/nuevo">Nueva Compra</a>
-                        <a class="collapse-item" href="<?= base_url() ?>compras">Compras</a>
-                        
-                    </div>
-                </div>
-            </li>
-
- <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="<?= base_url() ?>ventas/venta"
-                    aria-expanded="true">
-                    <i class="fas fa-cash-register "></i>
-                    <span>Caja</span>
-                </a>
-
-            </li>
-
-             <li class="nav-item">
-                <a class="nav-link collapsed" href="<?= base_url() ?>ventas"
-                    aria-expanded="true">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span>Ventas</span>
-                </a>
-
-            </li>
-
-             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReportes"
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReportes"
                     aria-expanded="true" aria-controls="collapseReportes">
                     <i class="fas fa-file-alt"></i>
                     <span>Reportes</span>
                 </a>
-<div id="collapseReportes" class="collapse" aria-labelledby="headingCompras" data-parent="#accordionSidebar">
+                <div id="collapseReportes" class="collapse" aria-labelledby="headingCompras" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Lista de Reportes:</h6>
                         <a class="collapse-item" href="<?= base_url() ?>productos/reporteMinimos">Mínimo Stock</a>
-                        
+
                     </div>
                 </div>
             </li>
@@ -163,8 +130,8 @@ $user_session = session();
                         <h6 class="collapse-header">Opciones:</h6>
                         <a class="collapse-item" href="<?= base_url() ?>configuracion">Configuración</a>
                         <a class="collapse-item" href="<?= base_url() ?>usuarios">Usuarios</a>
-                        <a class="collapse-item" href="<?= base_url() ?>cajas">Cajas</a>
-                        <a class="collapse-item" href="<?= base_url() ?>roles">Roles</a>
+                        <a class="collapse-item" href="<?= base_url() ?>materias">Materias</a>
+                        <a class="collapse-item" href="<?= base_url() ?>configuracion/link">Link Agenda Pública</a>
                     </div>
                 </div>
             </li>
@@ -191,16 +158,16 @@ $user_session = session();
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-<img height="100%" src="<?=base_url().$user_session->ruta_logo?>"/>
+                    <img height="100%" src="<?= base_url() . $user_session->ruta_logo ?>" />
                     <!-- Sidebar Toggle (Topbar) 
                     <form class="form-inline">-->
-                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                            <i class="fa fa-bars"></i>
-                        </button>
-                   <!-- Sidebar Toggle (Topbar)  </form>
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <!-- Sidebar Toggle (Topbar)  </form>
 
                     Topbar Search -->
-                   <!-- <form
+                    <!-- <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
@@ -239,7 +206,7 @@ $user_session = session();
                                 </form>
                             </div>
                         </li>
-<!--
+                        <!--
                          Nav Item - Alerts 
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
@@ -369,12 +336,12 @@ $user_session = session();
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                
+
                                 <a class="dropdown-item" href="<?= base_url() ?>usuarios/cambia_password">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Cambiar contraseña
                                 </a>
-                                
+
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

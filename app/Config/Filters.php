@@ -71,7 +71,7 @@ class Filters extends BaseFilters
      */
     public array $globals = [
         'before' => [
-            'session' => ['except' => ['/', 'usuarios/valida', 'api/*', 'usuarios/authAPI', 'registro', 'agenda']],
+            'session' => ['except' => ['/', 'usuarios/valida', 'api/*', 'usuarios/authAPI', 'registro', 'agenda/*', 'eventos/agendar']],
             
              // Example: Exclude login routes
             // 'honeypot',

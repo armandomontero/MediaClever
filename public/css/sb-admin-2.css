@@ -15,6 +15,15 @@
   z-index: 215000000 !important;
 }
 
+.collapse-inner{
+   z-index: 215000000 !important;
+}
+
+.calendar{
+  z-index: 10 !important;
+  position:relative;
+}
+
 .covered {
   position:relative; /* make a new "render context", so absolute positioning is relative to this parent container */
   padding:20px; /* only needed for this demo */

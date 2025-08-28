@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Media Clever - Agenda</title>
+    <title><?=$config['nombre']?> - Agenda</title>
 
     <!-- Custom fonts for this template-->
     <link rel="icon" type="image/vnd.icon" href="<?= base_url() ?>favicon.ico" />
@@ -35,7 +35,7 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js'></script>
 
     <!-- rut chileno -->
-    <script src="js/jquery.rut.js"></script>
+    <script src="<?= base_url() ?>js/jquery.rut.js"></script>
 
     <style>
         .fc-bg-event {
@@ -50,6 +50,7 @@
             width: 100% !important;
             /* Force full width */
             left: 0 !important;
+             pointer-events: none !important;
             /* Ensure it starts at the left edge */
         }
 
@@ -61,25 +62,62 @@
             right: 0px !important;
             /* Ensure it starts at the left edge */
         }
+
+        .fc-toolbar-title{
+            font-size: 14px !important;
+           
+        }
     </style>
 </head>
 
 <body>
     <!-- Begin Page Content -->
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+        <a class="navbar-brand" href="#"><img width="" height="80" src="<?=base_url().$config['logo']?>"/></a>
+      
+        <div class="" id="">
+           <h4 class="text-primary">Agenda <?=$config['nombre']?></h4>
+            <p>Haga click sobre una fecha disponible e ingrese sus datos</p>
+        </div>
+    </nav>
     <main>
         <div class="container-fluid">
 
+        <div class="">
+            
+           
+            
+        </div>
 
 
-            <div id='calendar'></div>
+            <div class="p-2" id='calendar'></div>
 
         </div>
     </main>
-
+ <!-- Modal confirmación -->
+    <div class="modal fade" id="modal-mensaje" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-success">Atención</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id=""><?php if($mensaje){echo $mensaje;}?></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal confirmación -->
     <div class="modal fade" id="modal-alerta" tabindex="-1">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-danger">Atención</h5>
@@ -134,6 +172,9 @@
                     </div>
                     <form method="POST" action="<?= base_url() ?>eventos/agendar" autocomplete="off">
                         <?= csrf_field() ?>
+                        <input type="hidden" name="id_tienda" id="id_tienda" value="<?=$config['id_tienda']?>"/>
+                        <input type="hidden" name="pass_tienda" id="pass_tienda" value="<?=$pass_tienda?>"/>
+                         <input type="hidden" name="fecha_bd" id="fecha_bd" value=""/>
                         <div class="form-group mt-4">
                             <h5 class="text-primary">Datos Solicitante:</h5>
                             <hr class="mt-1 mb-2">
@@ -170,15 +211,17 @@
                             <div class="row ">
                                 <div class="col-12 col-sm-6">
                                     <label>Región </label>
-                                    <select onchange="mostrar(this.value, 'comuna');" required class="form-control" name="region" id="region" required>
+                                    <select onchange="mostrar(this.value, 'comuna'); getText(this, 'region1h');" required class="form-control" name="region" id="region" required>
                                         <option value="">Selecciona</option>
                                     </select>
+                                    <input type="hidden" id="region1h" name="region1h" value=""/>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label>Comuna </label>
-                                    <select required class="form-control" name="comuna" id="comuna">
+                                    <select onchange="getText(this, 'comuna1h');" required class="form-control" name="comuna" id="comuna">
                                         <option value="">Selecciona</option>
                                     </select>
+                                     <input type="hidden" id="comuna1h" name="comuna1h" value=""/>
                                 </div>
                             </div>
                         </div>
@@ -220,15 +263,17 @@
                             <div class="row ">
                                 <div class="col-12 col-sm-6">
                                     <label>Región: </label>
-                                    <select onchange="mostrar(this.value, 'comuna2');" required class="form-control" name="region2" id="region2" required>
+                                    <select onchange="mostrar(this.value, 'comuna2'); getText(this, 'region2h');" required class="form-control" name="region2" id="region2" required>
                                         <option value="">Selecciona</option>
                                     </select>
+                                    <input type="hidden" id="region2h" name="region2h" value=""/>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label>Comuna: </label>
-                                    <select required class="form-control" name="comuna2" id="comuna2">
+                                    <select onchange="getText(this, 'comuna2h');" required class="form-control" name="comuna2" id="comuna2">
                                         <option value="">Selecciona</option>
                                     </select>
+                                    <input type="hidden" id="comuna2h" name="comuna2h" value=""/>
                                 </div>
                             </div>
                         </div>
@@ -295,42 +340,16 @@
                                     <h5 class="text-primary">Seleccione las materias a mediar
                                     </h5>
                                     <hr class="mt-1 mb-2">
+
+                                <?php foreach ($materias AS $materia){?>
+
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="alimentos" value="" id="alimentos" />
-                                        <label class="form-check-label" for="alimentos">Alimentos</label>
+                                        <input class="form-check-input" type="checkbox" name="materia<?=$materia['id']?>" value="" id="materia<?=$materia['id']?>" />
+                                        <label class="form-check-label" for="materia<?=$materia['id']?>"><?=$materia['nombre']?></label>
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="alimentos_aumento" value="" id="alimentos_aumento" />
-                                        <label class="form-check-label" for="alimentos_aumento">Alimentos Aumento</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="alimentos_rebaja" value="" id="alimentos_rebaja" />
-                                        <label class="form-check-label" for="alimentos_rebaja">Alimentos Rebaja</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="deuda_alimentos" value="" id="deuda_alimentos" />
-                                        <label class="form-check-label" for="deuda_alimentos">Deuda por Pensión de Alimentos</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="cese_alimentos" value="" id="cese_alimentos" />
-                                        <label class="form-check-label" for="cese_alimentos">Cese Alimentos</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="cuidado_personal" value="" id="cuidado_personal" />
-                                        <label class="form-check-label" for="cuidado_personal">Cuidado Personal del Niño</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="cuidado_modifica" value="" id="cuidado_modifica" />
-                                        <label class="form-check-label" for="cuidado_modifica">Cuidado Personal Modificación</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="relacion_directa" value="" id="relacion_directa" />
-                                        <label class="form-check-label" for="relacion_directa">Relación Directa y Regular (Visitas)</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="relacion_modifica" value="" id="relacion_modifica" />
-                                        <label class="form-check-label" for="relacion_modifica">Relación Directa y Regular (Modificación)</label>
-                                    </div>
+                                <?php }?>
+
+                                    
                                 </div>
 
                                 <div class="col-12 col-sm-6">
@@ -341,11 +360,11 @@
                                     <hr class="mt-1 mb-2">
 
                                     <div class="form-radio">
-                                        <input class="form-radio-input" type="radio" required name="violencia" value="si" id="violencia1" />
+                                        <input class="form-radio-input" type="radio" required name="violencia" value="1" id="violencia1" />
                                         <label class="form-radio-label" for="violencia1">Si</label>
                                     </div>
                                     <div class="form-radio">
-                                        <input class="form-radio-input" type="radio" name="violencia" value="no" id="violencia2" />
+                                        <input class="form-radio-input" type="radio" name="violencia" value="0" id="violencia2" />
                                         <label class="form-radio-label" for="violencia2">No</label>
                                     </div>
                                 </div>
@@ -361,7 +380,7 @@
                             <div class="row ">
                                 <div class="col-12 col-sm-3">
                                     <label>Fecha de Sesión: </label>
-                                    <input required class="form-control" value="" id="fecha" name="fecha" type="datetime" />
+                                    <input readonly class="form-control" value="" id="fecha" name="fecha" type="datetime" />
                                 </div>
                                 <div class="col-12 col-sm-6">
 <div style="background-color: #e6f2ff; color: blue; border: 1px solid #dee2e6;" class="form-check mb-3 rounded text-sm p-3">
@@ -396,11 +415,32 @@
     </div>
 
     <script>
+
+    $(document).ready(function(){
+       <?php if($mensaje){
+echo '$("#modal-mensaje").modal("show");';
+        }?>
+
+    });
+
+if(window.innerWidth>=1024){
+    var duration = 7;
+}else{
+    duration = 4;
+}
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
+            let fechaActual = new Date(); // Obtiene la fecha actual
+            // alert(fechaActual);
+            let mesActual = fechaActual.getMonth(); 
+            let fechaFin = new Date();
+             fechaFin.setMonth(mesActual + 1);
+             
+           // alert(fechaFin);
+           // alert(fechaActual);
             var calendar = new FullCalendar.Calendar(calendarEl, {
 
-                initialView: 'timeGridWeek',
+                
                 slotEventOverlap: false,
 
 
@@ -409,11 +449,14 @@
                 slotMaxTime: "20:00:00",
                 locale: "esLocale",
                 firstDay: 1,
-                //initialDate: '2025-08-22', 
+                validRange: {
+    start: fechaActual, // Start date of the valid range
+    end: fechaFin  // End date of the valid range
+  },
                 expandRows: true,
                 height: '90%',
 
-                selectable: false,
+                selectable: true,
                 slotDuration: '01:00', // 2 hours
                 themeSystem: 'bootstrap',
                 buttonText: {
@@ -423,16 +466,36 @@
                     day: 'day',
                     list: 'list'
                 },
+                businessHours: {
+  // days of week. an array of zero-based day of week integers (0=Sunday)
+  daysOfWeek: [ 1, 2, 3, 4, 5, 6 ], // Monday - Thursday
+
+  startTime: '09:00', // a start time (10am in this example)
+  endTime: '19:00', // an end time (6pm in this example)
+},
                 displayEventEnd: true,
-                dateClick: function(info) {
+                select: function(start, end) {
+                    
+                   //alert(start.start.toDateString());
+
+                   let dia = start.start.getDate();
+                   let mes = (start.start.getMonth()+1).toString().padStart(2, '0');
+                   let ano = start.start.getFullYear();
+                   let hora = start.start.getHours().toString().padStart(2, '0');
+                   let min = start.start.getMinutes().toString().padStart(2, '0');
+
+                   let fecha_bd = ano+'-'+mes+'-'+dia+' '+hora+':'+min+':00';
+
+                  // alert(fecha_bd);
+                    //console.log(start);
                     let ahora = new Date();
                     //alert(ahora);
                     //alert(info.date);
-                    if (info.date <= ahora) {
+                    if (start.start <= ahora) {
                         $("#text-alerta").html('No se puede agendar para un horario anterior a la fecha y hora actual, por favor seleccione una fecha y horario posterior.');
                         $("#modal-alerta").modal('show');
                     } else {
-                        let date_selected = info.date.toLocaleString("es-ES");
+                        let date_selected = dia+'-'+mes+'-'+ano+' '+hora+':'+min+':00';
                         //alert(info);
                         $("#modal-formulario").modal('show');
                         // const opciones = { year: 'numeric', month: '2-digit', day: '2-digit' };
@@ -441,26 +504,28 @@
                         // alert(date_selected);
                         // alert('Date: ' + info.dateStr);
                         $("#fecha").val(date_selected);
+                        $("#fecha_bd").val(fecha_bd);
                     }
                     // alert('Resource ID: ' + info.resource.id);
                 },
-                events: [{ // this object will be "parsed" into an Event Object
+                events: [
 
-                        start: '2025-08-22T10:00:00',
-                        end: '2025-08-22T11:00:00',
+                    <?php
+                    foreach($eventos as $evento){
+                        echo "{ 
+
+                        start: '".$evento['fecha_inicio']."',
+                        end: '".$evento['fecha_fin']."',
                         overlap: false,
-                        display: 'background',
-                        color: '#ff9f89'
-                    },
-                    { // this object will be "parsed" into an Event Object
+                       display: 'background',
+                        title: 'No Disponible',
+                        color: '#9e9f9b'
+                        
+                    },";
 
-                        start: '2025-08-22T11:00:00',
-                        end: '2025-08-22T12:00:00',
-                        overlap: true,
-                        // display: 'block',
-                        color: '#9e9f9b',
-                        textColor: '#9e9f9b'
-                    }
+                    } ?>
+                   
+                    
                 ],
                 selectOverlap: false,
                 eventOverlap: false,
@@ -472,6 +537,20 @@
                     // change the border color just for fun
                     //info.el.style.borderColor = 'red';
                 },
+    selectConstraint: "businessHours",
+    minTime: "08:00",
+    maxTime: "22:00",
+    defaultView: "timeGridFourDay",
+    initialView: 'timeGridFourDay',
+  views: {
+    timeGridFourDay: {
+      type: 'timeGrid',
+      duration: { days: duration }
+    }
+  },
+  selectHelper: true,
+  longPressDelay: 1
+                
 
 
             });
@@ -581,16 +660,7 @@
             $("#cuentaHijos").val(cuenta_hijos);
         });
 
-        $(document).ready(function() {
-
-            $(".fc-timegrid-event").css('width', '100% !important');
-
-            $(".fc-timegrid-bg-harness").click(function(event) {
-                alert('pq no funca');
-                $(".fc-timegrid-bg-harness").css('pointerEvents', 'none');
-                event.preventDefault();
-            });
-        });
+       
 
 
         function calcularEdad(campoFecha, campoEdad) {
@@ -666,6 +736,12 @@ if(edad>=1){
     psInt = parseInt(strNumber);
     psFloat = parseFloat(strNumber);
     return !isNaN(strNumber) && !isNaN(psFloat);
+}
+
+
+function getText(campoIn, campoOut)
+{
+    document.getElementById(campoOut).value = $(campoIn).children(':selected').text();
 }
     </script>
 </body>

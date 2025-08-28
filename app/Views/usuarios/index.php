@@ -31,6 +31,8 @@
                                 <th>ID</th>
                                 <th>Usuario</th>
                                 <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Rol</th>
                                 <th></th>
                                 <th></th>
 
@@ -41,6 +43,8 @@
                                 <th>ID</th>
                                <th>Usuario</th>
                                 <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Rol</th>
                                 <th></th>
                                 <th></th>
                             </tr>
@@ -54,6 +58,8 @@
                                     <td><?php echo $dato['id']; ?></td>
                                     <td><?php echo $dato['usuario']; ?></td>
                                     <td><?php echo $dato['nombre']; ?></td>
+                                    <td><?php echo $dato['correo']; ?></td>
+                                    <td><?php echo $dato['rol']; ?></td>
                                     <td><a class="btn btn-warning btn-sm" href="<?= base_url() ?>usuarios/editar/<?php echo $dato['id']; ?>"><i class="fas fa-edit"></i></a></td>
                                     <td><a data-toggle="modal" data-target="#modal-confirma" class="btn btn-danger btn-sm" href="#" data-href="<?= base_url() ?>usuarios/eliminar/<?php echo $dato['id']; ?>"><i class="fas fa-trash-alt"></i></a></td>
 

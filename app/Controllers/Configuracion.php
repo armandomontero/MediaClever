@@ -42,7 +42,19 @@ class Configuracion extends BaseController
     }
 
 
+    public function link()
+    {
 
+        $configuracion = $this->configuracion->select('id_tienda, pass')->join('tiendas', 'configuracion.id_tienda = tiendas.id')
+        ->where('id_tienda', $this->session->id_tienda)
+        ->first();
+        
+        $data = ['titulo' => 'Link Agenda Pública', 'datos' => $configuracion];
+
+        echo view('header');
+        echo view('configuracion/link', $data);
+        echo view('footer');
+    }
 
 
 

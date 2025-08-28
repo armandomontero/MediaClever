@@ -51,20 +51,12 @@
             <div class="form-group mb-4">
                 <div class="row">
                     <div class="col-12 col-sm-6">
-                        <label>Caja: </label>
-                        <select class="form-control" name="id_caja" id="id_caja" required>
-                            <option value="">Selecciona Caja</option>
-                            <?php foreach ($cajas as $caja) { ?>
-                                <option
-                                    <?php if ($caja['id'] == set_value('id_caja')) {
-                                        echo 'selected';
-                                    } ?>
-                                    value="<?= $caja['id'] ?>"><?= $caja['nombre'] ?></option>
-                            <?php } ?>
-                        </select>
+                         <label>Correo: </label>
+                        <input required class="form-control" value="<?= set_value('correo') ?>" id="correo" name="correo" type="email" />
+                        
                     </div>
                     <div class="col-12 col-sm-6">
-                        <label>Rol: </label>
+                         <label>Rol: </label>
                         <select class="form-control" name="id_rol" id="id_rol" required>
                             <option value="">Selecciona Rol</option>
                             <?php foreach ($roles as $rol) { ?>

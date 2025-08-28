@@ -24,6 +24,17 @@ $routes->post('/unidades/actualizar', 'Unidades::actualizar');
 $routes->get('/unidades/eliminar/(:num)', 'Unidades::eliminar/$1');
 $routes->get('/unidades/reingresar/(:num)', 'Unidades::reingresar/$1');
 
+
+//Materias
+$routes->get('/materias', 'Materias::index');
+$routes->get('/materias/eliminados', 'Materias::eliminados');
+$routes->get('/materias/nuevo', 'Materias::nuevo');
+$routes->post('/materias/insertar', 'Materias::insertar');
+$routes->get('/materias/editar/(:num)', 'Materias::editar/$1');
+$routes->post('/materias/actualizar', 'Materias::actualizar');
+$routes->get('/materias/eliminar/(:num)', 'Materias::eliminar/$1');
+$routes->get('/materias/reingresar/(:num)', 'Materias::reingresar/$1');
+
 //Categorias
 $routes->get('/categorias', 'Categorias::index');
 $routes->get('/categorias/eliminados', 'Categorias::eliminados');
@@ -54,6 +65,9 @@ $routes->get('/productos/generaReporteMinimo', 'Productos::generaReporteMinimo')
 //Eventos
 $routes->get('/eventos', 'Eventos::index');
 $routes->get('/agenda/(:num)/(:any)', 'Eventos::agenda/$1/$2');
+$routes->post('/eventos/agendar', 'Eventos::agendar');
+$routes->get('/eventos/getDatosId/(:num)', 'Eventos::getDatosId/$1');
+
 
 
 //Google
@@ -80,6 +94,7 @@ $routes->get('/clientes/autoCompleteData(:any)', 'Clientes::autoCompleteData/$1'
 
 //Configuracion
 $routes->get('/configuracion', 'Configuracion::index');
+$routes->get('/configuracion/link', 'Configuracion::link');
 $routes->post('/configuracion/actualizar', 'Configuracion::actualizar');
 $routes->get('/configuracion/getLogo', 'Configuracion::getLogo');
 

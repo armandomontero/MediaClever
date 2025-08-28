@@ -11,7 +11,7 @@ class ClientesModel extends Model{
     protected $returnType     = 'array';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['nombre', 'direccion', 'comuna', 'region', 'telefono', 
+    protected $allowedFields = ['rut','nombre', 'direccion', 'comuna', 'region', 'telefono', 
     'correo', 'activo', 'id_tienda'];
 
     protected bool $allowEmptyInserts = false;
