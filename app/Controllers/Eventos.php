@@ -259,7 +259,7 @@ class Eventos extends BaseController
             return $this->editar($this->request->getPost('id'), $this->validator);
         }
     }
-//perfecr
+
     public function eliminar($id)
     {
         if ($id == 1) {
