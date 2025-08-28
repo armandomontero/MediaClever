@@ -109,8 +109,8 @@ class Eventos extends BaseController
             $dataInsert = [
                 'rut' => $rut_solicitante,
                 'nombre' => $this->request->getPost('nombre_solicitante'),
-                'region' => $this->request->getPost('region'),
-                'comuna' => $this->request->getPost('comuna'),
+                'region' => $this->request->getPost('region1h'),
+                'comuna' => $this->request->getPost('comuna1h'),
                 'telefono' => $this->request->getPost('telefono_solicitante'),
                 'correo' => $this->request->getPost('correo_solicitante'),
                 'activo' => 1,
@@ -126,8 +126,8 @@ class Eventos extends BaseController
             $dataInsert = [
                 'rut' => $rut_solicitado,
                 'nombre' => $this->request->getPost('nombre_solicitado'),
-                'region' => $this->request->getPost('region2'),
-                'comuna' => $this->request->getPost('comuna2'),
+                'region' => $this->request->getPost('region2h'),
+                'comuna' => $this->request->getPost('comuna2h'),
                 'telefono' => $this->request->getPost('telefono_solicitado'),
                 'correo' => $this->request->getPost('correo_solicitado'),
                 'activo' => 1,
