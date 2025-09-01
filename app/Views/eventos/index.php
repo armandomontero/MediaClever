@@ -167,8 +167,8 @@ helper('number');
                         overlap: false,
                       
                         title: 'Mediación',
-                        color: '#f0f25c',
-                        textColor: '#28292f',
+                        color: '#f74750',
+                        textColor: '#FFFFFF',
                         extendedProps: {
           state: 'Agendado'
         },
@@ -187,20 +187,20 @@ helper('number');
                              },
                          url: '" . base_url() . "eventos/getEvento/" . $evento['id'] . "',
                         title: 'Mediación',
-                        color: '#47f765',
-                        textColor: '#28292f'
+                        color: '#f0f25c',
+                        textColor: '#28292f',
                         
                     },";
                     }
 
-                    if ($evento['state'] == 'Confirmado') {
+                    if ($evento['state'] == 'Notificado') {
                         echo "{ 
                         id: '" . $evento['id'] . "',
                         start: '" . $evento['fecha_inicio'] . "',
                         end: '" . $evento['fecha_fin'] . "',
                         overlap: false,
                         extendedProps: {
-          state: 'Confirmado'
+          state: 'Notificado'
         },
                         title: 'Mediación',
                         color: '#1a7e2b'
