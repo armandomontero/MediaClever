@@ -86,7 +86,7 @@ class Eventos extends BaseController
         
        
         if ($datos_tienda ) {
-            $eventos = $this->eventos->where("state = 'Confirmado' OR state = 'Revisado'")->where('id_tienda', $id_tienda)->findAll();
+            $eventos = $this->eventos->where('reservado', 1)->where('id_tienda', $id_tienda)->findAll();
             $config = new ConfiguracionModel();
             $datos_config = $config->where('id_tienda', $id_tienda)->first();
 
