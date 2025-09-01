@@ -11,7 +11,7 @@ class ConfiguracionModel extends Model{
     protected $returnType     = 'array';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['id_tienda', 'nombre', 'direccion', 'mensaje', 'logo'];
+    protected $allowedFields = ['id_tienda', 'nombre', 'direccion', 'mensaje', 'valor_servicio', 'logo'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

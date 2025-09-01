@@ -2,8 +2,8 @@
 namespace App\Models;
 use CodeIgniter\Model;
 
-class MateriasModel extends Model{
-    protected $table      = 'materias';
+class ServiciosModel extends Model{
+    protected $table      = 'servicios';
     protected $primaryKey = 'id';
 
     protected $useAutoIncrement = true; 
@@ -11,7 +11,7 @@ class MateriasModel extends Model{
     protected $returnType     = 'array';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['nombre', 'orden', 'activo', 'id_tienda'];
+    protected $allowedFields = ['nombre', 'valor', 'activo', 'id_tienda'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

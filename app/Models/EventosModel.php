@@ -11,7 +11,8 @@ class EventosModel extends Model{
     protected $returnType     = 'array';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['fecha_inicio', 'fecha_fin', 'id_solicitante', 'id_solicitado', 'region_evento', 'comuna_evento', 'causa', 'id_usuario', 'state', 
+    protected $allowedFields = ['fecha_inicio', 'fecha_fin', 'id_solicitante', 'id_solicitado', 'id_servicio', 'valor', 'region_evento', 
+    'comuna_evento', 'causa', 'id_usuario', 'state', 'reservado',
     'enlace', 'texto', 'firma_solicitante', 'firma_solicitado', 'id_tienda'];
 
     protected bool $allowEmptyInserts = false;

@@ -347,14 +347,27 @@ class Usuarios extends BaseController
         return redirect()->to(base_url() . 'usuarios');
     }
 
-    public function login()
+    public function login($redirect = null)
     {
+        
         //comprobamos si ya no habia iniciado sesion
         $session = session();
         if ($session->user != null) {
             return redirect()->to(base_url() . 'index');
         }
-        echo view('login');
+        $data = [];
+    
+
+        if($redirect){
+            $data = ['ruta' => $redirect];
+           
+       echo view('login', $data);
+          
+        
+    }else{
+        echo view('login', $data);
+        
+        }
     }
 
     public function valida()
@@ -363,6 +376,7 @@ class Usuarios extends BaseController
         if ($this->request->getMethod() == "POST" && $this->validate($this->reglasLogin)) {
             $usuario = $this->request->getPost('usuario');
             $password = $this->request->getPost('password');
+            $redirect = $this->request->getPost('redirect');
             $datosUsuario = $this->usuarios->where('usuario', $usuario)->first();
             if ($datosUsuario != null) {
                 if (password_verify($password, $datosUsuario['password'])) {
@@ -390,8 +404,12 @@ class Usuarios extends BaseController
 
                     $session = session();
                     $session->set($datosSesion);
-
+                    if($redirect==''){
                     return redirect()->to(base_url() . 'index');
+                    }
+                    else{
+                        return redirect()->to($redirect);
+                    }
                 } else {
                     $data['error'] = 'Usuario o contraseña incorrecta';
                     echo view('login', $data);

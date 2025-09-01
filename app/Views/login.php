@@ -23,7 +23,11 @@
     <link href="<?= base_url() ?>vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
 
 </head>
-
+<?php if(isset($ruta)){
+    $ruta = $ruta;
+}else{
+    $ruta = '';
+} ?>
 <body class="bg-gradient-primary">
     <div class="container">
         <!-- Outer Row -->
@@ -61,6 +65,7 @@
                         <?php } ?>
                                     </div>
                                     <form class="user" method="POST" action="<?= base_url() ?>usuarios/valida">
+                                        <input type="hidden" name="redirect" id="redirect" value="<?=$ruta?>"/>
                                           <?=csrf_field()?>
                                         <div class="form-group">
                                             <label>Usuario: </label>

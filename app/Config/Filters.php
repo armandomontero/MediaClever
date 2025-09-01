@@ -71,11 +71,11 @@ class Filters extends BaseFilters
      */
     public array $globals = [
         'before' => [
-            'session' => ['except' => ['/', 'usuarios/valida', 'api/*', 'usuarios/authAPI', 'registro', 'agenda/*', 'eventos/agendar']],
+            'session' => ['except' => ['/', '/redirect/*', 'usuarios/valida', 'api/*', 'usuarios/authAPI', 'registro', 'agenda/*', 'eventos/agendar']],
             
              // Example: Exclude login routes
             // 'honeypot',
-             'csrf' => ['except' => ['/ventas/*', '/', 'usuarios/valida', 'api/*', 'usuarios/authAPI', 'registro', 'google/*']],
+             'csrf' => ['except' => ['/ventas/*', '/', '/redirect/*', 'usuarios/valida', 'api/*', 'usuarios/authAPI', 'registro', 'google/*']],
             // 'invalidchars',
         ],
         'after' => [

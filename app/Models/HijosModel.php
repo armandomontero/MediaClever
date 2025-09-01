@@ -11,7 +11,7 @@ class HijosModel extends Model{
     protected $returnType     = 'array';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['rut', 'nombre', 'fecha_nac', 'id_evento'];
+    protected $allowedFields = ['rut', 'nombre', 'fecha_nac', 'edad', 'id_evento'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

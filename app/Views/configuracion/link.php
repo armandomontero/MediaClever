@@ -5,7 +5,6 @@
     <div class="container-fluid">
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800"><?= $titulo ?></h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="<?= base_url() ?>">Inicio</a></li>
             <li class="breadcrumb-item active"><?= $titulo ?></li>
@@ -18,14 +17,28 @@
                 Los enlaces siguientes sirven para que pueda integrar la agenda del sistema con sus propios canales, como por ejemplo, su sitio web.
 
             </div>
+<div class="mb-4">
+                <h5>Servicio de Mediación</h5>
             Link Agenda Pública: <a href="<?=base_url()?>agenda/<?=$datos['id_tienda']?>/<?=$datos['pass']?>" target="_blank"><?=base_url()?>agenda/<?=$datos['id_tienda']?>/<?=$datos['pass']?></a>
 
-<hr>
+<br><br>
 
 Código ejemplo para insertar: <pre><code>
     &lt;iframe src="<?=base_url()?>agenda/<?=$datos['id_tienda']?>/<?=$datos['pass']?>" width="600" height="400" frameborder="0" allowfullscreen&gt; &lt;/iframe&gt;
 </code></pre>
+            </div>
+            <?php foreach ($servicios AS $servicio){ ?>
+            <div class="mb-4">
+                <h5><?=$servicio['nombre']?></h5>
+            Link Agenda Pública: <a href="<?=base_url()?>agenda/<?=$datos['id_tienda']?>/<?=$datos['pass']?>/<?=$servicio['id']?>" target="_blank"><?=base_url()?>agenda/<?=$datos['id_tienda']?>/<?=$datos['pass']?></a>
 
+<br><br>
+
+Código ejemplo para insertar: <pre><code>
+    &lt;iframe src="<?=base_url()?>agenda/<?=$datos['id_tienda']?>/<?=$datos['pass']?>" width="600" height="400" frameborder="0" allowfullscreen&gt; &lt;/iframe&gt;
+</code></pre>
+            </div>
+<?php } ?>
        
         </div>
     </div>

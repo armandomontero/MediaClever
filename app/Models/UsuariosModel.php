@@ -38,6 +38,12 @@ class UsuariosModel extends Model{
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getNotificados($id_tienda)
+    {
+        $notificados = $this->where('id_tienda', $id_tienda)->where('notifica', 1)->findAll();
+        return $notificados;
+    }
 }
 
 ?>

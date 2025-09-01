@@ -8,6 +8,7 @@ use CodeIgniter\Router\RouteCollection;
 
  //Home no logeado
 $routes->get('/', 'Usuarios::login');
+$routes->get('/redirect/(:any)', 'Usuarios::login/$1');
 $routes->get('/registro', 'Usuarios::registro');
 $routes->post('/registro', 'Usuarios::registro');
 
@@ -34,6 +35,17 @@ $routes->get('/materias/editar/(:num)', 'Materias::editar/$1');
 $routes->post('/materias/actualizar', 'Materias::actualizar');
 $routes->get('/materias/eliminar/(:num)', 'Materias::eliminar/$1');
 $routes->get('/materias/reingresar/(:num)', 'Materias::reingresar/$1');
+
+
+//Servicios
+$routes->get('/servicios', 'Servicios::index');
+$routes->get('/servicios/eliminados', 'Servicios::eliminados');
+$routes->get('/servicios/nuevo', 'Servicios::nuevo');
+$routes->post('/servicios/insertar', 'Servicios::insertar');
+$routes->get('/servicios/editar/(:num)', 'Servicios::editar/$1');
+$routes->post('/servicios/actualizar', 'Servicios::actualizar');
+$routes->get('/servicios/eliminar/(:num)', 'Servicios::eliminar/$1');
+$routes->get('/servicios/reingresar/(:num)', 'Servicios::reingresar/$1');
 
 //Categorias
 $routes->get('/categorias', 'Categorias::index');
@@ -67,6 +79,10 @@ $routes->get('/eventos', 'Eventos::index');
 $routes->get('/agenda/(:num)/(:any)', 'Eventos::agenda/$1/$2');
 $routes->post('/eventos/agendar', 'Eventos::agendar');
 $routes->get('/eventos/getDatosId/(:num)', 'Eventos::getDatosId/$1');
+$routes->get('/eventos/getEvento/(:num)', 'Eventos::getEvento/$1');
+$routes->post('/eventos/actualizar', 'Eventos::actualizar');
+
+
 
 
 

@@ -4,15 +4,18 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\ConfiguracionModel;
+use App\Models\ServiciosModel;
 
 class Configuracion extends BaseController
 {
     protected $configuracion;
+    protected $servicios;
     protected $reglas;
 
     public function __construct()
     {
         $this->configuracion = new configuracionModel();
+        $this->servicios = new ServiciosModel();
         helper(['form']);
 
         $this->reglas = [
@@ -44,12 +47,13 @@ class Configuracion extends BaseController
 
     public function link()
     {
-
+        //invocamos servicios
+        $servicios = $this->servicios->where('id_tienda', $this->session->id_tienda)->findAll();
         $configuracion = $this->configuracion->select('id_tienda, pass')->join('tiendas', 'configuracion.id_tienda = tiendas.id')
         ->where('id_tienda', $this->session->id_tienda)
         ->first();
         
-        $data = ['titulo' => 'Link Agenda Pública', 'datos' => $configuracion];
+        $data = ['titulo' => 'Link Agenda Pública', 'datos' => $configuracion, 'servicios' => $servicios];
 
         echo view('header');
         echo view('configuracion/link', $data);

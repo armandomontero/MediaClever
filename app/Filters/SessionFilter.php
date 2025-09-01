@@ -2,18 +2,29 @@
 
 namespace App\Filters;
 
+use App\Controllers\Usuarios;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+
 use Config\Services;
 
-class SessionFilter implements FilterInterface
+class SessionFilter implements FilterInterface 
 {
+
+
+
     public function before(RequestInterface $request, $arguments = null)
     {
         $session = Services::session();
         if (!$session->get('id_usuario')) { // Verificar si la sesión del usuario está activa
-            return redirect()->to(base_url()); // Redirigir a la página de inicio de sesión
+
+            $usuarios = new Usuarios();
+    $request = service('request');
+
+            $params =$request->getUri();
+           
+            return $usuarios->login($params); // Redirigir a la página de inicio de sesión
         }
     }
 

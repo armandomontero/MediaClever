@@ -14,14 +14,16 @@ use CodeIgniter\RESTful\ResourceController;
 class Google extends ResourceController
 {
     protected $google;
+    protected $ruta_redirect;
     const CALENDAR_SCOPE = 'https://www.googleapis.com/auth/calendar';
-    const CALENDAR_REDIRECT_URI = 'https://localhost/MediaClever/public/google';
+    //const CALENDAR_REDIRECT_URI = 'https://localhost/MediaClever/public/google';
     const CALENDAR_CLIENT_ID = '1089877400901-1od8d1ehd5v310p5q3r8pmqm06f9n2nu.apps.googleusercontent.com';
-    const CALENDAR_APP_NAME = 'Clever Agenda';
+    const CALENDAR_APP_NAME = 'Media Clever';
 
     public function __construct()
     {
         $this->google = new GoogleModel();
+        $this->ruta_redirect = base_url().'google';
        
     }
 
@@ -35,7 +37,7 @@ class Google extends ResourceController
         $authLink =  sprintf(
             'https://accounts.google.com/o/oauth2/auth?scope=%s&redirect_uri=%s&response_type=code&client_id=%s&access_type=offline&prompt=consent',
             $this::CALENDAR_SCOPE,
-            $this::CALENDAR_REDIRECT_URI,
+            $this->ruta_redirect,
             $this::CALENDAR_CLIENT_ID
         );
  return $this->respond(['link' => $authLink ]);
@@ -66,7 +68,7 @@ class Google extends ResourceController
          unlink('credentials.json');
 
         $client->setAccessType('offline');
-        $client->setRedirectUri($this::CALENDAR_REDIRECT_URI);
+        $client->setRedirectUri($this->ruta_redirect);
         $client->setApprovalPrompt('consent');
 
         $token = $client->fetchAccessTokenWithAuthCode($code);
@@ -97,8 +99,8 @@ class Google extends ResourceController
 
         $calendarId = 'primary';
 
-        $fecha = '2025-08-22' . 'T' . '15:45:00';
-        $fecha_end = '2025-08-22' . 'T' . '15:58:00';
+        $fecha = '2025-08-31' . 'T' . '18:33:00';
+        $fecha_end = '2025-08-31' . 'T' . '18:40:00';
         $event = new Event([
             'summary' => 'Mi Primer Evento',
 
@@ -113,7 +115,7 @@ class Google extends ResourceController
             ],
             'attendees' => [
                 ['email' => 'acdc.rengo@gmail.com'],
-                ['email' => 'a.montero.f@gmail.com'],
+                ['email' => 'armando.montero@alumnos.ucentral.cl'],
             ],
             'reminders' => [
                 'useDefault' => FALSE,
@@ -134,9 +136,9 @@ class Google extends ResourceController
         ]);
 
 
-        $evento = $calendar->events->insert($calendarId, $event, ['conferenceDataVersion' => 1]);
-
-        return $evento;
+        $evento = $calendar->events->insert($calendarId, $event, ['conferenceDataVersion' => 1, 'sendUpdates' => 'all'] );
+return $this->respond($evento);
+       
     }
 
     private function __storeAuthToken($token)
@@ -170,7 +172,7 @@ class Google extends ResourceController
 
 
         $client->setAccessType('offline');
-        $client->setRedirectUri($this::CALENDAR_REDIRECT_URI);
+        $client->setRedirectUri($this->ruta_redirect);
         $client->setApprovalPrompt('consent');
 
         $accessToken = json_decode($this->google->__getToken(), true);
@@ -188,6 +190,8 @@ class Google extends ResourceController
 
             $this->__storeAuthToken(json_encode($accessToken), $refreshToken);
         }
+
+        
 
         return $client;
     }

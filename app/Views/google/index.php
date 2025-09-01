@@ -12,11 +12,11 @@
     <h2>Contectar Google</h2>
     <button onclick="generateLink()" id="generate_link">Conecta</button>
     <br>
-    <!--
+   
     <h2>Agendar Evento</h2>
     <input type="email" name="email" id="email" />
-    <button onclick="test()" id="crearevento">Agendar</button>
--->
+    <button onclick="test();" id="crearevento">Agendar</button>
+-
     <br>
     <script>
         const API = '<?php base_url()?>';

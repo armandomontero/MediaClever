@@ -2,8 +2,8 @@
 namespace App\Models;
 use CodeIgniter\Model;
 
-class MateriasModel extends Model{
-    protected $table      = 'materias';
+class EventosMaterias extends Model{
+    protected $table      = 'eventos_materias';
     protected $primaryKey = 'id';
 
     protected $useAutoIncrement = true; 
@@ -11,13 +11,13 @@ class MateriasModel extends Model{
     protected $returnType     = 'array';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['nombre', 'orden', 'activo', 'id_tienda'];
+    protected $allowedFields = ['id_evento', 'id_materia'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
 
     // Dates
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
@@ -40,10 +40,7 @@ class MateriasModel extends Model{
     protected $afterDelete    = [];
 
 
-    public function cuentaMaterias($id_tienda){
-       $cuentaMaterias = $this->where("id_tienda = " . $id_tienda . " OR id = 1")->countAllResults();
-       return $cuentaMaterias;
-    }
+   
 }
 
 ?>

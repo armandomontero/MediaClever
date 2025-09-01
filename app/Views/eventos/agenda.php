@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title><?=$config['nombre']?> - Agenda</title>
+    <title><?= $config['nombre'] ?> - Agenda</title>
 
     <!-- Custom fonts for this template-->
     <link rel="icon" type="image/vnd.icon" href="<?= base_url() ?>favicon.ico" />
@@ -50,7 +50,7 @@
             width: 100% !important;
             /* Force full width */
             left: 0 !important;
-             pointer-events: none !important;
+            pointer-events: none !important;
             /* Ensure it starts at the left edge */
         }
 
@@ -63,9 +63,9 @@
             /* Ensure it starts at the left edge */
         }
 
-        .fc-toolbar-title{
+        .fc-toolbar-title {
             font-size: 14px !important;
-           
+
         }
     </style>
 </head>
@@ -73,31 +73,31 @@
 <body>
     <!-- Begin Page Content -->
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light ">
-        <a class="navbar-brand" href="#"><img width="" height="80" src="<?=base_url().$config['logo']?>"/></a>
-      
+    <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+        <a class="navbar-brand" href="#"><img width="" height="80" src="<?= base_url() . $config['logo'] ?>" /></a>
+
         <div class="" id="">
-           <h4 class="text-primary">Agenda <?=$config['nombre']?></h4>
+            <h4 class="text-primary">Agenda <?= $config['nombre'] ?></h4>
             <p>Haga click sobre una fecha disponible e ingrese sus datos</p>
         </div>
     </nav>
     <main>
         <div class="container-fluid">
 
-        <div class="">
-            
-           
-            
-        </div>
+            <div class="">
+
+
+
+            </div>
 
 
             <div class="p-2" id='calendar'></div>
 
         </div>
     </main>
- <!-- Modal confirmación -->
+    <!-- Modal confirmación -->
     <div class="modal fade" id="modal-mensaje" tabindex="-1">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-success">Atención</h5>
@@ -106,7 +106,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p id=""><?php if($mensaje){echo $mensaje;}?></p>
+                    <p id=""><?php if ($mensaje) {
+                                    echo $mensaje;
+                                } ?></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
@@ -172,9 +174,10 @@
                     </div>
                     <form method="POST" action="<?= base_url() ?>eventos/agendar" autocomplete="off">
                         <?= csrf_field() ?>
-                        <input type="hidden" name="id_tienda" id="id_tienda" value="<?=$config['id_tienda']?>"/>
-                        <input type="hidden" name="pass_tienda" id="pass_tienda" value="<?=$pass_tienda?>"/>
-                         <input type="hidden" name="fecha_bd" id="fecha_bd" value=""/>
+                        <input type="hidden" name="id_tienda" id="id_tienda" value="<?= $config['id_tienda'] ?>" />
+                        <input type="hidden" name="pass_tienda" id="pass_tienda" value="<?= $pass_tienda ?>" />
+                        <input type="hidden" name="valor" id="valor" value="<?= $config['valor_servicio'] ?>" />
+                        <input type="hidden" name="fecha_bd" id="fecha_bd" value="" />
                         <div class="form-group mt-4">
                             <h5 class="text-primary">Datos Solicitante:</h5>
                             <hr class="mt-1 mb-2">
@@ -196,8 +199,8 @@
                                 <div class="col-12 col-sm-6">
                                     <label>Teléfono<span class="text-danger">*</span> </label>
                                     <div class="input-group">
-                                    <span class="input-group-text"><img style="padding-right:5px;" width="25" src="<?=base_url()?>img/chile.png" alt="chile">+56</span>
-                                    <input required autofocus value="<?= set_value('telefono_solicitante') ?>" class="form-control" id="telefono_solicitante" name="telefono_solicitante" type="number" />
+                                        <span class="input-group-text"><img style="padding-right:5px;" width="25" src="<?= base_url() ?>img/chile.png" alt="chile">+56</span>
+                                        <input required autofocus value="<?= set_value('telefono_solicitante') ?>" class="form-control" id="telefono_solicitante" name="telefono_solicitante" type="number" />
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm-6">
@@ -206,7 +209,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-12 col-sm-12">
+                                    <label for="direccion_solicitante">Dirección </label>
 
+
+                                    <input value="<?= set_value('direccion_solicitante') ?>" class="form-control" id="direccion_solicitante" name="direccion_solicitante" type="text" />
+
+                                </div>
+
+                            </div>
+                        </div>
                         <div class="form-group mb-4 mt-2">
                             <div class="row ">
                                 <div class="col-12 col-sm-6">
@@ -214,14 +228,14 @@
                                     <select onchange="mostrar(this.value, 'comuna'); getText(this, 'region1h');" required class="form-control" name="region" id="region" required>
                                         <option value="">Selecciona</option>
                                     </select>
-                                    <input type="hidden" id="region1h" name="region1h" value=""/>
+                                    <input type="hidden" id="region1h" name="region1h" value="" />
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label>Comuna </label>
                                     <select onchange="getText(this, 'comuna1h');" required class="form-control" name="comuna" id="comuna">
                                         <option value="">Selecciona</option>
                                     </select>
-                                     <input type="hidden" id="comuna1h" name="comuna1h" value=""/>
+                                    <input type="hidden" id="comuna1h" name="comuna1h" value="" />
                                 </div>
                             </div>
                         </div>
@@ -248,8 +262,8 @@
                                 <div class="col-12 col-sm-6">
                                     <label>Teléfono </label>
                                     <div class="input-group">
-                                    <span class="input-group-text"><img style="padding-right:5px;" width="25" src="<?=base_url()?>img/chile.png" alt="chile">+56</span>
-                                    <input required autofocus value="<?= set_value('telefono_solicitado') ?>" class="form-control" id="telefono_solicitado" name="telefono_solicitado" type="number" />
+                                        <span class="input-group-text"><img style="padding-right:5px;" width="25" src="<?= base_url() ?>img/chile.png" alt="chile">+56</span>
+                                        <input required value="<?= set_value('telefono_solicitado') ?>" class="form-control" id="telefono_solicitado" name="telefono_solicitado" type="number" />
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm-6">
@@ -258,7 +272,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-12 col-sm-12">
+                                    <label for="direccion_solicitado">Dirección </label>
 
+
+                                    <input value="<?= set_value('direccion_solicitado') ?>" class="form-control" id="direccion_solicitado" name="direccion_solicitado" type="text" />
+
+                                </div>
+
+                            </div>
+                        </div>
                         <div class="form-group mb-4 mt-2">
                             <div class="row ">
                                 <div class="col-12 col-sm-6">
@@ -266,14 +291,14 @@
                                     <select onchange="mostrar(this.value, 'comuna2'); getText(this, 'region2h');" required class="form-control" name="region2" id="region2" required>
                                         <option value="">Selecciona</option>
                                     </select>
-                                    <input type="hidden" id="region2h" name="region2h" value=""/>
+                                    <input type="hidden" id="region2h" name="region2h" value="" />
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label>Comuna: </label>
                                     <select onchange="getText(this, 'comuna2h');" required class="form-control" name="comuna2" id="comuna2">
                                         <option value="">Selecciona</option>
                                     </select>
-                                    <input type="hidden" id="comuna2h" name="comuna2h" value=""/>
+                                    <input type="hidden" id="comuna2h" name="comuna2h" value="" />
                                 </div>
                             </div>
                         </div>
@@ -295,22 +320,34 @@
                                 <div class="row">
 
                                     <div class="col-12 col-sm-4">
-                                        <label>Nombre Completo:  <?php if($i==1){echo '<span class="text-danger">*</span>';} ?></label>
-                                        <input 
-                                        <?php if($i==1){echo 'required';} ?>
-                                        autofocus value="<?= set_value('nombre' . $i) ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
+                                        <label>Nombre Completo: <?php if ($i == 1) {
+                                                                    echo '<span class="text-danger">*</span>';
+                                                                } ?></label>
+                                        <input
+                                            <?php if ($i == 1) {
+                                                echo 'required';
+                                            } ?>
+                                            autofocus value="<?= set_value('nombre' . $i) ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
                                     </div>
                                     <div class="col-12 col-sm-3">
-                                        <label>RUT:<?php if($i==1){echo '<span class="text-danger">*</span>';} ?> </label>
-                                        <input 
-                                        <?php if($i==1){echo 'required';} ?>
-                                        class="form-control rut" value="<?= set_value('rut' . $i) ?>" id="rut<?= $i ?>" name="rut<?= $i ?>" type="text" />
+                                        <label>RUT:<?php if ($i == 1) {
+                                                        echo '<span class="text-danger">*</span>';
+                                                    } ?> </label>
+                                        <input
+                                            <?php if ($i == 1) {
+                                                echo 'required';
+                                            } ?>
+                                            class="form-control rut" value="<?= set_value('rut' . $i) ?>" id="rut<?= $i ?>" name="rut<?= $i ?>" type="text" />
                                     </div>
                                     <div class="col-12 col-sm-3">
-                                        <label>Fecha de Nacimiento:<?php if($i==1){echo '<span class="text-danger">*</span>';} ?> </label>
+                                        <label>Fecha de Nacimiento:<?php if ($i == 1) {
+                                                                        echo '<span class="text-danger">*</span>';
+                                                                    } ?> </label>
                                         <input onchange="calcularEdad(this, edad<?= $i ?>)"
-                                        <?php if($i==1){echo 'required';} ?>
-                                         class="form-control" value="<?= set_value('fecha' . $i) ?>" id="fecha<?= $i ?>" name="fecha<?= $i ?>" type="date" />
+                                            <?php if ($i == 1) {
+                                                echo 'required';
+                                            } ?>
+                                            class="form-control" value="<?= set_value('fecha' . $i) ?>" id="fecha<?= $i ?>" name="fecha<?= $i ?>" type="date" />
                                     </div>
                                     <div class="col-12 col-sm-2">
                                         <label>Edad: </label>
@@ -341,15 +378,17 @@
                                     </h5>
                                     <hr class="mt-1 mb-2">
 
-                                <?php foreach ($materias AS $materia){?>
+                                    <?php $i = 0;
+                                    foreach ($materias as $materia) { ?>
 
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="materia<?=$materia['id']?>" value="" id="materia<?=$materia['id']?>" />
-                                        <label class="form-check-label" for="materia<?=$materia['id']?>"><?=$materia['nombre']?></label>
-                                    </div>
-                                <?php }?>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="materia<?= $i ?>" value="<?= $materia['id'] ?>" id="materia<?= $materia['id'] ?>" />
+                                            <label class="form-check-label" for="materia<?= $i ?>"><?= $materia['nombre'] ?></label>
+                                        </div>
+                                    <?php $i++;
+                                    } ?>
 
-                                    
+
                                 </div>
 
                                 <div class="col-12 col-sm-6">
@@ -383,10 +422,10 @@
                                     <input readonly class="form-control" value="" id="fecha" name="fecha" type="datetime" />
                                 </div>
                                 <div class="col-12 col-sm-6">
-<div style="background-color: #e6f2ff; color: blue; border: 1px solid #dee2e6;" class="form-check mb-3 rounded text-sm p-3">
-        <input class="form-check-input ml-2" type="checkbox" value="" id="acepto" required="">
-        <label class="form-check-label ml-4" for="acepto"><b>NO AGENDES</b> sin estar en conocimiento de que el servicio de mediación está asociado a un cobro.</label>
-      </div>
+                                    <div style="background-color: #e6f2ff; color: blue; border: 1px solid #dee2e6;" class="form-check mb-3 rounded text-sm p-3">
+                                        <input class="form-check-input ml-2" type="checkbox" value="" id="acepto" required="">
+                                        <label class="form-check-label ml-4" for="acepto"><b>NO AGENDES</b> sin estar en conocimiento de que el servicio de mediación está asociado a un cobro.</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -415,32 +454,31 @@
     </div>
 
     <script>
+        $(document).ready(function() {
+            <?php if ($mensaje) {
+                echo '$("#modal-mensaje").modal("show");';
+            } ?>
 
-    $(document).ready(function(){
-       <?php if($mensaje){
-echo '$("#modal-mensaje").modal("show");';
-        }?>
+        });
 
-    });
-
-if(window.innerWidth>=1024){
-    var duration = 7;
-}else{
-    duration = 4;
-}
+        if (window.innerWidth >= 1024) {
+            var duration = 7;
+        } else {
+            duration = 4;
+        }
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             let fechaActual = new Date(); // Obtiene la fecha actual
             // alert(fechaActual);
-            let mesActual = fechaActual.getMonth(); 
+            let mesActual = fechaActual.getMonth();
             let fechaFin = new Date();
-             fechaFin.setMonth(mesActual + 1);
-             
-           // alert(fechaFin);
-           // alert(fechaActual);
+            fechaFin.setMonth(mesActual + 1);
+
+            // alert(fechaFin);
+            // alert(fechaActual);
             var calendar = new FullCalendar.Calendar(calendarEl, {
 
-                
+
                 slotEventOverlap: false,
 
 
@@ -450,9 +488,9 @@ if(window.innerWidth>=1024){
                 locale: "esLocale",
                 firstDay: 1,
                 validRange: {
-    start: fechaActual, // Start date of the valid range
-    end: fechaFin  // End date of the valid range
-  },
+                    start: fechaActual, // Start date of the valid range
+                    end: fechaFin // End date of the valid range
+                },
                 expandRows: true,
                 height: '90%',
 
@@ -467,26 +505,26 @@ if(window.innerWidth>=1024){
                     list: 'list'
                 },
                 businessHours: {
-  // days of week. an array of zero-based day of week integers (0=Sunday)
-  daysOfWeek: [ 1, 2, 3, 4, 5, 6 ], // Monday - Thursday
+                    // days of week. an array of zero-based day of week integers (0=Sunday)
+                    daysOfWeek: [1, 2, 3, 4, 5, 6], // Monday - Thursday
 
-  startTime: '09:00', // a start time (10am in this example)
-  endTime: '19:00', // an end time (6pm in this example)
-},
+                    startTime: '09:00', // a start time (10am in this example)
+                    endTime: '19:00', // an end time (6pm in this example)
+                },
                 displayEventEnd: true,
                 select: function(start, end) {
-                    
-                   //alert(start.start.toDateString());
 
-                   let dia = start.start.getDate();
-                   let mes = (start.start.getMonth()+1).toString().padStart(2, '0');
-                   let ano = start.start.getFullYear();
-                   let hora = start.start.getHours().toString().padStart(2, '0');
-                   let min = start.start.getMinutes().toString().padStart(2, '0');
+                    //alert(start.start.toDateString());
 
-                   let fecha_bd = ano+'-'+mes+'-'+dia+' '+hora+':'+min+':00';
+                    let dia = start.start.getDate();
+                    let mes = (start.start.getMonth() + 1).toString().padStart(2, '0');
+                    let ano = start.start.getFullYear();
+                    let hora = start.start.getHours().toString().padStart(2, '0');
+                    let min = start.start.getMinutes().toString().padStart(2, '0');
 
-                  // alert(fecha_bd);
+                    let fecha_bd = ano + '-' + mes + '-' + dia + ' ' + hora + ':' + min + ':00';
+
+                    // alert(fecha_bd);
                     //console.log(start);
                     let ahora = new Date();
                     //alert(ahora);
@@ -495,7 +533,7 @@ if(window.innerWidth>=1024){
                         $("#text-alerta").html('No se puede agendar para un horario anterior a la fecha y hora actual, por favor seleccione una fecha y horario posterior.');
                         $("#modal-alerta").modal('show');
                     } else {
-                        let date_selected = dia+'-'+mes+'-'+ano+' '+hora+':'+min+':00';
+                        let date_selected = dia + '-' + mes + '-' + ano + ' ' + hora + ':' + min + ':00';
                         //alert(info);
                         $("#modal-formulario").modal('show');
                         // const opciones = { year: 'numeric', month: '2-digit', day: '2-digit' };
@@ -511,21 +549,20 @@ if(window.innerWidth>=1024){
                 events: [
 
                     <?php
-                    foreach($eventos as $evento){
+                    foreach ($eventos as $evento) {
                         echo "{ 
 
-                        start: '".$evento['fecha_inicio']."',
-                        end: '".$evento['fecha_fin']."',
+                        start: '" . $evento['fecha_inicio'] . "',
+                        end: '" . $evento['fecha_fin'] . "',
                         overlap: false,
                        display: 'background',
                         title: 'No Disponible',
                         color: '#9e9f9b'
                         
                     },";
-
                     } ?>
-                   
-                    
+
+
                 ],
                 selectOverlap: false,
                 eventOverlap: false,
@@ -537,20 +574,22 @@ if(window.innerWidth>=1024){
                     // change the border color just for fun
                     //info.el.style.borderColor = 'red';
                 },
-    selectConstraint: "businessHours",
-    minTime: "08:00",
-    maxTime: "22:00",
-    defaultView: "timeGridFourDay",
-    initialView: 'timeGridFourDay',
-  views: {
-    timeGridFourDay: {
-      type: 'timeGrid',
-      duration: { days: duration }
-    }
-  },
-  selectHelper: true,
-  longPressDelay: 1
-                
+                selectConstraint: "businessHours",
+                minTime: "08:00",
+                maxTime: "22:00",
+                defaultView: "timeGridFourDay",
+                initialView: 'timeGridFourDay',
+                views: {
+                    timeGridFourDay: {
+                        type: 'timeGrid',
+                        duration: {
+                            days: duration
+                        }
+                    }
+                },
+                selectHelper: true,
+                longPressDelay: 1
+
 
 
             });
@@ -585,7 +624,7 @@ if(window.innerWidth>=1024){
             })
             .on('rutInvalido', function() {})
             .on('rutValido', function() {});
-            
+
 
         $("#rut_solicitado").change(function() {
 
@@ -599,26 +638,26 @@ if(window.innerWidth>=1024){
             }
         });
 
-       <?php for ($i = 1; $i <= 6; $i++) { ?>
-         $("#rut<?=$i?>").rut({
-                formatOn: 'keyup',
-                validateOn: 'keyup'
-            })
-            .on('rutInvalido', function() {})
-            .on('rutValido', function() {});
-            
-
-        $("#rut<?=$i?>").change(function() {
-
-            if (!$.validateRut($("#rut<?=$i?>").val())) {
-                alert('El RUT ingresado no es válido, favor revisar');
-                $("#rut<?=$i?>").val('');
-                $("#rut<?=$i?>").select();
-                $("#rut<?=$i?>").focus();
+        <?php for ($i = 1; $i <= 6; $i++) { ?>
+            $("#rut<?= $i ?>").rut({
+                    formatOn: 'keyup',
+                    validateOn: 'keyup'
+                })
+                .on('rutInvalido', function() {})
+                .on('rutValido', function() {});
 
 
-            }
-        });
+            $("#rut<?= $i ?>").change(function() {
+
+                if (!$.validateRut($("#rut<?= $i ?>").val())) {
+                    alert('El RUT ingresado no es válido, favor revisar');
+                    $("#rut<?= $i ?>").val('');
+                    $("#rut<?= $i ?>").select();
+                    $("#rut<?= $i ?>").focus();
+
+
+                }
+            });
 
         <?php } ?>
 
@@ -640,7 +679,7 @@ if(window.innerWidth>=1024){
 
 
         function mostrar(region, campo) {
-            $("#"+campo).find('option').not(':first').remove();
+            $("#" + campo).find('option').not(':first').remove();
             fetch('<?= base_url() ?>json/regiones.json')
                 .then(res => res.json())
                 .then(data => {
@@ -660,89 +699,88 @@ if(window.innerWidth>=1024){
             $("#cuentaHijos").val(cuenta_hijos);
         });
 
-       
+
 
 
         function calcularEdad(campoFecha, campoEdad) {
-        // Si la fecha es correcta, calculamos la edad
+            // Si la fecha es correcta, calculamos la edad
             var fecha = new Date(campoFecha.value);
-           // alert(fecha)
-       
+            // alert(fecha)
 
-       // var values = fecha.split("-");
-        var dia = fecha.getDate();
-        var mes = fecha.getMonth();
-        var ano =fecha.getYear();
-//alert(ano);
-        // cogemos los valores actuales
-        var fecha_hoy = new Date();
-        var ahora_ano = fecha_hoy.getYear();
-        var ahora_mes = fecha_hoy.getMonth();
-        var ahora_dia = fecha_hoy.getDate();
 
-        // realizamos el calculo
-        var edad = (ahora_ano + 1900) - ano;
-        if (ahora_mes < mes) {
-            edad--;
+            // var values = fecha.split("-");
+            var dia = fecha.getDate();
+            var mes = fecha.getMonth();
+            var ano = fecha.getYear();
+            //alert(ano);
+            // cogemos los valores actuales
+            var fecha_hoy = new Date();
+            var ahora_ano = fecha_hoy.getYear();
+            var ahora_mes = fecha_hoy.getMonth();
+            var ahora_dia = fecha_hoy.getDate();
+
+            // realizamos el calculo
+            var edad = (ahora_ano + 1900) - ano;
+            if (ahora_mes < mes) {
+                edad--;
+            }
+            if ((mes == ahora_mes) && (ahora_dia < dia)) {
+                edad--;
+            }
+            if (edad >= 1900) {
+                edad -= 1900;
+            }
+
+            // calculamos los meses
+            var meses = 0;
+
+            if (ahora_mes > mes && dia > ahora_dia)
+                meses = ahora_mes - mes - 1;
+            else if (ahora_mes > mes)
+                meses = ahora_mes - mes
+            if (ahora_mes < mes && dia < ahora_dia)
+                meses = 12 - (mes - ahora_mes);
+            else if (ahora_mes < mes)
+                meses = 12 - (mes - ahora_mes + 1);
+            if (ahora_mes == mes && dia > ahora_dia)
+                meses = 11;
+
+            // calculamos los dias
+            var dias = 0;
+            if (ahora_dia > dia)
+                dias = ahora_dia - dia;
+            if (ahora_dia < dia) {
+                ultimoDiaMes = new Date(ahora_ano, ahora_mes - 1, 0);
+                dias = ultimoDiaMes.getDate() - (dia - ahora_dia);
+            }
+            edadFinal = dias + " días";
+
+            if (meses > 1) {
+                edadFinal = meses + " meses";
+            }
+            if (edad >= 1) {
+                edadFinal = edad + " años";
+            }
+            campoEdad.value = edadFinal;
         }
-        if ((mes == ahora_mes) && (ahora_dia < dia)) {
-            edad--;
+
+
+        function esNumero(strNumber) {
+            if (strNumber == null) return false;
+            if (strNumber == undefined) return false;
+            if (typeof strNumber === "number" && !isNaN(strNumber)) return true;
+            if (strNumber == "") return false;
+            if (strNumber === "") return false;
+            var psInt, psFloat;
+            psInt = parseInt(strNumber);
+            psFloat = parseFloat(strNumber);
+            return !isNaN(strNumber) && !isNaN(psFloat);
         }
-        if (edad >= 1900) {
-            edad -= 1900;
+
+
+        function getText(campoIn, campoOut) {
+            document.getElementById(campoOut).value = $(campoIn).children(':selected').text();
         }
-
-        // calculamos los meses
-        var meses = 0;
-
-        if (ahora_mes > mes && dia > ahora_dia)
-            meses = ahora_mes - mes - 1;
-        else if (ahora_mes > mes)
-            meses = ahora_mes - mes
-        if (ahora_mes < mes && dia < ahora_dia)
-            meses = 12 - (mes - ahora_mes);
-        else if (ahora_mes < mes)
-            meses = 12 - (mes - ahora_mes + 1);
-        if (ahora_mes == mes && dia > ahora_dia)
-            meses = 11;
-
-        // calculamos los dias
-        var dias = 0;
-        if (ahora_dia > dia)
-            dias = ahora_dia - dia;
-        if (ahora_dia < dia) {
-            ultimoDiaMes = new Date(ahora_ano, ahora_mes - 1, 0);
-            dias = ultimoDiaMes.getDate() - (dia - ahora_dia);
-        }
-        edadFinal = dias + " días";
-
-if( meses>1){
-    edadFinal = meses + " meses";
-}
-if(edad>=1){
-    edadFinal = edad + " años";
-}
-        campoEdad.value = edadFinal;
-    }
-
-
-    function esNumero(strNumber) {
-    if (strNumber == null) return false;
-    if (strNumber == undefined) return false;
-    if (typeof strNumber === "number" && !isNaN(strNumber)) return true;
-    if (strNumber == "") return false;
-    if (strNumber === "") return false;
-    var psInt, psFloat;
-    psInt = parseInt(strNumber);
-    psFloat = parseFloat(strNumber);
-    return !isNaN(strNumber) && !isNaN(psFloat);
-}
-
-
-function getText(campoIn, campoOut)
-{
-    document.getElementById(campoOut).value = $(campoIn).children(':selected').text();
-}
     </script>
 </body>
 
