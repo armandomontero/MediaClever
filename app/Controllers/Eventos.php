@@ -12,6 +12,7 @@ use App\Models\MateriasModel;
 use App\Models\ServiciosModel;
 use App\Models\TiendasModel;
 use App\Models\UsuariosModel;
+use App\Controllers\Google;
 
 class Eventos extends BaseController
 {
@@ -69,6 +70,9 @@ class Eventos extends BaseController
 
     public function index($activo = 1)
     {
+               if(!$this->session->id_usuario){
+        exit();
+         }
         $eventos = $this->eventos->where("id_tienda", $this->session->id_tienda)->findAll();
         $data = ['titulo' => 'Eventos', 'eventos' => $eventos];
 
@@ -92,8 +96,9 @@ class Eventos extends BaseController
 
             //llamamos materias
             $materias = $this->materias->where('activo', 1)->where("id_tienda = " . $id_tienda . " OR id = 1")->orderBy('orden', 'asc')->findAll();
-
+          
             $data = ['config' => $datos_config, 'materias' => $materias, 'eventos' => $eventos, 'pass_tienda' => $pass_tienda, 'mensaje' => $mensaje];
+            
             echo view('eventos/agenda', $data);
         } else {
             echo 'Calendario no autorizado';
@@ -171,9 +176,9 @@ class Eventos extends BaseController
             $this->eventos->insert($dataInsert);
             $id_evento = $this->eventos->getInsertID();
 
-
+          
             //materias
-            $cuentaMaterias = $this->materias->cuentaMaterias($this->session->id_tienda);
+            $cuentaMaterias = $this->materias->cuentaMaterias($this->request->getPost('id_tienda'));
             
             for($i=0; $i<$cuentaMaterias; $i++){
                 if($this->request->getPost('materia'.$i)!=null){
@@ -186,8 +191,10 @@ class Eventos extends BaseController
 
             //Insertamos hijos
             //cuentaHijos
+           
             $cuentaHijos = $this->request->getPost('cuentaHijos');
-            for ($i = 1; $i <= $cuentaHijos; $i++) {
+           
+            for ($i = 0; $i <= $cuentaHijos; $i++) {
                 //limpiamos rut
                 $rut = str_replace('.', '', $this->request->getPost('rut' . $i));
                 $this->hijos->save([
@@ -203,17 +210,18 @@ class Eventos extends BaseController
             //llamamos notificados
 
             $usuarios = new UsuariosModel();
-            $notificados = $usuarios->getNotificados($this->session->id_tienda);
+            $notificados = $usuarios->getNotificados($this->request->getPost('id_tienda'));
             $array_correos = [];
             foreach($notificados AS $notificado){
                 array_push($array_correos, $notificado['correo']);
             }
            // print_r($array_correos);
             //exit();
+
             $email = \Config\Services::email();
             $email->setFrom('notificamediacionchile@gmail.com', 'Sistema Mediación');
             $email->setTo($array_correos);
-            $email->setSubject('Agenda Mediación');
+            $email->setSubject('Agenda Mediación '.$fechaInicio);
             $email->setMessage('Se ha agendado una nueva hora, para ver los detalles visite el siguiente enlace: <a href="' . base_url() . 'eventos/getEvento/'.$id_evento.'">Click Aquí</a>.');
             $email->setMailType('html');
             if ($email->send()) {
@@ -262,7 +270,9 @@ class Eventos extends BaseController
 
     public function getEvento($id, $valid = null, $mensaje = null)
     {
-
+         if(!$this->session->id_usuario){
+        exit();
+         }
         try {
             //datos del evento
          $this->eventos->select('eventos.id AS id_evento, id_solicitante, id_solicitado, reservado, valor, 
@@ -270,10 +280,12 @@ class Eventos extends BaseController
          solicitante.rut AS rut_solicitante, solicitante.nombre AS nombre_solicitante, solicitante.correo AS correo_solicitante, 
          solicitante.telefono AS telefono_solicitante, solicitante.comuna AS comuna_solicitante, solicitante.region AS region_solicitante,
          solicitado.rut AS rut_solicitado, solicitado.nombre AS nombre_solicitado, solicitado.correo AS correo_solicitado, solicitado.direccion AS direccion_solicitado,
-         solicitado.telefono AS telefono_solicitado, solicitado.comuna AS comuna_solicitado, solicitado.region AS region_solicitado
+         solicitado.telefono AS telefono_solicitado, solicitado.comuna AS comuna_solicitado, solicitado.region AS region_solicitado,
+         mediador.correo AS correo_mediador, mediador.nombre AS nombre_mediador
          ')
             ->join('clientes AS solicitante', 'id_solicitante = solicitante.id')
-            ->join('clientes AS solicitado', 'id_solicitado = solicitado.id');
+            ->join('clientes AS solicitado', 'id_solicitado = solicitado.id')
+            ->join('usuarios AS mediador', 'id_usuario = mediador.id');
         $this->eventos->where('eventos.id', $id);
 
         $evento = $this->eventos->get()->getRow();
@@ -307,7 +319,7 @@ class Eventos extends BaseController
         if($evento->state=='Agendado'){
         echo view('eventos/evento', $data);
         }
-        if($evento->state=='Revisado'){
+      if($evento->state=='Revisado'||$evento->state=='Notificado'){
         echo view('eventos/revisado', $data);
         }
         echo view('footer');
@@ -317,16 +329,13 @@ class Eventos extends BaseController
 
 
 
-    public function eliminar($id)
+    public function updEstado($id, $estado)
     {
-        if ($id == 1) {
-            echo 'No se puede editar este registro!';
-            exit;
-        }
+   
         $this->eventos->update($id, [
-            'activo' => 0
+            'state' => $estado
         ]);
-        return redirect()->to(base_url() . 'eventos');
+        return redirect()->to(base_url() . 'eventos/getEvento/'.$id);
     }
 
     public function reingresar($id)
@@ -335,6 +344,126 @@ class Eventos extends BaseController
             'activo' => 1
         ]);
         return redirect()->to(base_url() . 'eventos');
+    }
+
+    
+
+      public function notificar()
+    {
+         if ($this->request->getMethod() == "POST"){
+        $id_evento = $this->request->getPost('id_evento');
+             $Timestamp = strtotime($this->request->getPost('fecha_inicio'));
+            $nuevaTimestamp = strtotime('+1 hours', $Timestamp);
+         $fecha_fin = date('Y-m-d  H:i:s', $nuevaTimestamp);
+         //$fecha_inicio = date('Y-m-d H:i:s', strtotime($this->request->getPost('fecha')));
+
+        $fecha_i = date('Y-m-d', $Timestamp);
+        $fecha_f = date('Y-m-d', $nuevaTimestamp);
+            $fecha_iES = date('d-m-Y', $nuevaTimestamp);
+        $hora_i = date('H:i:s', $Timestamp);
+                $hora_f = date('H:i:s', $nuevaTimestamp);
+
+        $fecha_inicio = $fecha_i.'T'.$hora_i;
+        $fecha_fin = $fecha_f.'T'.$hora_f;
+        
+        
+
+        $invitados['email'] = [$this->request->getPost('correo_solicitante'), $this->request->getPost('correo_solicitado'), $this->request->getPost('correo_mediador')];
+        $nombre = 'Sesión de Mediación';
+        $array_correos = [$this->request->getPost('correo_solicitante'), $this->request->getPost('correo_solicitado'), $this->request->getPost('correo_mediador')];
+        $descripcion = "Reunión virtual Mediación Familiar";
+
+        $google = new Google();
+        $agenda = $google->storeEventForm($fecha_inicio, $fecha_fin, $invitados, $nombre, $descripcion);
+
+        if($agenda->hangoutLink){
+
+           $this->eventos->update($this->request->getPost('id_evento'), [
+            'enlace' => $agenda->hangoutLink,
+            'state' => 'Notificado'
+        ]);
+        
+        $meet = 1;
+        }
+        else{
+          $meet = 0;
+        }
+
+        //ahora notificados por mail
+
+//definimos variable a usar
+//$nombre_mediador = $this->request->getPost('nombre_mediador');
+$nombre_solicitante = $this->request->getPost('nombre_solicitante');
+$nombre_solicitado = $this->request->getPost('nombre_solicitado');
+
+//llamamos materias y creamos html con ellas
+  $materias = $this->materias->select("*")->join('eventos_materias', 'id_materia = materias.id')->where('id_evento', $id_evento)->orderBy('orden', 'asc')->findAll();
+  
+    $lista_materias = '';
+    $i = 0;
+    foreach ($materias AS $materia){
+        $i++;
+$lista_materias = $lista_materias.$i.'- '.$materia['nombre'].'<br>';
+    };
+
+$cuerpo = 'Por la presente me dirijo a ustedes, en atención que se ha acercado a mi don o doña '.$nombre_solicitante.', a fin de solicitar un proceso de Mediación Familiar sobre: 
+ <br><br>
+
+'.$lista_materias.'
+<br>
+
+A fin de llevar a cabo el proceso de Mediación Familiar, cito en mi calidad de mediador/a a Don/ña '.$nombre_solicitante.' y a Don/ña '.$nombre_solicitado.', para que comparezcan a Mediación Familiar vía telemática por plataforma meet, para el día '.$fecha_iES.' a las '.$hora_i.' horas.
+<br><br>
+Solicito confirmar asistencia a la brevedad 
+<br><br>
+
+El link de acceso a la reunión virtual es el siguiente:
+<br>
+<a href="'.$agenda->hangoutLink.'">'.$agenda->hangoutLink.'</a>
+<br>
+Al cual podrán acceder en la fecha y hora señalada en la presente notificación.
+<br>
+
+La mediación familiar es un proceso pacifico de resolución de conflictos, a través del cual un tercero imparcial, llamado mediador, ayuda a las partes a solucionar sus conflictos y arribar a un acuerdo. Es un proceso voluntario y confidencial, es decir, el mediador debe guardar reserva respecto a lo tratado en la sesión de mediación, salvo en aquellos casos en que tome conocimiento de la existencia de situaciones de maltrato o abuso en contra de niños, niñas, adolescentes o discapacitados.
+<br>
+Los resultados del proceso de mediación pueden ser dos: 
+<br>
+1. las partes lleguen a un acuerdo, lo que se plasma a través de un acta de acuerdo que debe ser leída y firmada por los mediados y enviada al tribunal de familia competente para su aprobación. Una vez aprobada el acta de acuerdo por parte del tribunal, tendrá el valor de una sentencia firme o ejecutoriada, es decir, el cumplimiento de lo acordado puede solicitarse ante el tribunal competente, de igual modo que una sentencia judicial.
+<br>
+
+2. Las partes no logren acuerdos, por lo que en ese caso la mediación resulta frustrada, caso en el que el mediador emitirá un acta de mediación frustrada, lo que permite al interesado continuar el proceso judicial pendiente o iniciarlo en caso que la mediación sea anterior al proceso judicial.
+<br><br>
+ Atentamente, <br><br>
+ 
+ <br>
+ <br>
+ El contenido de este correo electrónico es confidencial y está destinado únicamente para los destinatarios especificados en el mensaje. Está estrictamente prohibido compartir cualquier parte de este mensaje con terceros sin el consentimiento del remitente. Si recibió este mensaje por error, por favor responda a este mensaje y proceda a su eliminación, para que podamos asegurarnos de que dicho error no ocurra en el futuro.';
+
+         $email = \Config\Services::email();
+            $email->setFrom('notificamediacionchile@gmail.com', 'Sistema Mediación');
+            $email->setTo($array_correos);
+            $email->setSubject('Notificación Mediación '.$fecha_inicio);
+
+            $email->setMessage($cuerpo);
+            $email->setMailType('html');
+            $email->setReplyTo($this->request->getPost('correo_mediador'));
+            if ($email->send()) {
+                // Correo enviado correctamente
+                $enviado = 'OK';
+                $envio = 1;
+            } else {
+                // Error al enviar el correo
+                $enviado =  'Error al enviar el correo: ' . $email->printDebugger();
+                $envio = 0;
+                print_r($enviado);
+                exit();
+                // exit;
+            }
+
+            $mensaje = 'La notificación ha sido enviada con éxtito y la reunión virtual ha sido generada, podrá acceder mediante el enlace indicado en la fecha programada.';
+            $this->getEvento($id_evento, null, $mensaje);
+       
+         }
     }
 
 

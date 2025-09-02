@@ -20,9 +20,14 @@
         <?php } ?>
 
         <div class="card-body">
-            <form method="POST" action="<?= base_url() ?>eventos/actualizar" autocomplete="off">
+            <form method="POST" action="<?= base_url() ?>eventos/notificar" autocomplete="off">
                 <?= csrf_field() ?>
                 <input type="hidden" name="fecha_bd" id="fecha_bd" value="" />
+               <input type="hidden" name="fecha_inicio" id="fecha_inicio" value="<?=$datos->fecha_inicio?>" />
+                 <input type="hidden" name="fecha_fin" id="fecha_fin" value="<?=$datos->fecha_fin?>" />
+                  <input type="hidden" name="nombre_mediador" id="nombre_mediador" value="<?=$datos->nombre_mediador?>" />
+                   <input type="hidden" name="correo_mediador" id="correo_mediador" value="<?=$datos->correo_mediador?>" />
+
                 <input type="hidden" name="id_evento" id="id_evento" value="<?= $datos->id_evento ?>" />
                 <input type="hidden" name="id_solicitante" id="id_solicitante" value="<?= $datos->id_solicitante ?>" />
                 <input type="hidden" name="id_solicitado" id="id_solicitado" value="<?= $datos->id_solicitado ?>" />
@@ -171,23 +176,15 @@
                         <div class="row">
 
                             <div class="col-12 col-sm-4">
-                                <label>Nombre Completo: <?php if ($i == 1) {
-                                                            echo '<span class="text-danger">*</span>';
-                                                        } ?></label>
+                                <label>Nombre Completo: </label>
                                 <input
-                                    <?php if ($i == 1) {
-                                        echo 'required';
-                                    } ?>
-                                    autofocus value="<?= $hijo['nombre'] ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
+                                    
+                                     value="<?= $hijo['nombre'] ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
                             </div>
                             <div class="col-12 col-sm-3">
-                                <label>RUT:<?php if ($i == 1) {
-                                                echo '<span class="text-danger">*</span>';
-                                            } ?> </label>
+                                <label>RUT: </label>
                                 <input
-                                    <?php if ($i == 1) {
-                                        echo 'required';
-                                    } ?>
+                                  
                                     class="form-control rut" value="<?= $hijo['rut'] ?>" id="rut<?= $i ?>" name="rut<?= $i ?>" type="text" />
                             </div>
                             <div class="col-12 col-sm-3">
@@ -220,33 +217,21 @@
                         <div class="row">
 
                             <div class="col-12 col-sm-4">
-                                <label>Nombre Completo: <?php if ($i == 1) {
-                                                            echo '<span class="text-danger">*</span>';
-                                                        } ?></label>
+                                <label>Nombre Completo: </label>
                                 <input
-                                    <?php if ($i == 1) {
-                                        echo 'required';
-                                    } ?>
+                                
                                     autofocus value="<?= set_value('nombre' . $i) ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
                             </div>
                             <div class="col-12 col-sm-3">
-                                <label>RUT:<?php if ($i == 1) {
-                                                echo '<span class="text-danger">*</span>';
-                                            } ?> </label>
+                                <label>RUT: </label>
                                 <input
-                                    <?php if ($i == 1) {
-                                        echo 'required';
-                                    } ?>
+                                   
                                     class="form-control rut" value="<?= set_value('rut' . $i) ?>" id="rut<?= $i ?>" name="rut<?= $i ?>" type="text" />
                             </div>
                             <div class="col-12 col-sm-3">
-                                <label>Fecha de Nacimiento:<?php if ($i == 1) {
-                                                                echo '<span class="text-danger">*</span>';
-                                                            } ?> </label>
+                                <label>Fecha de Nacimiento: </label>
                                 <input onchange="calcularEdad(this, edad<?= $i ?>)"
-                                    <?php if ($i == 1) {
-                                        echo 'required';
-                                    } ?>
+                                   
                                     class="form-control" value="<?= set_value('fecha' . $i) ?>" id="fecha<?= $i ?>" name="fecha<?= $i ?>" type="date" />
                             </div>
                             <div class="col-12 col-sm-2">
@@ -366,10 +351,11 @@
                     </div>
                 </div>
                 </div>
-
+<button type="button" id="detalles" class="btn btn-sm btn-secondary">Ver Detalles</button>
+                    <button type="button" id="detallesNo" class="btn d-none btn-sm mr-auto btn-secondary">Ocultar Detalles</button>
                 <div class="modal-footer">
                     
-                    <button type="button" id="detalles" class="btn mr-auto btn-secondary">Ver Detalles</button>
+                    <a href="<?= base_url() ?>eventos/updEstado/<?=$datos->id_evento?>/Agendado" id="editar" class="btn mr-auto btn-warning"><i class="far fa-pencil"></i> Volver y Editar</a>
                     <button type="submit" class="btn btn-success btn-ok"><i class="fas fa-check-double"></i> Notificar Mediación</button>
                     <a href="<?= base_url() ?>eventos" class="btn btn-primary btn-ok"><i class="fas fa-calendar-check"></i> Volver al Calendario</a>
 
@@ -578,5 +564,13 @@
 
     $("#detalles").click(function(){
         $('#oculto').removeClass('d-none');
+        $('#detallesNo').removeClass('d-none');
+        $("#detalles").addClass('d-none');
+    });
+
+        $("#detallesNo").click(function(){
+        $('#oculto').addClass('d-none');
+        $('#detallesNo').addClass('d-none');
+        $("#detalles").removeClass('d-none');
     });
 </script>

@@ -71,6 +71,25 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group mb-4">
+                    <div class="row">
+                        <div class="col-12 col-sm-6">
+                            <div class="form-check">
+                                <input class="form-check-input"  type="checkbox" name="notifica" value="1" id="notifica" />
+                                <label class="form-check-label" for="notifica">¿Es Notificado (Agenda General)?</label>
+
+                                
+                            </div>
+
+                             <div class="form-check">
+                                <input class="form-check-input"  type="checkbox" name="atiende" value="1" id="atiende" />
+                                <label class="form-check-label" for="atiende">¿Es Mediador?</label>
+
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <a href="<?= base_url() ?>usuarios" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Volver</a>
             <button class="btn btn-success" type="submit"><i class="fas fa-save"></i> Guardar</button>
 

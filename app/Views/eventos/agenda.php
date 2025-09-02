@@ -304,10 +304,10 @@
                         </div>
                         <hr class="mt-1 mb-3">
                         <h5 class="text-primary">Datos de los beneficiarios (hijos)
-                            <input type="hidden" id="cuentaHijos" name="cuentaHijos" value="1" />
+                            <input type="hidden" id="cuentaHijos" name="cuentaHijos" value="0" />
                         </h5>
                         <hr class="mt-1 mb-2">
-                        <?php for ($i = 1; $i <= 6; $i++) { ?>
+                        <?php for ($i = 0; $i <= 5; $i++) { ?>
                             <div id="hijo<?= $i ?>"
                                 <?php if ($i != 1) {
                                     echo 'style="display: none;"';
@@ -320,33 +320,21 @@
                                 <div class="row">
 
                                     <div class="col-12 col-sm-4">
-                                        <label>Nombre Completo: <?php if ($i == 1) {
-                                                                    echo '<span class="text-danger">*</span>';
-                                                                } ?></label>
+                                        <label>Nombre Completo: 
                                         <input
-                                            <?php if ($i == 1) {
-                                                echo 'required';
-                                            } ?>
-                                            autofocus value="<?= set_value('nombre' . $i) ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
+                                           
+                                             value="<?= set_value('nombre' . $i) ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
                                     </div>
                                     <div class="col-12 col-sm-3">
-                                        <label>RUT:<?php if ($i == 1) {
-                                                        echo '<span class="text-danger">*</span>';
-                                                    } ?> </label>
+                                        <label>RUT:
                                         <input
-                                            <?php if ($i == 1) {
-                                                echo 'required';
-                                            } ?>
+                                            
                                             class="form-control rut" value="<?= set_value('rut' . $i) ?>" id="rut<?= $i ?>" name="rut<?= $i ?>" type="text" />
                                     </div>
                                     <div class="col-12 col-sm-3">
-                                        <label>Fecha de Nacimiento:<?php if ($i == 1) {
-                                                                        echo '<span class="text-danger">*</span>';
-                                                                    } ?> </label>
+                                        <label>Fecha de Nacimiento:
                                         <input onchange="calcularEdad(this, edad<?= $i ?>)"
-                                            <?php if ($i == 1) {
-                                                echo 'required';
-                                            } ?>
+                                            
                                             class="form-control" value="<?= set_value('fecha' . $i) ?>" id="fecha<?= $i ?>" name="fecha<?= $i ?>" type="date" />
                                     </div>
                                     <div class="col-12 col-sm-2">

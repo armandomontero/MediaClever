@@ -81,6 +81,9 @@ $routes->post('/eventos/agendar', 'Eventos::agendar');
 $routes->get('/eventos/getDatosId/(:num)', 'Eventos::getDatosId/$1');
 $routes->get('/eventos/getEvento/(:num)', 'Eventos::getEvento/$1');
 $routes->post('/eventos/actualizar', 'Eventos::actualizar');
+$routes->get('/eventos/updEstado/(:num)/(:any)', 'Eventos::updEstado/$1/$2');
+$routes->post('/eventos/notificar', 'Eventos::notificar');
+
 
 
 

@@ -171,33 +171,21 @@
                         <div class="row">
 
                             <div class="col-12 col-sm-4">
-                                <label>Nombre Completo: <?php if ($i == 1) {
-                                                            echo '<span class="text-danger">*</span>';
-                                                        } ?></label>
+                                <label>Nombre Completo: </label>
                                 <input
-                                    <?php if ($i == 1) {
-                                        echo 'required';
-                                    } ?>
-                                    autofocus value="<?= $hijo['nombre'] ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
+                                   
+                                     value="<?= $hijo['nombre'] ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
                             </div>
                             <div class="col-12 col-sm-3">
-                                <label>RUT:<?php if ($i == 1) {
-                                                echo '<span class="text-danger">*</span>';
-                                            } ?> </label>
+                                <label>RUT:</label>
                                 <input
-                                    <?php if ($i == 1) {
-                                        echo 'required';
-                                    } ?>
+                                   
                                     class="form-control rut" value="<?= $hijo['rut'] ?>" id="rut<?= $i ?>" name="rut<?= $i ?>" type="text" />
                             </div>
                             <div class="col-12 col-sm-3">
-                                <label>Fecha de Nacimiento:<?php if ($i == 1) {
-                                                                echo '<span class="text-danger">*</span>';
-                                                            } ?> </label>
+                                <label>Fecha de Nacimiento:</label>
                                 <input onchange="calcularEdad(this, edad<?= $i ?>)"
-                                    <?php if ($i == 1) {
-                                        echo 'required';
-                                    } ?>
+                                   
                                     class="form-control" value="<?= $hijo['fecha_nac'] ?>" id="fecha<?= $i ?>" name="fecha<?= $i ?>" type="date" />
                             </div>
                             <div class="col-12 col-sm-2">
@@ -220,33 +208,21 @@
                         <div class="row">
 
                             <div class="col-12 col-sm-4">
-                                <label>Nombre Completo: <?php if ($i == 1) {
-                                                            echo '<span class="text-danger">*</span>';
-                                                        } ?></label>
+                                <label>Nombre Completo: </label>
                                 <input
-                                    <?php if ($i == 1) {
-                                        echo 'required';
-                                    } ?>
-                                    autofocus value="<?= set_value('nombre' . $i) ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
+                                   
+                                     value="<?= set_value('nombre' . $i) ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
                             </div>
                             <div class="col-12 col-sm-3">
-                                <label>RUT:<?php if ($i == 1) {
-                                                echo '<span class="text-danger">*</span>';
-                                            } ?> </label>
+                                <label>RUT:</label>
                                 <input
-                                    <?php if ($i == 1) {
-                                        echo 'required';
-                                    } ?>
+                                   
                                     class="form-control rut" value="<?= set_value('rut' . $i) ?>" id="rut<?= $i ?>" name="rut<?= $i ?>" type="text" />
                             </div>
                             <div class="col-12 col-sm-3">
-                                <label>Fecha de Nacimiento:<?php if ($i == 1) {
-                                                                echo '<span class="text-danger">*</span>';
-                                                            } ?> </label>
+                                <label>Fecha de Nacimiento:</label>
                                 <input onchange="calcularEdad(this, edad<?= $i ?>)"
-                                    <?php if ($i == 1) {
-                                        echo 'required';
-                                    } ?>
+                                    
                                     class="form-control" value="<?= set_value('fecha' . $i) ?>" id="fecha<?= $i ?>" name="fecha<?= $i ?>" type="date" />
                             </div>
                             <div class="col-12 col-sm-2">
@@ -340,7 +316,7 @@
 
                         <div class="col-12 col-sm-4">
                             <label for="id_usuario">Mediador Asignado: </label>
-                            <select class="form-control" name="id_usuario" id="id_usuario">
+                            <select required class="form-control" name="id_usuario" id="id_usuario">
                                 <option value="">Seleccione</option>
                                 <?php foreach ($usuarios as $usuario) {
                                     if ($usuario['id'] == $datos->id_usuario) {

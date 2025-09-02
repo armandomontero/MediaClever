@@ -11,7 +11,7 @@ class UsuariosModel extends Model{
     protected $returnType     = 'array';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['usuario', 'password', 'nombre', 'correo', 'id_rol', 'activo', 'id_tienda'];
+    protected $allowedFields = ['usuario', 'password', 'nombre', 'correo', 'notifica', 'atiende', 'id_rol', 'activo', 'id_tienda'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

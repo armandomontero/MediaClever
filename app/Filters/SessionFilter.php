@@ -20,11 +20,21 @@ class SessionFilter implements FilterInterface
         if (!$session->get('id_usuario')) { // Verificar si la sesión del usuario está activa
 
             $usuarios = new Usuarios();
-    $request = service('request');
+             $request = service('request');
 
             $params =$request->getUri();
+
+            if ($params->getSegment(2) === 'getEvento'&&is_numeric($params->getSegment(3))) {
+     return $usuarios->login($params); 
+}
+else{
+    return redirect()->to(base_url());
+}
+
+         
            
-            return $usuarios->login($params); // Redirigir a la página de inicio de sesión
+          // Redirigir a la página de inicio de sesión
+            
         }
     }
 

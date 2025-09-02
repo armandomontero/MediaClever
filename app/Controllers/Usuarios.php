@@ -259,7 +259,15 @@ class Usuarios extends BaseController
         if ($this->request->getMethod() == "POST" && $this->validate($this->reglas)) {
 
             $hash = password_hash($this->request->getPost('password'), PASSWORD_DEFAULT);
+ $notifica = 0;
+            if($this->request->getPost('notifica')!=''){
+                $notifica = 1;
+            }
 
+                        $atiende = 0;
+            if($this->request->getPost('atiende')!=''){
+                $atiende = 1;
+            }
             $this->usuarios->save([
                 'usuario' => $this->request->getPost('usuario'),
                 'nombre' => $this->request->getPost('nombre'),
@@ -267,6 +275,8 @@ class Usuarios extends BaseController
                 'correo' => $this->request->getPost('correo'),
                 'id_rol' => $this->request->getPost('id_rol'),
                 'activo' => 1,
+                'notifica' => $notifica,
+                'atiende' => $atiende,
                 'id_tienda' => $this->session->id_tienda
             ]);
             return redirect()->to(base_url() . 'usuarios');
@@ -304,7 +314,15 @@ class Usuarios extends BaseController
     public function actualizar()
     {
         if ($this->request->getMethod() == "POST" && $this->validate($this->reglasUpdate)) {
+            $notifica = 0;
+            if($this->request->getPost('notifica')!=''){
+                $notifica = 1;
+            }
 
+                        $atiende = 0;
+            if($this->request->getPost('atiende')!=''){
+                $atiende = 1;
+            }
             //actualiza password?
             $edit_pwd = $this->request->getPost('edit_pwd');
             if ($edit_pwd == 1) {
@@ -313,6 +331,8 @@ class Usuarios extends BaseController
                     'usuario' => $this->request->getPost('usuario'),
                     'nombre' => $this->request->getPost('nombre'),
                     'correo' => $this->request->getPost('correo'),
+                    'notifica' => $notifica,
+                    'atiende' => $atiende,
                     'id_rol' => $this->request->getPost('id_rol'),
                     'password' => $hash
                 ]);
@@ -321,6 +341,8 @@ class Usuarios extends BaseController
                     'usuario' => $this->request->getPost('usuario'),
                     'nombre' => $this->request->getPost('nombre'),
                     'correo' => $this->request->getPost('correo'),
+                    'notifica' => $notifica,
+                    'atiende' => $atiende,
                     'id_rol' => $this->request->getPost('id_rol')
                 ]);
             }
@@ -368,6 +390,7 @@ class Usuarios extends BaseController
         echo view('login', $data);
         
         }
+       
     }
 
     public function valida()
@@ -569,6 +592,8 @@ class Usuarios extends BaseController
                         'nombre' => $this->request->getPost('nombre'),
                        'correo' => $this->request->getPost('correo'),
                         'password' => $hash,
+                        'notifica' => 1,
+                        'atiende' => 1,
                         'id_rol' => 1, //admin
                         'activo' => 1,
                         'id_tienda' => $id_tienda

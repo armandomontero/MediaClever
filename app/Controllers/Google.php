@@ -86,8 +86,6 @@ class Google extends ResourceController
     }
 
 
-
-
     public function storeEvent()
     {
          $data = $this->request->getJSON();
@@ -138,6 +136,56 @@ class Google extends ResourceController
 
         $evento = $calendar->events->insert($calendarId, $event, ['conferenceDataVersion' => 1, 'sendUpdates' => 'all'] );
 return $this->respond($evento);
+       
+    }
+
+    public function storeEventForm($fecha_inicio, $fecha_fin, $invitados, $nombre, $descripcion)
+    {
+        
+        
+        $client = $this->__getClient();
+
+        $calendar = new Calendar($client);
+
+        $calendarId = 'primary';
+       
+        $fecha = '2025-09-01' . 'T' . '20:43:00';
+        $fecha_end = '2025-09-01' . 'T' . '21:43:00';
+        $event = new Event([
+            'summary' => $nombre,
+
+            'description' => $descripcion,
+            'start' => [
+                'dateTime' => $fecha_inicio, // Example: August 25, 2025, 9:00 AM EDT
+                'timeZone' => 'America/Santiago',
+            ],
+            'end' => [
+                'dateTime' => $fecha_fin, // Example: August 25, 2025, 10:00 AM EDT
+                'timeZone' => 'America/Santiago',
+            ],
+            'attendees' => [$invitados
+            ],
+            'reminders' => [
+                'useDefault' => FALSE,
+                'overrides' => [
+                    ['method' => 'email', 'minutes' => 30],
+                    ['method' => 'popup', 'minutes' => 10],
+                ]
+            ],
+            "conferenceData" => [
+                "createRequest" => [
+                    "conferenceSolutionKey" => [
+                        "type" => "hangoutsMeet"
+                    ],
+                    "requestId" => uniqid()
+                ]
+            ],
+
+        ]);
+
+
+        $evento = $calendar->events->insert($calendarId, $event, ['conferenceDataVersion' => 1, 'sendUpdates' => 'all'] );
+return $evento;
        
     }
 
