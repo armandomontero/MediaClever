@@ -25,6 +25,7 @@ class Google extends ResourceController
         $this->google = new GoogleModel();
         $this->ruta_redirect = base_url().'google';
        
+       
     }
 
 

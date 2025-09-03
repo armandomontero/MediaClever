@@ -72,7 +72,12 @@
 
 <body>
     <!-- Begin Page Content -->
-
+<div id="spinner" class="spinner-overlay  d-none">
+  <div class="spinner-border text-primary" role="status">
+    <span class="">Procesando...</span>
+  </div>
+   <span class="">Procesando...</span>
+</div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light ">
         <a class="navbar-brand" href="#"><img width="" height="80" src="<?= base_url() . $config['logo'] ?>" /></a>
 
@@ -172,7 +177,7 @@
                         Nuestro servicio de mediación privada le permite agendar mediación en un plazo máximo de <b>48 horas</b>. Considerar que este servicio
                         <b>no es gratuito</b> y tiene un costo asociado, un mediador se contactará para coordinar su día y hora de mediación.
                     </div>
-                    <form method="POST" action="<?= base_url() ?>eventos/agendar" autocomplete="off">
+                    <form method="POST" name="formulario" id="formulario" action="<?= base_url() ?>eventos/agendar" autocomplete="off">
                         <?= csrf_field() ?>
                         <input type="hidden" name="id_tienda" id="id_tienda" value="<?= $config['id_tienda'] ?>" />
                         <input type="hidden" name="pass_tienda" id="pass_tienda" value="<?= $pass_tienda ?>" />
@@ -419,7 +424,7 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary btn-ok"><i class="fas fa-calendar-check"></i> Agendar</button>
+                            <button id="enviar" type="submit" class="btn btn-primary btn-ok"><i class="fas fa-calendar-check"></i> Agendar</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-ban"></i> Cancelar</button>
 
                         </div>
@@ -564,7 +569,7 @@
                 },
                 selectConstraint: "businessHours",
                 minTime: "08:00",
-                maxTime: "22:00",
+                maxTime: "19:00",
                 defaultView: "timeGridFourDay",
                 initialView: 'timeGridFourDay',
                 views: {
@@ -769,6 +774,13 @@
         function getText(campoIn, campoOut) {
             document.getElementById(campoOut).value = $(campoIn).children(':selected').text();
         }
+
+          $("#enviar").click(function(){
+            if (formulario.checkValidity()) {
+$("#spinner").removeClass('d-none');
+            }
+    });
+    
     </script>
 </body>
 

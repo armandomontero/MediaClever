@@ -140,8 +140,8 @@ helper('number');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'timeGridWeek',
             allDaySlot: false,
-            slotMinTime: "08:00:00",
-            slotMaxTime: "19:30:00",
+            slotMinTime: "09:00:00",
+            slotMaxTime: "20:00:00",
             locale: "esLocale",
             firstDay: 1,
             selectable: true,
@@ -153,7 +153,28 @@ helper('number');
                 day: 'day',
                 list: 'list'
             },
+ select: function(start, end) {
 
+                    //alert(start.start.toDateString());
+
+                    let dia = start.start.getDate();
+                    let mes = (start.start.getMonth() + 1).toString().padStart(2, '0');
+                    let ano = start.start.getFullYear();
+                    let hora = start.start.getHours().toString().padStart(2, '0');
+                    let min = start.start.getMinutes().toString().padStart(2, '0');
+
+                    let fecha_inicio = ano + '-' + mes + '-' + dia + ' ' + hora + ':' + min + ':00';
+
+                     dia = start.end.getDate();
+                     mes = (start.end.getMonth() + 1).toString().padStart(2, '0');
+                     ano = start.end.getFullYear();
+                     hora = start.end.getHours().toString().padStart(2, '0');
+                     min = start.end.getMinutes().toString().padStart(2, '0');
+
+                    let fecha_fin = ano + '-' + mes + '-' + dia + ' ' + hora + ':' + min + ':00';
+                    
+                    window.location.href='eventos/nuevo/'+fecha_inicio+'/'+fecha_fin+'/agenda_general';
+ },
 
             events: [
 
@@ -202,6 +223,7 @@ helper('number');
                         extendedProps: {
           state: 'Notificado'
         },
+        url: '" . base_url() . "eventos/getEvento/" . $evento['id'] . "',
                         title: 'Mediación',
                         color: '#1a7e2b'
                         
@@ -216,7 +238,7 @@ helper('number');
                 $("#idEvento").val(info.event.id);
                // alert(info.event.extendedProps.state);
                 //funcion ajax para lla,ar datos del formulario
-                if(info.event.extendedProps.state=='Notificado'){
+                if(info.event.extendedProps.state=='jaj'){
                 $.ajax({
                     url: '<?= base_url() ?>eventos/getDatosId/' + info.event.id,
                     dataType: 'json',

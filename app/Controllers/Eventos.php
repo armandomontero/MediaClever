@@ -105,6 +105,31 @@ class Eventos extends BaseController
         }
     }
 
+
+
+    public function nuevo($fecha_inicio, $fecha_fin, $desde = null, $mensaje = null)
+    {
+        
+        
+     
+       
+            $config = new ConfiguracionModel();
+
+            $id_tienda = $this->session->id_tienda;
+
+            $datos_config = $config->where('id_tienda', $id_tienda)->first();
+
+            //llamamos materias
+            $materias = $this->materias->where('activo', 1)->where("id_tienda = " . $id_tienda . " OR id = 1")->orderBy('orden', 'asc')->findAll();
+             //llamamos mediadores disponibles
+            $usuarios = $this->usuarios->where('id_tienda', $this->session->id_tienda)->where("atiende = 1 OR id_rol = 3")->orderBy('nombre', 'asc')->findAll();
+          
+            $data = ['config' => $datos_config, 'materias' => $materias, 'desde' => $desde, 'usuarios' => $usuarios, 'fecha_inicio' => $fecha_inicio, 'fecha_fin' => $fecha_fin,  'mensaje' => $mensaje];
+             echo view('header');
+            echo view('eventos/nuevo', $data);
+        echo view('footer');
+    }
+
     public function eliminados($activo = 0)
     {
         $eventos = $this->eventos->where('activo', $activo)->where('id_tienda', $this->session->id_tienda)->findAll();
@@ -275,7 +300,7 @@ class Eventos extends BaseController
          }
         try {
             //datos del evento
-         $this->eventos->select('eventos.id AS id_evento, id_solicitante, id_solicitado, reservado, valor, 
+         $this->eventos->select('eventos.id AS id_evento, id_solicitante, id_solicitado, reservado, valor, enlace,
         fecha_inicio, fecha_fin, causa, id_usuario, state, causa, solicitante.direccion AS direccion_solicitante,
          solicitante.rut AS rut_solicitante, solicitante.nombre AS nombre_solicitante, solicitante.correo AS correo_solicitante, 
          solicitante.telefono AS telefono_solicitante, solicitante.comuna AS comuna_solicitante, solicitante.region AS region_solicitante,
@@ -285,7 +310,7 @@ class Eventos extends BaseController
          ')
             ->join('clientes AS solicitante', 'id_solicitante = solicitante.id')
             ->join('clientes AS solicitado', 'id_solicitado = solicitado.id')
-            ->join('usuarios AS mediador', 'id_usuario = mediador.id');
+            ->join('usuarios AS mediador', 'mediador.id = id_usuario', 'left');
         $this->eventos->where('eventos.id', $id);
 
         $evento = $this->eventos->get()->getRow();
@@ -319,8 +344,13 @@ class Eventos extends BaseController
         if($evento->state=='Agendado'){
         echo view('eventos/evento', $data);
         }
-      if($evento->state=='Revisado'||$evento->state=='Notificado'){
+      if($evento->state=='Revisado'){
         echo view('eventos/revisado', $data);
+        }
+
+        
+        if($evento->state=='Notificado'){
+        echo view('eventos/sesion', $data);
         }
         echo view('footer');
     }
@@ -336,6 +366,16 @@ class Eventos extends BaseController
             'state' => $estado
         ]);
         return redirect()->to(base_url() . 'eventos/getEvento/'.$id);
+    }
+
+
+        public function anula($id)
+    {
+   
+        $this->eventos->update($id, [
+            'state' => 'Anulado'
+        ]);
+        return redirect()->to(base_url() . 'eventos');
     }
 
     public function reingresar($id)

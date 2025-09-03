@@ -107,7 +107,8 @@ class Configuracion extends BaseController
                 $this->configuracion->update($this->request->getPost('id'), [
                     'nombre' => $this->request->getPost('nombre'),
                     'direccion' => $this->request->getPost('direccion'),
-                    'mensaje' => $this->request->getPost('mensaje'),
+                    'valor_servicio' => $this->request->getPost('valor_servicio'),
+                    'valor_frustrada' => $this->request->getPost('valor_frustrada'),
                     'logo' => $ruta_bd
                 ]);
             } else {
@@ -115,7 +116,8 @@ class Configuracion extends BaseController
                 $this->configuracion->save([
                     'nombre' => $this->request->getPost('nombre'),
                     'direccion' => $this->request->getPost('direccion'),
-                    'mensaje' => $this->request->getPost('mensaje'),
+                    'valor_servicio' => $this->request->getPost('valor_servicio'),
+                    'valor_frustrada' => $this->request->getPost('valor_frustrada'),
                     'id_tienda' => $this->session->id_tienda,
                     'logo' => $ruta_bd
                 ]);

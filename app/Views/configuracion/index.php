@@ -26,11 +26,11 @@
                     <div class="row">
                         <div class="col-12 col-sm-6">
                             <label>Nombre: </label>
-                            <input require autofocus class="form-control" value="<?= $datos['nombre'] ?>" id="nombre" name="nombre" type="text" />
+                            <input required autofocus class="form-control" value="<?= $datos['nombre'] ?>" id="nombre" name="nombre" type="text" />
                         </div>
                         <div class="col-12 col-sm-6">
                             <label>Dirección: </label>
-                            <input require class="form-control" value="<?= $datos['direccion'] ?>" id="direccion" name="direccion" type="text" />
+                            <input required class="form-control" value="<?= $datos['direccion'] ?>" id="direccion" name="direccion" type="text" />
                         </div>
                     </div>
                 </div>
@@ -38,11 +38,13 @@
                 <div class="form-group mb-4">
                     <div class="row">
                         <div class="col-12 col-sm-6">
-                            <label>Mensaje: </label>
-                            <input require autofocus class="form-control" value="<?= $datos['mensaje'] ?>" id="mensaje" name="mensaje" type="text" />
+                            <label for="valor_servicio">Valor Mediación: </label>
+                            <input required autofocus class="form-control text-right" value="<?= $datos['valor_servicio'] ?>" id="valor_servicio" name="valor_servicio" type="number" />
                         </div>
                         <div class="col-12 col-sm-6">
-
+ <label for="valor_frustrada">Valor Mediación Frustrada: </label>
+                            <input required autofocus class="form-control text-right" value="<?= $datos['valor_frustrada'] ?>" id="valor_frustrada" name="valor_frustrada" type="number" />
+                        </div>
                         </div>
                     </div>
                 </div>

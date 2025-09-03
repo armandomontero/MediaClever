@@ -48,8 +48,8 @@
                             </div>
                         </div>
                         <div class="col-12 col-sm-3">
-                            <label>E-Mail<span class="text-danger">*</span> </label>
-                            <input class="form-control" value="<?= $datos->correo_solicitante ?>" id="correo_solicitante" name="correo_solicitante" type="email" />
+                            <label for="correo_solicitante">E-Mail<span class="text-danger">*</span> </label>
+                            <input required class="form-control" value="<?= $datos->correo_solicitante ?>" id="correo_solicitante" name="correo_solicitante" type="email" />
                         </div>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
 
                         <div class="col-12 col-sm-5">
 
-                            <label>Dirección<span class="text-danger">*</span> </label>
+                            <label for="direccion_solicitante">Dirección<span class="text-danger">*</span> </label>
                             <input  value="<?= $datos->direccion_solicitante ?>" class="form-control" id="direccion_solicitante" name="direccion_solicitante" type="text" />
                         </div>
 
@@ -114,8 +114,8 @@
                         </div>
 
                         <div class="col-12 col-sm-3">
-                            <label>E-Mail: </label>
-                            <input class="form-control" value="<?= $datos->correo_solicitado ?>" id="correo_solicitado" name="correo_solicitado" type="email" />
+                            <label for="correo_solicitado">E-Mail: </label>
+                            <input required class="form-control" value="<?= $datos->correo_solicitado ?>" id="correo_solicitado" name="correo_solicitado" type="email" />
                         </div>
                     </div>
                 </div>
@@ -353,6 +353,8 @@
                 </div>
 
                 <div class="modal-footer">
+               <a data-toggle="modal" data-target="#modal-confirma" href="#" data-href="<?= base_url() ?>eventos/anula/<?=$datos->id_evento?>" id="editar" class="btn mr-auto btn-danger"><i class="fas fa-ban"></i> Anular</a>
+
                     <button type="submit" class="btn btn-success btn-ok"><i class="fas fa-check-double"></i> Confirmar y Guardar Datos</button>
                     <a href="<?= base_url() ?>eventos" class="btn btn-primary btn-ok"><i class="fas fa-calendar-check"></i> Volver al Calendario</a>
 
@@ -361,6 +363,28 @@
         </div>
     </div>
 </main>
+
+
+<!-- Modal confirmación -->
+<div class="modal fade" id="modal-confirma" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Anular Registro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>¿Está seguro que desea anular el registro?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <a type="button" class="btn btn-danger btn-ok">Anular</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- rut chileno -->
 <script src="<?= base_url() ?>js/jquery.rut.js"></script>

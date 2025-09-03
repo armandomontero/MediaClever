@@ -146,7 +146,7 @@ $user_session = session();
                         <h6 class="collapse-header">Opciones:</h6>
                         <a class="collapse-item" href="<?= base_url() ?>configuracion">Configuración</a>
                         <a class="collapse-item" href="<?= base_url() ?>usuarios">Usuarios</a>
-                        <a class="collapse-item" href="<?= base_url() ?>servicios">Servicios</a>
+                        <a class="collapse-item" href="<?= base_url() ?>servicios">Otros Servicios</a>
                         <a class="collapse-item" href="<?= base_url() ?>materias">Materias</a>
                         <a class="collapse-item" href="<?= base_url() ?>configuracion/link">Link Agenda Pública</a>
                     </div>
