@@ -449,6 +449,12 @@ class Eventos extends BaseController
             $nombre_solicitante = $this->request->getPost('nombre_solicitante');
             $nombre_solicitado = $this->request->getPost('nombre_solicitado');
 
+
+            //llamamos datos de configuracion
+            $config = new ConfiguracionModel();
+            $datos_config = $config->where('id_tienda', $this->session->id_tienda)->first();
+            $atte = $datos_config['nombre'];
+
             //llamamos materias y creamos html con ellas
             $materias = $this->materias->select("*")->join('eventos_materias', 'id_materia = materias.id')->where('id_evento', $id_evento)->orderBy('orden', 'asc')->findAll();
 
@@ -475,7 +481,7 @@ El link de acceso a la reunión virtual es el siguiente:
 <a href="' . $agenda->hangoutLink . '">' . $agenda->hangoutLink . '</a>
 <br>
 Al cual podrán acceder en la fecha y hora señalada en la presente notificación.
-<br>
+<br><br><br>
 
 La mediación familiar es un proceso pacifico de resolución de conflictos, a través del cual un tercero imparcial, llamado mediador, ayuda a las partes a solucionar sus conflictos y arribar a un acuerdo. Es un proceso voluntario y confidencial, es decir, el mediador debe guardar reserva respecto a lo tratado en la sesión de mediación, salvo en aquellos casos en que tome conocimiento de la existencia de situaciones de maltrato o abuso en contra de niños, niñas, adolescentes o discapacitados.
 <br>
@@ -486,7 +492,7 @@ Los resultados del proceso de mediación pueden ser dos:
 
 2. Las partes no logren acuerdos, por lo que en ese caso la mediación resulta frustrada, caso en el que el mediador emitirá un acta de mediación frustrada, lo que permite al interesado continuar el proceso judicial pendiente o iniciarlo en caso que la mediación sea anterior al proceso judicial.
 <br><br>
- Atentamente, <br><br>
+ Atentamente, '.$atte.' <br><br>
  
  <br>
  <br>
