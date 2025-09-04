@@ -82,6 +82,20 @@ class Eventos extends BaseController
     }
 
 
+        public function pendientes($activo = 1)
+    {
+        if (!$this->session->id_usuario) {
+            exit();
+        }
+        $eventos = $this->eventos->where("id_tienda", $this->session->id_tienda)->where("state != 'Realizado' AND state != 'Anulado'")->findAll();
+        $data = ['titulo' => 'Pendientes', 'eventos' => $eventos];
+
+        echo view('header');
+        echo view('archivos/pendientes', $data);
+        echo view('footer');
+    }
+
+
         public function miAgenda($activo = 1)
     {
         if (!$this->session->id_usuario) {

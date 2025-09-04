@@ -88,6 +88,10 @@ $routes->get('/eventos/updEstado/(:num)/(:any)', 'Eventos::updEstado/$1/$2');
 $routes->get('/eventos/anula/(:num)', 'Eventos::anula/$1');
 $routes->post('/eventos/notificar', 'Eventos::notificar');
 
+//eventos (archivo)
+$routes->get('/archivo/pendientes', 'Eventos::pendientes');
+
+
 
 
 

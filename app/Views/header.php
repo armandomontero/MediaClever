@@ -108,6 +108,7 @@ $user_session = session();
                 <div id="collapseArch" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Opciones:</h6>
+                        <a class="collapse-item" href="<?= base_url() ?>archivo/pendientes">Pendientes</a>
                         <a class="collapse-item" href="<?= base_url() ?>archivo">Actas</a>
                         <a class="collapse-item" href="<?= base_url() ?>usuarios">Frustradas</a>
                         <a class="collapse-item" href="<?= base_url() ?>servicios">No realizadas</a>
