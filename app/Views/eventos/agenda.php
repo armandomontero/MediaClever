@@ -268,11 +268,11 @@
                                     <label>Teléfono </label>
                                     <div class="input-group">
                                         <span class="input-group-text"><img style="padding-right:5px;" width="25" src="<?= base_url() ?>img/chile.png" alt="chile">+56</span>
-                                        <input required value="<?= set_value('telefono_solicitado') ?>" class="form-control" id="telefono_solicitado" name="telefono_solicitado" type="number" />
+                                        <input  value="<?= set_value('telefono_solicitado') ?>" class="form-control" id="telefono_solicitado" name="telefono_solicitado" type="number" />
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <label>E-Mail: </label>
+                                    <label for="correo_solicitado">E-Mail: </label>
                                     <input class="form-control" value="<?= set_value('correo_solicitado') ?>" id="correo_solicitado" name="correo_solicitado" type="email" />
                                 </div>
                             </div>
@@ -314,7 +314,7 @@
                         <hr class="mt-1 mb-2">
                         <?php for ($i = 0; $i <= 5; $i++) { ?>
                             <div id="hijo<?= $i ?>"
-                                <?php if ($i != 1) {
+                                <?php if ($i != 0) {
                                     echo 'style="display: none;"';
                                 } else {
                                     echo 'style="display: block;"';
@@ -325,19 +325,19 @@
                                 <div class="row">
 
                                     <div class="col-12 col-sm-4">
-                                        <label>Nombre Completo: 
+                                        <label>Nombre Completo: </label>
                                         <input
                                            
                                              value="<?= set_value('nombre' . $i) ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
                                     </div>
                                     <div class="col-12 col-sm-3">
-                                        <label>RUT:
+                                        <label>RUT:</label>
                                         <input
                                             
                                             class="form-control rut" value="<?= set_value('rut' . $i) ?>" id="rut<?= $i ?>" name="rut<?= $i ?>" type="text" />
                                     </div>
                                     <div class="col-12 col-sm-3">
-                                        <label>Fecha de Nacimiento:
+                                        <label>Fecha de Nacimiento:</label>
                                         <input onchange="calcularEdad(this, edad<?= $i ?>)"
                                             
                                             class="form-control" value="<?= set_value('fecha' . $i) ?>" id="fecha<?= $i ?>" name="fecha<?= $i ?>" type="date" />
@@ -631,7 +631,7 @@
             }
         });
 
-        <?php for ($i = 1; $i <= 6; $i++) { ?>
+        <?php for ($i = 0; $i <= 5; $i++) { ?>
             $("#rut<?= $i ?>").rut({
                     formatOn: 'keyup',
                     validateOn: 'keyup'

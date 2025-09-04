@@ -76,9 +76,11 @@ $routes->get('/productos/generaReporteMinimo', 'Productos::generaReporteMinimo')
 
 //Eventos
 $routes->get('/eventos', 'Eventos::index');
+$routes->get('/eventos/miAgenda', 'Eventos::miAgenda');
 $routes->get('/agenda/(:num)/(:any)', 'Eventos::agenda/$1/$2');
 $routes->get('/eventos/nuevo/(:any)/(:any)', 'Eventos::nuevo/$1/$2');
 $routes->post('/eventos/agendar', 'Eventos::agendar');
+$routes->post('/eventos/agendarPrivado', 'Eventos::agendarPrivado');
 $routes->get('/eventos/getDatosId/(:num)', 'Eventos::getDatosId/$1');
 $routes->get('/eventos/getEvento/(:num)', 'Eventos::getEvento/$1');
 $routes->post('/eventos/actualizar', 'Eventos::actualizar');

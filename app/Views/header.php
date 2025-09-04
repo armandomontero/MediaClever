@@ -88,6 +88,16 @@ $user_session = session();
                 </a>
             </li>
 
+
+                <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="<?= base_url() ?>eventos/miAgenda"
+                    aria-expanded="true">
+                    <i class="fas fa-address-book"></i>
+                    <span>Mi Agenda</span>
+                </a>
+            </li>
+
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseArch"
