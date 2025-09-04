@@ -477,7 +477,7 @@
 
                 allDaySlot: false,
                 slotMinTime: "09:00:00",
-                slotMaxTime: "20:00:00",
+                slotMaxTime: "21:00:00",
                 locale: "esLocale",
                 firstDay: 1,
                 validRange: {
@@ -502,7 +502,7 @@
                     daysOfWeek: [1, 2, 3, 4, 5, 6], // Monday - Thursday
 
                     startTime: '09:00', // a start time (10am in this example)
-                    endTime: '19:00', // an end time (6pm in this example)
+                    endTime: '21:00', // an end time (6pm in this example)
                 },
                 displayEventEnd: true,
                 select: function(start, end) {
@@ -568,8 +568,7 @@
                     //info.el.style.borderColor = 'red';
                 },
                 selectConstraint: "businessHours",
-                minTime: "08:00",
-                maxTime: "19:00",
+               
                 defaultView: "timeGridFourDay",
                 initialView: 'timeGridFourDay',
                 views: {

@@ -33,7 +33,7 @@
                     <div class="row">
                         <div class="col-12 col-sm-4">
                             <label class="control-label">Nombre Completo<span class="text-danger">*</span> </label>
-                            <input required autofocus value="<?= $datos->nombre_solicitante ?>" class="form-control" id="nombre_solicitante" name="nombre_solicitante" type="text" />
+                            <input required autofocus value="<?= strtoupper($datos->nombre_solicitante) ?>" class="form-control" id="nombre_solicitante" name="nombre_solicitante" type="text" />
                         </div>
                         <div class="col-12 col-sm-2">
                             <label>RUT<span class="text-danger">*</span> </label>
@@ -49,7 +49,7 @@
                         </div>
                         <div class="col-12 col-sm-3">
                             <label for="correo_solicitante">E-Mail<span class="text-danger">*</span> </label>
-                            <input required class="form-control" value="<?= $datos->correo_solicitante ?>" id="correo_solicitante" name="correo_solicitante" type="email" />
+                            <input required class="form-control" value="<?= strtolower($datos->correo_solicitante) ?>" id="correo_solicitante" name="correo_solicitante" type="email" />
                         </div>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
                     <div class="row">
                         <div class="col-12 col-sm-4">
                             <label>Nombre Completo<span class="text-danger">*</span> </label>
-                            <input required autofocus value="<?= $datos->nombre_solicitado ?>" class="form-control" id="nombre_solicitado" name="nombre_solicitado" type="text" />
+                            <input required autofocus value="<?= strtoupper($datos->nombre_solicitado) ?>" class="form-control" id="nombre_solicitado" name="nombre_solicitado" type="text" />
                         </div>
                         <div class="col-12 col-sm-2">
                             <label>RUT </label>
@@ -115,7 +115,7 @@
 
                         <div class="col-12 col-sm-3">
                             <label for="correo_solicitado">E-Mail: </label>
-                            <input required class="form-control" value="<?= $datos->correo_solicitado ?>" id="correo_solicitado" name="correo_solicitado" type="email" />
+                            <input required class="form-control" value="<?= strtolower($datos->correo_solicitado) ?>" id="correo_solicitado" name="correo_solicitado" type="email" />
                         </div>
                     </div>
                 </div>
@@ -174,7 +174,7 @@
                                 <label>Nombre Completo: </label>
                                 <input
                                    
-                                     value="<?= $hijo['nombre'] ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
+                                     value="<?= strtoupper($hijo['nombre']) ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
                             </div>
                             <div class="col-12 col-sm-3">
                                 <label>RUT:</label>

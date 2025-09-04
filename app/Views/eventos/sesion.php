@@ -31,7 +31,7 @@
                             <tbody>
                                 <tr>
                                     <td class="text-xs text-right">NOMBRE:</td>
-                                    <td class="pl-2"><?= $datos->nombre_solicitante ?></td>
+                                    <td class="pl-2"><?= strtoupper($datos->nombre_solicitante) ?></td>
 
                                 </tr>
                                 <tr>
@@ -44,7 +44,7 @@
                                 </tr>
                                 <tr>
                                     <td class="text-xs text-right">CORREO:</td>
-                                    <td class="pl-2"><?= $datos->correo_solicitante ?></td>
+                                    <td class="pl-2"><?= strtolower($datos->correo_solicitante) ?></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -57,7 +57,7 @@
                             <tbody>
                                 <tr>
                                     <td class="text-xs text-right">NOMBRE:</td>
-                                    <td class="pl-2"><?= $datos->nombre_solicitado ?></td>
+                                    <td class="pl-2"><?= strtoupper($datos->nombre_solicitado) ?></td>
 
                                 </tr>
                                 <tr>
@@ -70,7 +70,7 @@
                                 </tr>
                                 <tr>
                                     <td class="text-xs text-right">CORREO:</td>
-                                    <td class="pl-2"><?= $datos->correo_solicitado ?></td>
+                                    <td class="pl-2"><?= strtolower($datos->correo_solicitado) ?></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -83,9 +83,9 @@
                         <div class="card-body  mt-0 pt-1">
                             <table>
                                 <tbody>
-                                    <ul>
+                                    <ul class=" text-xs" style="list-style-type: none; margin-left: -20px;">
                                         <?php foreach ($hijos as $hijo) { ?>
-                                            <li><?= $hijo['nombre'] ?> - <?= $hijo['edad'] ?></li>
+                                            <li class="ml-0"><?= strtoupper($hijo['nombre']) ?> - <?= $hijo['edad'] ?></li>
                                         <?php } ?>
                                     </ul>
                                 </tbody>

@@ -178,7 +178,7 @@ helper('number');
             initialView: 'timeGridWeek',
             allDaySlot: false,
             slotMinTime: "09:00:00",
-            slotMaxTime: "20:00:00",
+            slotMaxTime: "21:00:00",
             locale: "esLocale",
             firstDay: 1,
             selectable: true,
