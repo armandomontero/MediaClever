@@ -90,6 +90,8 @@ $routes->post('/eventos/notificar', 'Eventos::notificar');
 
 //eventos (archivo)
 $routes->get('/archivo/pendientes', 'Eventos::pendientes');
+$routes->get('/archivos/getEvento/(:num)', 'Eventos::getEventoArchivo/$1');
+$routes->post('/archivos/actualizarArchivo', 'Eventos::actualizarArchivo');
 
 
 

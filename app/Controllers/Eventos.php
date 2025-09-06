@@ -87,7 +87,23 @@ class Eventos extends BaseController
         if (!$this->session->id_usuario) {
             exit();
         }
-        $eventos = $this->eventos->where("id_tienda", $this->session->id_tienda)->where("state != 'Realizado' AND state != 'Anulado'")->findAll();
+                   $this->eventos->select('eventos.id AS id_evento, id_solicitante, id_solicitado, reservado, valor, enlace,
+        fecha_inicio, fecha_fin, causa, id_usuario, state, causa, solicitante.direccion AS direccion_solicitante,
+         solicitante.rut AS rut_solicitante, solicitante.nombre AS nombre_solicitante, solicitante.correo AS correo_solicitante, 
+         solicitante.telefono AS telefono_solicitante, solicitante.comuna AS comuna_solicitante, solicitante.region AS region_solicitante,
+         solicitado.rut AS rut_solicitado, solicitado.nombre AS nombre_solicitado, solicitado.correo AS correo_solicitado, solicitado.direccion AS direccion_solicitado,
+         solicitado.telefono AS telefono_solicitado, solicitado.comuna AS comuna_solicitado, solicitado.region AS region_solicitado,
+         mediador.correo AS correo_mediador, mediador.nombre AS nombre_mediador
+         ')
+                ->join('clientes AS solicitante', 'id_solicitante = solicitante.id')
+                ->join('clientes AS solicitado', 'id_solicitado = solicitado.id')
+                ->join('usuarios AS mediador', 'mediador.id = id_usuario', 'left')
+                ->where("state != 'Realizado' AND state != 'Anulado'")
+                ->where('eventos.id_tienda', $this->session->id_tienda)
+                ->orderBy('id_evento', 'desc');
+           
+
+            $eventos = $this->eventos->findAll();
         $data = ['titulo' => 'Pendientes', 'eventos' => $eventos];
 
         echo view('header');
@@ -384,7 +400,62 @@ class Eventos extends BaseController
     }
 
 
+ public function getEventoArchivo($id, $valid = null, $mensaje = null)
+    {
+        if (!$this->session->id_usuario) {
+            exit();
+        }
+        if($this->session->id_rol!=1){
+            echo 'No autorizado';
+            exit();
+        }
+        try {
+            //datos del evento
+            $this->eventos->select('eventos.id AS id_evento, id_solicitante, id_solicitado, reservado, valor, enlace,
+        fecha_inicio, fecha_fin, causa, id_usuario, state, causa, solicitante.direccion AS direccion_solicitante,
+         solicitante.rut AS rut_solicitante, solicitante.nombre AS nombre_solicitante, solicitante.correo AS correo_solicitante, 
+         solicitante.telefono AS telefono_solicitante, solicitante.comuna AS comuna_solicitante, solicitante.region AS region_solicitante,
+         solicitado.rut AS rut_solicitado, solicitado.nombre AS nombre_solicitado, solicitado.correo AS correo_solicitado, solicitado.direccion AS direccion_solicitado,
+         solicitado.telefono AS telefono_solicitado, solicitado.comuna AS comuna_solicitado, solicitado.region AS region_solicitado,
+         mediador.correo AS correo_mediador, mediador.nombre AS nombre_mediador
+         ')
+                ->join('clientes AS solicitante', 'id_solicitante = solicitante.id')
+                ->join('clientes AS solicitado', 'id_solicitado = solicitado.id')
+                ->join('usuarios AS mediador', 'mediador.id = id_usuario', 'left');
+            $this->eventos->where('eventos.id', $id);
 
+            $evento = $this->eventos->get()->getRow();
+            //lamamos hijos
+            $hijos = $this->hijos->where('id_evento', $id)->findAll();
+            //llamamos materias
+            $materias = $this->materias->where('activo', 1)->where("id_tienda = " . $this->session->id_tienda . " OR id = 1")->orderBy('orden', 'asc')->findAll();
+
+            //llamamos materias seleccionadas
+            $eventos_materias = $this->eventos_materias->where('id_evento', $id)->findAll();
+
+
+            //llamamos mediadores disponibles
+            $usuarios = $this->usuarios->where('id_tienda', $this->session->id_tienda)->where("atiende = 1 OR id_rol = 3")->orderBy('nombre', 'asc')->findAll();
+
+            //enviamos user_activo
+            $user_activo = $this->session->id_usuario;
+        } catch (\Exception $e) {
+            exit($e->getMessage());
+        }
+        if ($valid != null) {
+            $data = ['titulo' => 'Editar Registro', 'datos' => $evento, 'materias' => $materias, 'eventos_materias' => $eventos_materias, 'hijos' => $hijos, 'validation' => $valid, 'usuarios' => $usuarios, 'user_activo' => $user_activo];
+        } else {
+
+
+            $data = ['titulo' => 'Editar Registro', 'datos' => $evento, 'materias' => $materias, 'eventos_materias' => $eventos_materias, 'hijos' => $hijos, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'user_activo' => $user_activo];
+        }
+        echo view('header');
+       
+            echo view('archivos/editar', $data);
+        
+        
+        echo view('footer');
+    }
 
 
     public function updEstado($id, $estado)
@@ -686,6 +757,123 @@ Los resultados del proceso de mediación pueden ser dos:
         }
     }
 
+
+
+ public function actualizarArchivo()
+    {
+        $id_evento = $this->request->getPost('id_evento');
+        if ($this->request->getMethod() == "POST" && $this->validate($this->reglas_agendar)) {
+
+
+
+
+            //actualizamos Evento
+            $fechaInicio = $this->request->getPost('fecha');
+            $nuevaTimestamp = strtotime('+1 hours', strtotime($fechaInicio));
+            $fechaFin = date('Y-m-d H:i:s', $nuevaTimestamp);
+
+
+            $this->eventos->update($this->request->getPost('id_evento'), [
+                'fecha_inicio' => $fechaInicio,
+                'fecha_fin' => $fechaFin,
+                'valor' => $this->request->getPost('valor'),
+                'region_evento' => $this->request->getPost('region1h'),
+                'comuna_evento' => $this->request->getPost('comuna1h'),
+                
+                'causa' => $this->request->getPost('violencia'),
+                'reservado' => $this->request->getPost('reservado'),
+                'id_usuario' => $this->request->getPost('id_usuario'),
+                'state' => $this->request->getPost('estado')
+
+            ]);
+
+
+            //actualizamos solicitante
+            $this->clientes->update($this->request->getPost('id_solicitante'), [
+                'rut' => $this->request->getPost('rut_solicitante'),
+                'nombre' => $this->request->getPost('nombre_solicitante'),
+                'direccion' => $this->request->getPost('direccion_solicitante'),
+                'comuna' => $this->request->getPost('comuna1h'),
+                'region' => $this->request->getPost('region1h'),
+                'telefono' => $this->request->getPost('telefono_solicitante'),
+                'correo' => $this->request->getPost('correo_solicitante')
+
+            ]);
+
+
+
+
+            //actualizamos solicitado
+            $this->clientes->update($this->request->getPost('id_solicitado'), [
+                'rut' => $this->request->getPost('rut_solicitado'),
+                'nombre' => $this->request->getPost('nombre_solicitado'),
+                'direccion' => $this->request->getPost('direccion_solicitado'),
+                'region' => $this->request->getPost('region2h'),
+                'comuna' => $this->request->getPost('comuna2h'),
+                'telefono' => $this->request->getPost('telefono_solicitado'),
+                'correo' => $this->request->getPost('correo_solicitado')
+
+            ]);
+
+            //borramos materias anteriores
+            $this->eventos_materias->where('id_evento', $id_evento)->delete();
+
+            //insertar materias
+            $cuentaMaterias = $this->materias->cuentaMaterias($this->session->id_tienda);
+
+            for ($i = 0; $i < $cuentaMaterias; $i++) {
+                if ($this->request->getPost('materia' . $i) != null) {
+                    $this->eventos_materias->save([
+                        'id_evento' => $id_evento,
+                        'id_materia' => $this->request->getPost('materia' . $i)
+                    ]);
+                }
+            }
+
+            //borramos hijos anteriores
+            $this->hijos->where('id_evento', $id_evento)->delete();
+            //cuentaHijos
+            $cuentaHijos = $this->request->getPost('cuentaHijos');
+            for ($i = 1; $i <= $cuentaHijos; $i++) {
+                //limpiamos rut
+                $rut = str_replace('.', '', $this->request->getPost('rut' . $i));
+                $this->hijos->save([
+
+                    'rut' => $rut,
+                    'nombre' => $this->request->getPost('nombre' . $i),
+                    'fecha_nac' => $this->request->getPost('fecha' . $i),
+                    'edad' => $this->request->getPost('edad' . $i),
+                    'id_evento' => $id_evento
+                ]);
+            }
+
+            /*
+            $email = \Config\Services::email();
+            $email->setFrom('agendainfoclever@gmail.com', 'MediaClever');
+            $email->setTo($this->request->getPost('correo_solicitante'));
+            $email->setSubject('Bienvenido/a al sistema MediaClever');
+            $email->setMessage('Para acceder debe entrar en este <a href="' . base_url() . '">link</a> e ingresar con los datos que definió al registrarse.');
+            $email->setMailType('html');
+            if ($email->send()) {
+                // Correo enviado correctamente
+                $enviado = 'OK';
+            } else {
+                // Error al enviar el correo
+                $enviado =  'Error al enviar el correo: ' . $email->printDebugger();
+                print_r($enviado);
+                exit();
+                // exit;
+            }
+
+*/
+
+            $mensaje = 'Los datos han sido actualizados con éxito y la agenda ha sido confirmada.';
+            $this->getEventoArchivo($id_evento, null, $mensaje);
+            // return redirect()->to(base_url() . 'eventos');
+        } else {
+            $this->getEventoArchivo($id_evento, $this->validator, null);
+        }
+    }
 
 
     public function agendarPrivado()

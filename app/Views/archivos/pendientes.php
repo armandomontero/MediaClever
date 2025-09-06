@@ -13,10 +13,7 @@
             <li class="breadcrumb-item active"><?= $titulo ?></li>
         </ol>
 
-        <p>
-            <a class="btn btn-info" href="<?= base_url() ?>unidades/nuevo">Agregar</a>
-            <a class="btn btn-warning" href="<?= base_url() ?>unidades/eliminados">Eliminados</a>
-        </p>
+
 
         <!-- DataTales -->
         <div class="card shadow mb-4">
@@ -30,8 +27,10 @@
                             <tr class="bg-primary text-white">
                                 <th>ID</th>
                                 <th>Fecha Sesión</th>
+                                <th>Solicitante</th>
+                                 <th>Solicitado</th>
                                 <th>Estado</th>
-                                <th>Reserva Espacio</th>
+                                
                                 <th></th>
                                 <th></th>
 
@@ -41,8 +40,10 @@
                             <tr class="bg-primary text-white">
                                 <th>ID</th>
                                 <th>Fecha Inicio</th>
+                                <th>Solicitante</th>
+                                 <th>Solicitado</th>
                                 <th>Estado</th>
-                                <th>Reserva Espacio</th>
+                                
                                 <th></th>
                                 <th></th>
                             </tr>
@@ -53,16 +54,15 @@
 
                             ?>
                                 <tr>
-                                    <td><?php echo $evento['id']; ?></td>
+                                    <td><?php echo $evento['id_evento']; ?></td>
                                     <td><?php  echo date('d-m-Y H:i:s', strtotime($evento['fecha_inicio'])); ?></td>
-                                    <td><?=$evento['state'] ?></td>
-                                    <td>
-                                        <input type="checkbox" name="reserva" id="reserva" <?php if($evento['reservado']==1){echo 'checked';} ?> />
-                                    </td>
-                                    <td><?php if($evento['id']!=1){?><a class="btn btn-warning btn-sm" href="<?= base_url() ?>unidades/editar/<?php echo $evento['id']; ?>"><i class="fas fa-edit"></i></a><?php } ?></td>
-                                    <td><?php if($evento['id']!=1){?><a data-toggle="modal" data-target="#modal-confirma" 
+                                    <td><?=$evento['nombre_solicitante'] ?></td>
+                                    <td><?=$evento['nombre_solicitado'] ?></td>
+                                   <td><?=$evento['state'] ?></td>
+                                    <td><?php if($evento['id_evento']!=1){?><a class="btn btn-warning btn-sm" href="<?= base_url() ?>archivos/getEvento/<?php echo $evento['id_evento']; ?>"><i class="fas fa-edit"></i></a><?php } ?></td>
+                                    <td><?php if($evento['id_evento']!=1){?><a data-toggle="modal" data-target="#modal-confirma" 
                                         class="btn btn-danger btn-sm" href="#" 
-                                        data-href="<?= base_url() ?>unidades/eliminar/<?php echo $evento['id']; ?>">
+                                        data-href="<?= base_url() ?>unidades/eliminar/<?php echo $evento['id_evento']; ?>">
                                         <i class="fas fa-trash-alt"></i></a><?php } ?></td>
 
                                 </tr>
