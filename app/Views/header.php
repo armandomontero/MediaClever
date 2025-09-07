@@ -37,6 +37,8 @@ $user_session = session();
 
     <!--Charts -->
     <script src="<?= base_url() ?>js/chart.js"></script>
+      <!-- rut chileno -->
+    <script src="<?= base_url() ?>js/jquery.rut.js"></script>
 
     <!--fullcalandar-->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js'></script>

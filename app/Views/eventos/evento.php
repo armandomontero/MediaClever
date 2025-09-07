@@ -54,6 +54,7 @@
                     </div>
                 </div>
 
+
                 <div class="form-group">
                     <div class="row">
 
@@ -82,6 +83,12 @@
                         </div>
                     </div>
                 </div>
+
+
+
+
+
+<!-- Datos solicitado-->
 
                 <div class="form-group mb-4 mt-2">
                     <div class="row ">
@@ -151,7 +158,9 @@
 
                 <div class="form-group mb-4 mt-2">
                     <div class="row ">
-
+ <div class="col-12 col-sm-6">
+                            <a href="<?=base_url()?>clientes/participantes/<?=$datos->id_evento?>" id="otrosParticipantes" class="btn btn-primary" type="button"><i class="fas fa-users"></i> Otros Participantes</a>
+                        </div>
                     </div>
                 </div>
                 <hr class="mt-1 mb-3">

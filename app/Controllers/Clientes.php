@@ -5,12 +5,14 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\ClientesModel;
 use App\Models\CategoriasModel;
+use App\Models\ClientesEventosModel;
 use App\Models\UnidadesModel;
 
 class Clientes extends BaseController
 {
     protected $clientes;
     protected $unidades;
+    protected $clientes_eventos;
     protected $categorias;
     protected $reglas;
 
@@ -19,6 +21,7 @@ class Clientes extends BaseController
         $this->clientes = new ClientesModel();
         $this->unidades = new UnidadesModel();
         $this->categorias = new CategoriasModel();
+        $this->clientes_eventos = new ClientesEventosModel();
 
         helper(['form']);
 
@@ -47,6 +50,19 @@ class Clientes extends BaseController
         echo view('header');
         echo view('clientes/index', $data);
         echo view('footer');
+    }
+
+
+        public function participantes($id_evento = null, $mensaje = null)
+    {
+            
+        $clientes = $this->clientes_eventos->join('clientes', 'id_cliente = clientes.id')->where('id_evento', $id_evento)->orderBy('nombre', 'ASC')->findAll();
+        $data = ['titulo' => 'Participantes Mediación: '.$id_evento.'', 'datos' => $clientes, 'id_evento' => $id_evento, 'mensaje' => $mensaje];
+
+        echo view('header');
+        echo view('clientes/participantes', $data);
+        echo view('footer');
+
     }
 
     public function eliminados($activo = 0)
@@ -95,6 +111,50 @@ else{
         }
         
     }
+
+
+
+    public function addParticipante()
+    {$id_evento = $this->request->getPost('id_evento');
+        if ($this->request->getMethod() == "POST" && $this->validate($this->reglas)) {
+
+            //limpiamos rut
+            $rut_solicitante = str_replace('.', '', $this->request->getPost('rut'));
+            
+             $dataInsert = [
+                'rut' => $rut_solicitante,
+                'nombre' => $this->request->getPost('nombre'),
+                'direccion' => $this->request->getPost('direccion'),
+                'region' => $this->request->getPost('region1h'),
+                'comuna' => $this->request->getPost('comuna1h'),
+                'telefono' => $this->request->getPost('telefono'),
+                'correo' => $this->request->getPost('correo'),
+                'activo' => 1,
+                'id_tienda' => $this->session->id_tienda
+
+                 ];
+
+                  $this->clientes->insert($dataInsert);
+                $id_participante = $this->clientes->getInsertID();
+
+                //relacionamos con evento
+                 $this->clientes_eventos->save([
+                'id_cliente' => $id_participante,
+                'id_evento' => $id_evento,
+                'tipo' => $this->request->getPost('tipo')
+
+                 ]);
+
+                 $mensaje = 'Datos almacenados con éxito';
+                 $this->participantes($id_evento, $mensaje);
+        }else{
+            $this->nuevo($this->validator);
+            $this->participantes($id_evento, $this->validator);
+        }
+        
+    }
+
+
 
 
     public function editar($id, $valid=null)
@@ -171,5 +231,28 @@ else{
             }
         }
         echo json_encode($returnData);
+    }
+
+
+    public function getParticipanteByID($id)
+    {
+        $this->clientes->select('*');
+        $this->clientes->where('id', $id);
+        $this->clientes->where('id_tienda', $this->session->id_tienda);
+        $datos = $this->clientes->get()->getRow();
+
+        $res['existe'] = false;
+        $res['datos'] = '';
+        $res['error'] = '';
+
+        if ($datos) {
+            $res['datos'] = $datos;
+            $res['existe'] = true;
+        } else {
+            $res['error'] = "No existe el producto";
+            $res['existe'] = false;
+        }
+
+        echo json_encode($res);
     }
 }

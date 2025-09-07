@@ -2,7 +2,7 @@
 namespace App\Models;
 use CodeIgniter\Model;
 
-class RolesPermisosModel extends Model{
+class ClientesEventosModel extends Model{
     protected $table      = 'clientes_eventos';
     protected $primaryKey = 'id';
 
@@ -40,7 +40,10 @@ class RolesPermisosModel extends Model{
     protected $afterDelete    = [];
 
 
-
+public function getClientesEventos($id_evento, $tipo){
+    $clientes = $this->select("*")->join('clientes', 'id_cliente = clientes.id')->where('id_evento', $id_evento)->where('tipo', $tipo)->orderBy('clientes.nombre', 'asc')->findAll();
+    return $clientes;
+    }
 }
 
 ?>

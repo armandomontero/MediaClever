@@ -13,11 +13,13 @@ use App\Models\ServiciosModel;
 use App\Models\TiendasModel;
 use App\Models\UsuariosModel;
 use App\Controllers\Google;
+use App\Models\ClientesEventosModel;
 
 class Eventos extends BaseController
 {
     protected $eventos;
     protected $clientes;
+     protected $clientes_eventos;
     protected $hijos;
     protected $materias;
     protected $eventos_materias;
@@ -30,6 +32,7 @@ class Eventos extends BaseController
     {
         $this->eventos = new EventosModel();
         $this->clientes = new ClientesModel();
+        $this->clientes_eventos = new ClientesEventosModel();
         $this->hijos = new HijosModel();
         $this->servicios = new ServiciosModel();
         $this->eventos_materias = new EventosMaterias();
@@ -362,11 +365,21 @@ class Eventos extends BaseController
             $evento = $this->eventos->get()->getRow();
             //lamamos hijos
             $hijos = $this->hijos->where('id_evento', $id)->findAll();
+
             //llamamos materias
             $materias = $this->materias->where('activo', 1)->where("id_tienda = " . $this->session->id_tienda . " OR id = 1")->orderBy('orden', 'asc')->findAll();
 
             //llamamos materias seleccionadas
             $eventos_materias = $this->eventos_materias->where('id_evento', $id)->findAll();
+
+
+            //llamamos otros solicitantes
+            $solicitantes = $this->clientes_eventos->getClientesEventos($id, 0);
+         
+
+             //llamamos otros solicitados
+            $solicitatados = $this->clientes_eventos->getClientesEventos($id, 1);
+            
 
 
             //llamamos mediadores disponibles
@@ -378,11 +391,15 @@ class Eventos extends BaseController
             exit($e->getMessage());
         }
         if ($valid != null) {
-            $data = ['titulo' => 'Editar Registro', 'datos' => $evento, 'materias' => $materias, 'eventos_materias' => $eventos_materias, 'hijos' => $hijos, 'validation' => $valid, 'usuarios' => $usuarios, 'user_activo' => $user_activo];
+            $data = ['titulo' => 'Editar Registro', 'datos' => $evento,
+             'materias' => $materias, 'eventos_materias' => $eventos_materias, 'hijos' => $hijos, 'validation' => $valid,
+              'usuarios' => $usuarios, 'user_activo' => $user_activo, 'solicitantes' => $solicitantes, 'solicitados' => $solicitatados];
         } else {
 
 
-            $data = ['titulo' => 'Editar Registro', 'datos' => $evento, 'materias' => $materias, 'eventos_materias' => $eventos_materias, 'hijos' => $hijos, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'user_activo' => $user_activo];
+            $data = ['titulo' => 'Editar Registro', 'datos' => $evento, 'materias' => $materias, 'eventos_materias' => $eventos_materias,
+             'hijos' => $hijos, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'user_activo' => $user_activo, 'solicitantes' => $solicitantes, 
+             'solicitados' => $solicitatados];
         }
         echo view('header');
         if ($evento->state == 'Agendado') {
