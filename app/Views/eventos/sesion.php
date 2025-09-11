@@ -19,17 +19,18 @@
 
         <div class="row mt-0">
 
-            <div class="col-12 col-md-8">
-                <form method="post" action="<?=base_url()?>eventos/saveObs">
-                     <?= csrf_field() ?>
-                                     <input type="hidden" name="id_evento" id="id_evento" value="<?= $datos->id_evento ?>" />
+            <div class="col-12 col-md-7">
+                <form method="post" action="<?= base_url() ?>eventos/saveObs">
+                    <?= csrf_field() ?>
+                    <input type="hidden" name="id_evento" id="id_evento" value="<?= $datos->id_evento ?>" />
 
-                     <div class="form-group">
-                <div class="row">
-                <div class="col-12 col-md-12 bg-primary text-white p-1" for="obs"><i class="fas fa-book-open"></i> Observaciones (Cuadernillo): </div>
-                <textarea class="form-control" name="obs" id="obs" cols="80" rows="10"><?php if($datos->texto){echo $datos->texto;}
-                    else{
-                        ?>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-12 col-md-12 bg-primary text-white p-1" for="obs"><i class="fas fa-book-open"></i> Observaciones (Cuadernillo): </div>
+                            <textarea class="form-control" name="obs" id="obs" cols="80" rows="10"><?php if ($datos->texto) {
+                                                                                                        echo $datos->texto;
+                                                                                                    } else {
+                                                                                                    ?>
 FECHA :
 MATERIAS SOLICITADAS :
 MEDIADOR :
@@ -58,29 +59,50 @@ REGIMEN EXTRAORDINARIO
 CAUSA ANTERIOR 
                     <?php } ?>
                 </textarea>
-                </div>
-                     </div>
- <div class="form-group">
-                <button id="enviar" type="submit" class="btn btn-primary btn-ok"><i class="fas fa-save"></i> Guardar Datos</button>
-                
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button id="enviar" type="submit" class="btn btn-primary btn-ok"><i class="fas fa-save"></i> Guardar Datos</button>
 
-            </div>
+
+                    </div>
 
                 </form>
 
                 <textarea class="form-control" cols="80" rows="15">Aca si irá el acta final... en desarrollo...</textarea>
             </div>
-            <div class="col-6 col-md-4 col-sm-12">
+            <div class="col-12 col-md-4 col-sm-12 ">
                 <div class="card bg-light ">
-                    <div style="background-color: #6fe39f;" class="card-header  text-dark pt-1 pb-1"> <span class="group-text"><img style="padding-right:5px;" width="25" src="<?= base_url() ?>img/meet_icon.png" alt="chile">Reunión Virtual</span></div>
+                    <div  class="card-header bg-success text-light pt-1 pb-1"> <i class="fas fa-calendar-check"></i> Datos Generales</div>
                     <div class="card-body  mt-0 pt-1">
                         <table>
                             <tbody>
-                                <ul class="list-group list-group-flush ">
-                                    <li class="list-group-item pb-1 pt-1">Mediador: <?=$datos->nombre_mediador?> N° Reg: <?=$datos->registro_mediador?></li>
-                                    <li class="list-group-item pb-1 pt-1">Link: <a target="_blank" href="<?= $datos->enlace ?>"><?= $datos->enlace ?></a></li>
-                                    <li class="list-group-item pb-1 pt-1">Fecha: <?=date('d-m-Y H:i:s', strtotime($datos->fecha_inicio))?></li>        
-                                </ul>
+                                <tr>
+                                    <td class="text-xs text-right">MEDIADOR:</td>
+                                    <td class="pl-2"><?= strtoupper($datos->nombre_mediador) ?></td>
+
+                                </tr>
+                                <tr>
+                                    <td class="text-xs text-right">REG:</td>
+                                    <td class="pl-2"><?= $datos->registro_mediador ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-xs text-right">FECHA:</td>
+                                    <td class="pl-2"><?= date('d-m-Y H:i:s', strtotime($datos->fecha_inicio)) ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-xs text-right"><span class="group-text"> <img style="padding-right:5px;" width="25" src="<?= base_url() ?>img/meet_icon.png" alt="chile"></span></td>
+                                    <td class="pl-2"><a target="_blank" href="<?= $datos->enlace ?>"><?= $datos->enlace ?></a></td>
+                                </tr>
+                                 <tr>
+                                    <td class="text-xs text-right align-top">MATERIAS:</td>
+                                    <td class="pl-2 ">
+                                        <ol class="text-xs"><?php foreach ($materias as $materia) { ?>
+                                            <li> <?= $materia['nombre'] ?></li>
+                                        <?php } ?>
+                                    <ol></td>
+                                </tr>
+                              
                             </tbody>
                         </table>
                     </div>
@@ -109,28 +131,28 @@ CAUSA ANTERIOR
                                 </tr>
                             </tbody>
                         </table>
-                        <?php if(count($solicitantes)>0){ ?>
+                        <?php if (count($solicitantes) > 0) { ?>
                             <span>Otros Solicitantes:</span>
-                        <table class="table table-sm table-striped table-hover">
-                            <thead>
-                                <tr class="bg-primary text-light text-xs text-center">
-                                    <th>RUT</th>
-                                    <th>NOMBRE</th>
-                                    <th>FONO</th>
-                                    <th>CORREO</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <?php foreach($solicitantes AS $solicitante){ ?>
-                            <tr class="text-center text-xs">
-                                 <td><?=$solicitante['rut']?></td>
-                                <td><?=$solicitante['nombre']?></td>
-                                <td><?=$solicitante['telefono']?></td>
-                                <td><?=$solicitante['correo']?></td>
-                            </tr>
-                            <?php } ?>
-                            </tbody>
-                        </table>
+                            <table class="table table-sm table-striped table-hover">
+                                <thead>
+                                    <tr class="bg-primary text-light text-xs text-center">
+                                        <th>RUT</th>
+                                        <th>NOMBRE</th>
+                                        <th>FONO</th>
+                                        <th>CORREO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($solicitantes as $solicitante) { ?>
+                                        <tr class="text-center text-xs">
+                                            <td><?= $solicitante['rut'] ?></td>
+                                            <td><?= $solicitante['nombre'] ?></td>
+                                            <td><?= $solicitante['telefono'] ?></td>
+                                            <td><?= $solicitante['correo'] ?></td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
                         <?php } ?>
                     </div>
                 </div>
@@ -160,28 +182,28 @@ CAUSA ANTERIOR
                             </tbody>
                         </table>
 
-                         <?php if(count($solicitados)>0){ ?>
+                        <?php if (count($solicitados) > 0) { ?>
                             <span>Otros Solicitados:</span>
-                        <table class="table table-sm table-striped table-hover">
-                            <thead>
-                                <tr class="bg-primary text-light text-xs text-center">
-                                    <th>RUT</th>
-                                    <th>NOMBRE</th>
-                                    <th>FONO</th>
-                                    <th>CORREO</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <?php foreach($solicitados AS $solicitado){ ?>
-                            <tr class="text-center text-xs">
-                                 <td><?=$solicitado['rut']?></td>
-                                <td><?=$solicitado['nombre']?></td>
-                                <td><?=$solicitado['telefono']?></td>
-                                <td><?=$solicitado['correo']?></td>
-                            </tr>
-                            <?php } ?>
-                            </tbody>
-                        </table>
+                            <table class="table table-sm table-striped table-hover">
+                                <thead>
+                                    <tr class="bg-primary text-light text-xs text-center">
+                                        <th>RUT</th>
+                                        <th>NOMBRE</th>
+                                        <th>FONO</th>
+                                        <th>CORREO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($solicitados as $solicitado) { ?>
+                                        <tr class="text-center text-xs">
+                                            <td><?= $solicitado['rut'] ?></td>
+                                            <td><?= $solicitado['nombre'] ?></td>
+                                            <td><?= $solicitado['telefono'] ?></td>
+                                            <td><?= $solicitado['correo'] ?></td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
                         <?php } ?>
                     </div>
                 </div>
@@ -204,23 +226,7 @@ CAUSA ANTERIOR
                 <?php } ?>
 
 
-                 <?php if (count($materias) > 0) { ?>
-                    <div class="card bg-light ">
-                        <div class="card-header bg-primary text-white pt-1 pb-1"><i class="fas fa-list"></i> Materias</div>
-                        <div class="card-body  mt-0 pt-1">
-                            <table>
-                                <tbody>
-                                    <ul class=" text-sm" style="list-style-type: none; margin-left: -20px;">
-                                        <?php foreach ($materias as $materia) { ?>
-                                            <li class="ml-0"><?= strtoupper($materia['nombre'])?></li>
-                                        <?php } ?>
-                                    </ul>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                <?php } ?>
-                
+               
 
 
             </div>
