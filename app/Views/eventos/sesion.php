@@ -77,7 +77,7 @@ CAUSA ANTERIOR
                         <table>
                             <tbody>
                                 <ul class="list-group list-group-flush ">
-                                    <li class="list-group-item pb-1 pt-1">Mediador: <?=$datos->nombre_mediador?></li>
+                                    <li class="list-group-item pb-1 pt-1">Mediador: <?=$datos->nombre_mediador?> N° Reg: <?=$datos->registro_mediador?></li>
                                     <li class="list-group-item pb-1 pt-1">Link: <a target="_blank" href="<?= $datos->enlace ?>"><?= $datos->enlace ?></a></li>
                                     <li class="list-group-item pb-1 pt-1">Fecha: <?=date('d-m-Y H:i:s', strtotime($datos->fecha_inicio))?></li>        
                                 </ul>

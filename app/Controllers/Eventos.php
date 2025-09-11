@@ -355,7 +355,7 @@ class Eventos extends BaseController
          solicitante.telefono AS telefono_solicitante, solicitante.comuna AS comuna_solicitante, solicitante.region AS region_solicitante,
          solicitado.rut AS rut_solicitado, solicitado.nombre AS nombre_solicitado, solicitado.correo AS correo_solicitado, solicitado.direccion AS direccion_solicitado,
          solicitado.telefono AS telefono_solicitado, solicitado.comuna AS comuna_solicitado, solicitado.region AS region_solicitado,
-         mediador.correo AS correo_mediador, mediador.nombre AS nombre_mediador
+         mediador.correo AS correo_mediador, mediador.nombre AS nombre_mediador, mediador.registro AS registro_mediador
          ')
                 ->join('clientes AS solicitante', 'id_solicitante = solicitante.id')
                 ->join('clientes AS solicitado', 'id_solicitado = solicitado.id')
