@@ -82,17 +82,23 @@
                                                                 } ?> type="checkbox" name="notifica" value="1" id="notifica" />
                                 <label class="form-check-label" for="notifica">¿Es Notificado (Agenda General)?</label>
 
-                                
+
                             </div>
 
-                             <div class="form-check">
+                            <div class="form-check">
                                 <input class="form-check-input" <?php if ($datos['atiende'] == 1) {
                                                                     echo 'checked';
                                                                 } ?> type="checkbox" name="atiende" value="1" id="atiende" />
                                 <label class="form-check-label" for="atiende">¿Es Mediador?</label>
 
-                                
+
                             </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6">
+                            <label>Nro Registro (Solo si es mediador): </label>
+                            <input required class="form-control" value="<?= $datos['registro'] ?>" id="registro" name="registro" type="number" />
+
                         </div>
                     </div>
                 </div>

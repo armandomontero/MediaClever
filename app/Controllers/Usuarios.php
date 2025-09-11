@@ -277,6 +277,7 @@ class Usuarios extends BaseController
                 'activo' => 1,
                 'notifica' => $notifica,
                 'atiende' => $atiende,
+                'registro' => $this->request->getPost('registro'),
                 'id_tienda' => $this->session->id_tienda
             ]);
             return redirect()->to(base_url() . 'usuarios');
@@ -334,6 +335,7 @@ class Usuarios extends BaseController
                     'notifica' => $notifica,
                     'atiende' => $atiende,
                     'id_rol' => $this->request->getPost('id_rol'),
+                    'registro' => $this->request->getPost('registro'),
                     'password' => $hash
                 ]);
             } else {
@@ -343,6 +345,7 @@ class Usuarios extends BaseController
                     'correo' => $this->request->getPost('correo'),
                     'notifica' => $notifica,
                     'atiende' => $atiende,
+                    'registro' => $this->request->getPost('registro'),
                     'id_rol' => $this->request->getPost('id_rol')
                 ]);
             }
@@ -611,7 +614,7 @@ class Usuarios extends BaseController
 
 
                     $email = \Config\Services::email();
-                    $email->setFrom('cleverpos@infoclever.cl', 'CleverPOS');
+                    $email->setFrom('mediaclever@infoclever.cl', 'MediaClever');
                     $email->setTo($this->request->getPost('correo'));
                     $email->setSubject('Bienvenido/a al sistema MediaClever');
                     $email->setMessage('Para acceder debe entrar en este <a href="' . base_url() . '">link</a> e ingresar con los datos que definió al registrarse.');
