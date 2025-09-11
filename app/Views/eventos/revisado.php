@@ -153,12 +153,15 @@
                         </div>
                     </div>
                 </div>
-<div id="oculto" class="d-none">
-                <div class="form-group mb-4 mt-2">
+                 <div class="form-group mb-4 mt-2">
                     <div class="row ">
-
+ <div class="col-12 col-sm-6">
+                            <a href="<?=base_url()?>clientes/participantesVer/<?=$datos->id_evento?>" id="otrosParticipantes" class="btn btn-primary" type="button"><i class="fas fa-users"></i> Otros Participantes</a>
+                        </div>
                     </div>
                 </div>
+<div id="oculto" class="d-none">
+              
                 <hr class="mt-1 mb-3">
                 <h5 class="text-primary">Datos de los beneficiarios (hijos)
 

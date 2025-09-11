@@ -84,6 +84,8 @@ $routes->post('/eventos/agendarPrivado', 'Eventos::agendarPrivado');
 $routes->get('/eventos/getDatosId/(:num)', 'Eventos::getDatosId/$1');
 $routes->get('/eventos/getEvento/(:num)', 'Eventos::getEvento/$1');
 $routes->post('/eventos/actualizar', 'Eventos::actualizar');
+$routes->post('/eventos/saveObs', 'Eventos::saveObs');
+
 $routes->get('/eventos/updEstado/(:num)/(:any)', 'Eventos::updEstado/$1/$2');
 $routes->get('/eventos/anula/(:num)', 'Eventos::anula/$1');
 $routes->post('/eventos/notificar', 'Eventos::notificar');
@@ -111,6 +113,8 @@ $routes->get('/agenda', 'Eventos::agenda');
 //Clientes
 $routes->get('/clientes', 'Clientes::index');
 $routes->get('/clientes/participantes/(:num)', 'Clientes::participantes/$1');
+$routes->get('/clientes/participantesVer/(:num)', 'Clientes::participantesVer/$1');
+
 $routes->get('/clientes/eliminados', 'Clientes::eliminados');
 $routes->get('/clientes/nuevo', 'Clientes::nuevo');
 $routes->post('/clientes/insertar', 'Clientes::insertar');
@@ -121,6 +125,8 @@ $routes->get('/clientes/reingresar/(:num)', 'Clientes::reingresar/$1');
 $routes->get('/clientes/autoCompleteData(:any)', 'Clientes::autoCompleteData/$1');
 $routes->post('/clientes/addParticipante', 'Clientes::addParticipante');
 $routes->get('/clientes/getParticipanteByID/(:num)', 'Clientes::getParticipanteByID/$1');
+$routes->get('/clientes/delParticipante/(:num)', 'Clientes::delParticipante/$1');
+
 
 
 

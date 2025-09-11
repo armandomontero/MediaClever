@@ -11,96 +11,8 @@ helper('number');
             <li class="breadcrumb-item"><a href="<?= base_url() ?>">Inicio</a></li>
             <li class="breadcrumb-item active"><?= $titulo ?></li>
         </ol>
-<?php 
-if(isset($mensaje)){?>
-<div id="alert-mensaje" class="alert alert-success">
-<?php echo $mensaje;?>
-</div>
-<?php }?>
-        <div class="card-body mt-0">
-            <form method="POST" action="<?= base_url() ?>clientes/addParticipante" autocomplete="off">
-                <?= csrf_field() ?>
-                <input type="hidden" name="id_evento" id="id_evento" value="<?= $id_evento ?>" />
-                <input type="hidden" id="id_cliente" name="id_cliente" value="" />
-                <input type="hidden" id="id_participa" name="id_participa" value="" />
-                <div class="form-group mt-1">
-                    <h5 class="text-primary text-sm">Ingrese los Datos:</h5>
-                    <hr class="mt-1 mb-2">
-
-                    <div class="row">
-                        <div class="col-12 col-sm-2">
-                            <label>RUT<span class="text-danger">*</span> </label>
-                            <input required autofocus class="form-control text-right" value="" id="rut" name="rut" type="text" />
-                        </div>
-                        <div class="col-12 col-sm-4">
-                            <label class="control-label">Nombre Completo<span class="text-danger">*</span> </label>
-                            <input required value="" class="form-control" id="nombre" name="nombre" type="text" />
-                        </div>
 
 
-                        <div class="col-12 col-sm-3">
-                            <label>Teléfono<span class="text-danger">*</span> </label>
-                            <div class="input-group">
-                                <span class="input-group-text"><img style="padding-right:5px;" width="25" src="<?= base_url() ?>img/chile.png" alt="chile">+56</span>
-                                <input required autofocus value="" class="form-control" id="telefono" name="telefono" type="number" />
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-3">
-                            <label for="correo_solicitante">E-Mail<span class="text-danger">*</span> </label>
-                            <input required class="form-control" value="" id="correo" name="correo" type="email" />
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="form-group">
-                    <div class="row">
-
-                        <div class="col-12 col-sm-3">
-
-                            <label for="direccion_solicitante">Dirección </label>
-                            <input value="" class="form-control" id="direccion" name="direccion" type="text" />
-                        </div>
-
-                        <div class="col-12 col-sm-3">
-                            <label for="region">Región <span class="text-danger">*</span> </label>
-                            <select onchange="mostrar(this.value, 'comuna'); getText(this, 'region1h');" required class="form-control" name="region" id="region" required>
-                                <option value="">Selecciona</option>
-                            </select>
-                            <input type="hidden" id="region1h" name="region1h" value="" />
-
-                        </div>
-
-                        <div class="col-12 col-sm-3">
-                            <label>Comuna <span class="text-danger">*</span> </label>
-                            <select onchange="getText(this, 'comuna1h');" required class="form-control" name="comuna" id="comuna">
-                                <option value="">Selecciona</option>
-                            </select>
-                            <input type="hidden" id="comuna1h" name="comuna1h" value="" />
-
-                        </div>
-
-                        <div class="col-12 col-sm-3">
-                            <label for="tipo">Tipo de participante <span class="text-danger">*</span> </label>
-                            <div class="form-radio">
-                                <input required class="form-radio-input" type="radio" required name="tipo" value="0" id="tipo0" />
-                                <label class="form-radio-label mr-2" for="tipo0">Solicitante</label>
-                                <input required class="form-radio-input" type="radio" required name="tipo" value="1" id="tipo1" />
-                                <label class="form-radio-label" for="tipo1">Solicitado</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="row">
-
-                    <div class="col-12 col-sm-3">
-                        <button type="submit" class="btn btn-success btn-ok"><i class="fas fa-save"></i> Guardar Datos</button>
-                    </div>
-                </div>
-            </form>
-        </div>
 
 
 
@@ -122,8 +34,7 @@ if(isset($mensaje)){?>
                                 <th>Teléfono</th>
                                 <th>E-mail</th>
                                 <th>Tipo</th>
-                                <th></th>
-                                <th></th>
+                         
 
                             </tr>
                         </thead>
@@ -136,8 +47,7 @@ if(isset($mensaje)){?>
                                 <th>Teléfono</th>
                                 <th>E-mail</th>
                                 <th>Tipo</th>
-                                <th></th>
-                                <th></th>
+                            
                             </tr>
                         </tfoot>
                         <tbody>
@@ -162,14 +72,7 @@ if(isset($mensaje)){?>
 
                                     </td>
 
-                                    <td>
-                                        <button class="btn btn-warning btn-sm" onclick="llamaParticipante(this.value)" value="<?= $dato['id_participa'] ?>" href="#"> <i class="fas fa-edit"></i></button>
-                                    </td>
-                                    <td>
-                                        <?php if ($dato['id'] != 1) { ?><a data-toggle="modal" data-target="#modal-confirma"
-                                                class="btn btn-danger btn-sm" href="#"
-                                                data-href="<?= base_url() ?>clientes/delParticipante/<?php echo $dato['id_participa']; ?>">
-                                                <i class="fas fa-trash-alt"></i></a><?php } ?></td>
+                                   
 
                                 </tr>
                             <?php

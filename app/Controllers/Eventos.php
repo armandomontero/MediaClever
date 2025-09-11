@@ -349,7 +349,7 @@ class Eventos extends BaseController
         }
         try {
             //datos del evento
-            $this->eventos->select('eventos.id AS id_evento, id_solicitante, id_solicitado, reservado, valor, enlace,
+            $this->eventos->select('eventos.id AS id_evento, id_solicitante, id_solicitado, reservado, valor, enlace, texto, 
         fecha_inicio, fecha_fin, causa, id_usuario, state, causa, solicitante.direccion AS direccion_solicitante,
          solicitante.rut AS rut_solicitante, solicitante.nombre AS nombre_solicitante, solicitante.correo AS correo_solicitante, 
          solicitante.telefono AS telefono_solicitante, solicitante.comuna AS comuna_solicitante, solicitante.region AS region_solicitante,
@@ -946,6 +946,7 @@ Los resultados del proceso de mediación pueden ser dos:
                 'fecha_fin' => $fechaFin,
                 'id_solicitante' => $id_solicitante,
                 'id_solicitado' => $id_solicitado,
+                'id_usuario' => $this->request->getPost('id_usuario'),
                 'valor' => $this->request->getPost('valor'),
                 'region_evento' => $this->request->getPost('region1h'),
                 'comuna_evento' => $this->request->getPost('comuna1h'),
@@ -1029,6 +1030,28 @@ Los resultados del proceso de mediación pueden ser dos:
             echo view('header');
             echo view('eventos/nuevo', $data);
             echo view('footer');
+        }
+    }
+
+
+        public function saveObs()
+    {
+        $id_evento = $this->request->getPost('id_evento');
+        if ($this->request->getMethod() == "POST") {
+
+
+
+
+            //actualizamos observaciones
+            
+
+            $this->eventos->update($id_evento, [
+                'texto' => $this->request->getPost('obs')
+               
+
+            ]);
+            $mensaje = 'Datos almacenados';
+            $this->getEvento($id_evento, null, $mensaje);
         }
     }
 }
