@@ -417,6 +417,7 @@ class Usuarios extends BaseController
                         'user' => $datosUsuario['usuario'],
                         'id_rol' => $datosUsuario['id_rol'],
                         'id_tienda' => $datosUsuario['id_tienda'],
+                        'mail_usuario' => $datosUsuario['correo'],
                         'ruta_logo' => $logo['logo']
                     ];
 

@@ -87,9 +87,93 @@
         </div>
     </nav>
     <main>
-        <div class="container-fluid bg-primary p-2">
-            <div class="col-md-8 offset-md-2 bg-light p-4 border rounded">
-                               <div style="background-color: #e6f2ff; color: blue; border: 1px solid #dee2e6;" class="rounded text-sm p-3 "><i class="fas fa-info mr-2"></i>
+        <div class="container-fluid">
+
+            <div class="">
+
+
+
+            </div>
+
+
+            <div class="p-2" id='calendar'></div>
+
+        </div>
+    </main>
+    <!-- Modal confirmación -->
+    <div class="modal fade" id="modal-mensaje" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-success">Atención</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id=""><?php if ($mensaje) {
+                                    echo $mensaje;
+                                } ?></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal confirmación -->
+    <div class="modal fade" id="modal-alerta" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">Atención</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="text-alerta"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="modal-alerta-formulario" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">Atención</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="text-alert-form">El RUT ingresado no es</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="ok_form" class="btn btn-danger" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal formulario -->
+    <div class="modal fade" id="modal-formulario" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agendar Mediación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4 pl-4 ml-4 mr-4">
+                    <div style="background-color: #e6f2ff; color: blue; border: 1px solid #dee2e6;" class="rounded text-sm p-3 "><i class="fas fa-info mr-2"></i>
                         Nuestro servicio de mediación privada le permite agendar mediación en un plazo máximo de <b>48 horas</b>. Considerar que este servicio
                         <b>no es gratuito</b> y tiene un costo asociado, un mediador se contactará para coordinar su día y hora de mediación.
                     </div>
@@ -98,17 +182,18 @@
                         <input type="hidden" name="id_tienda" id="id_tienda" value="<?= $config['id_tienda'] ?>" />
                         <input type="hidden" name="pass_tienda" id="pass_tienda" value="<?= $pass_tienda ?>" />
                         <input type="hidden" name="valor" id="valor" value="<?= $config['valor_servicio'] ?>" />
+                        <input type="hidden" name="fecha_bd" id="fecha_bd" value="" />
                         <div class="form-group mt-4">
-                            <h5 class="text-primary">Datos Solicitante (Persona que solicita el proceso):</h5>
+                            <h5 class="text-primary">Datos Solicitante:</h5>
                             <hr class="mt-1 mb-2">
 
                             <div class="row">
                                 <div class="col-12 col-sm-6">
-                                    <label for="nombre_solicitante">Nombre Completo<span class="text-danger">*</span> </label>
+                                    <label>Nombre Completo<span class="text-danger">*</span> </label>
                                     <input required autofocus value="<?= set_value('nombre_solicitante') ?>" class="form-control" id="nombre_solicitante" name="nombre_solicitante" type="text" />
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <label for="rut_solicitante">RUT<span class="text-danger">*</span> </label>
+                                    <label>RUT<span class="text-danger">*</span> </label>
                                     <input required class="form-control" value="<?= set_value('rut_solicitante') ?>" id="rut_solicitante" name="rut_solicitante" type="text" />
                                 </div>
                             </div>
@@ -117,10 +202,10 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-12 col-sm-6">
-                                    <label for="telefono_solicitante">Teléfono<span class="text-danger">*</span> </label>
+                                    <label>Teléfono<span class="text-danger">*</span> </label>
                                     <div class="input-group">
                                         <span class="input-group-text"><img style="padding-right:5px;" width="25" src="<?= base_url() ?>img/chile.png" alt="chile">+56</span>
-                                        <input required  value="<?= set_value('telefono_solicitante') ?>" class="form-control" id="telefono_solicitante" name="telefono_solicitante" type="number" />
+                                        <input required autofocus value="<?= set_value('telefono_solicitante') ?>" class="form-control" id="telefono_solicitante" name="telefono_solicitante" type="number" />
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm-6">
@@ -144,14 +229,14 @@
                         <div class="form-group mb-4 mt-2">
                             <div class="row ">
                                 <div class="col-12 col-sm-6">
-                                    <label for="region">Región </label>
+                                    <label>Región </label>
                                     <select onchange="mostrar(this.value, 'comuna'); getText(this, 'region1h');" required class="form-control" name="region" id="region" required>
                                         <option value="">Selecciona</option>
                                     </select>
                                     <input type="hidden" id="region1h" name="region1h" value="" />
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <label for="comuna">Comuna </label>
+                                    <label>Comuna </label>
                                     <select onchange="getText(this, 'comuna1h');" required class="form-control" name="comuna" id="comuna">
                                         <option value="">Selecciona</option>
                                     </select>
@@ -167,7 +252,7 @@
 
                             <div class="row">
                                 <div class="col-12 col-sm-6">
-                                    <label for="nombre_solicitado">Nombre Completo<span class="text-danger">*</span> </label>
+                                    <label>Nombre Completo<span class="text-danger">*</span> </label>
                                     <input required autofocus value="<?= set_value('nombre_solicitado') ?>" class="form-control" id="nombre_solicitado" name="nombre_solicitado" type="text" />
                                 </div>
                                 <div class="col-12 col-sm-6">
@@ -325,21 +410,11 @@
 
                         <div class="form-group mb-4 mt-2">
                             <div class="row ">
-                                <div class="col-12 col-sm-4">
+                                <div class="col-12 col-sm-3">
                                     <label>Fecha de Sesión: </label>
-                                    <input required class="form-control" value="" id="fecha_bd" name="fecha_bd" type="datetime-local" />
+                                    <input readonly class="form-control" value="" id="fecha" name="fecha" type="datetime" />
                                 </div>
-                                <div class="col-12 col-sm-8">
-                                 <div style="background-color: #e6f2ff; color: blue; border: 1px solid #dee2e6;" class="rounded text-sm p-3 "><i class="fas fa-info mr-2"></i>
-                        Consideraremos tu disponibilidad y haremos todo lo posible para agendar fecha y hora que se ajuste a tus necesidades.
-                                 </div>
-
-                    </div>
-                               
-                            </div>
-
-                            <div class="row mt-2">
-                                 <div class="col-12 col-sm-12">
+                                <div class="col-12 col-sm-6">
                                     <div style="background-color: #e6f2ff; color: blue; border: 1px solid #dee2e6;" class="form-check mb-3 rounded text-sm p-3">
                                         <input class="form-check-input ml-2" type="checkbox" value="" id="acepto" required="">
                                         <label class="form-check-label ml-4" for="acepto"><b>NO AGENDES</b> sin estar en conocimiento de que el servicio de mediación está asociado a un cobro.</label>
@@ -349,90 +424,11 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button id="enviar" type="submit" class="btn btn-primary btn-ok"><i class="fas fa-calendar-check"></i> Enviar y solicitar agenda</button>
+                            <button id="enviar" type="submit" class="btn btn-primary btn-ok"><i class="fas fa-calendar-check"></i> Agendar</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-ban"></i> Cancelar</button>
 
                         </div>
                     </form>
-
-            </div>
-            
-
-        </div>
-    </main>
-    <!-- Modal confirmación -->
-    <div class="modal fade" id="modal-mensaje" tabindex="-1">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-success">Atención</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id=""><?php if ($mensaje) {
-                                    echo $mensaje;
-                                } ?></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal confirmación -->
-    <div class="modal fade" id="modal-alerta" tabindex="-1">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-danger">Atención</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="text-alerta"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Ok</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="modal fade" id="modal-alerta-formulario" tabindex="-1">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-danger">Atención</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="text-alert-form">El RUT ingresado no es</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="ok_form" class="btn btn-danger" data-dismiss="modal">Ok</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal formulario -->
-    <div class="modal fade" id="modal-formulario" tabindex="-1">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Agendar Mediación</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body p-4 pl-4 ml-4 mr-4">
-
 
                 </div>
 

@@ -229,10 +229,13 @@ class Eventos extends BaseController
 
 
             //Insertamos Evento
-            $fechaInicio = date($this->request->getPost('fecha_bd'));
+            $fechaInicio = $this->request->getPost('fecha_bd');
+            //echo $fechaInicio;
+         
             $nuevaTimestamp = strtotime('+1 hours', strtotime($fechaInicio));
             $fechaFin = date('Y-m-d H:i:s', $nuevaTimestamp);
-
+            //echo $fechaFin;
+            //exit();
             $dataInsert = [
                 'fecha_inicio' => $fechaInicio,
                 'fecha_fin' => $fechaFin,

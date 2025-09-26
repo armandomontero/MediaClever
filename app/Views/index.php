@@ -7,7 +7,8 @@
             <div class="col-lg-4 col-md-2 mb-2">
                 <div class="card bg-primary text-white">
                     <div class="card-body ">
-                         Productos en total: <?=$total_productos?>
+                         Productos en total: <?=$total_productos?> <?=$google?> 
+                         
                     </div>
                     <a class="card-footer " href="<?=base_url()?>productos">Ver Detalle</a>
                 </div >
@@ -22,12 +23,12 @@
                 </div>
             </div>
 
-            <div class="col-lg-4 col-md-2 mb-2">
+            <div class="col-lg-4 col-md-2 col-sm-12 mb-2">
                 <div class="card bg-danger text-white">
                     <div class="card-body">
-                        <?=$productos_minimo?> productos bajo su stock mínimo
+                        <?=$eventos_pendientes?> agendas pendientes de confirmación
                     </div>
-                    <a class="card-footer" href="<?=base_url()?>productos/reporteMinimos">Ver Detalle</a>
+                    <a class="card-footer" href="<?=base_url()?>eventos">Ver Calendario</a>
                 </div>
             </div>
             
@@ -37,6 +38,27 @@
        
     </div>
 </main>
+
+<div class="modal fade" id="modal-alerta" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">Atención</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="text-alerta">Aún no ha sincronizado su cuenta con Google Calendar para poder realizar notificaciones y agendamiento de reuniones de Google Meet, ¿desea conectar con su cuenta de Google?</p>
+                    <p class="text-xs">*Esto solo debe realizarlo una vez</p>
+                </div>
+                <div class="modal-footer">
+                  <a href="<?=base_url()?>google" class="btn btn-success" >Conectar con Google</a>
+                    <button type="button" class="btn btn-secundary" data-dismiss="modal">Más tarde</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <script>
     (async function() {
@@ -58,4 +80,11 @@
     }
   );
 })();
+ $(document).ready(function() {
+            <?php if ($google==0) {
+                echo '$("#modal-alerta").modal("show");';
+            } ?>
+
+        });
+
 </script>

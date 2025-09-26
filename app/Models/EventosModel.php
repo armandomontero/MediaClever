@@ -40,6 +40,12 @@ class EventosModel extends Model{
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+
+     public function eventosPendientes($id_tienda){
+        $total = $this->where('state', 'Agendado')->where('id_tienda', $id_tienda)->countAllResults();
+    return $total;
+    }
 }
 
 ?>

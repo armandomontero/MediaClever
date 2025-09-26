@@ -71,11 +71,11 @@ CAUSA ANTERIOR
 
                 <textarea class="form-control" cols="80" rows="15">Aca si irá el acta final... en desarrollo...</textarea>
             </div>
-            <div class="col-12 col-md-4 col-sm-12 ">
+            <div class="col-12 col-md-5 col-sm-12 ">
                 <div class="card bg-light ">
                     <div  class="card-header bg-success text-light pt-1 pb-1"> <i class="fas fa-calendar-check"></i> Datos Generales</div>
                     <div class="card-body  mt-0 pt-1">
-                        <table>
+                        <table class="table table-striped table-sm mb-0">
                             <tbody>
                                 <tr>
                                     <td class="text-xs text-right">MEDIADOR:</td>
@@ -94,13 +94,13 @@ CAUSA ANTERIOR
                                     <td class="text-xs text-right"><span class="group-text"> <img style="padding-right:5px;" width="25" src="<?= base_url() ?>img/meet_icon.png" alt="chile"></span></td>
                                     <td class="pl-2"><a target="_blank" href="<?= $datos->enlace ?>"><?= $datos->enlace ?></a></td>
                                 </tr>
-                                 <tr>
-                                    <td class="text-xs text-right align-top">MATERIAS:</td>
+                                 <tr class="pt-2">
+                                    <td class="text-xs text-right align-top pt-2">MATERIAS:</td>
                                     <td class="pl-2 ">
-                                        <ol class="text-xs"><?php foreach ($materias as $materia) { ?>
-                                            <li> <?= $materia['nombre'] ?></li>
+                                       <?php foreach ($materias as $materia) { ?>
+                                             <?= $materia['nombre'] ?>
                                         <?php } ?>
-                                    <ol></td>
+                                    </td>
                                 </tr>
                               
                             </tbody>
@@ -214,7 +214,7 @@ CAUSA ANTERIOR
                         <div class="card-body  mt-0 pt-1">
                             <table>
                                 <tbody>
-                                    <ul class=" text-xs" style="list-style-type: none; margin-left: -20px;">
+                                    <ul class="" style="list-style-type: none; margin-left: -20px;">
                                         <?php foreach ($hijos as $hijo) { ?>
                                             <li class="ml-0"><?= strtoupper($hijo['nombre']) ?> - <?= $hijo['edad'] ?></li>
                                         <?php } ?>

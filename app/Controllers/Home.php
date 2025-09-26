@@ -2,17 +2,21 @@
 
 namespace App\Controllers;
 
+use App\Models\EventosModel;
+use App\Models\GoogleModel;
 use App\Models\ProductosModel;
 use App\Models\VentasModel;
 use CodeIgniter\I18n\Time;
 
 class Home extends BaseController
 {
-  protected $productosModel, $ventasModel;
+  protected $productosModel, $ventasModel, $eventosModel, $GoogleModel;
 
      public function __construct() {
       $this->productosModel = new ProductosModel();
       $this->ventasModel = new VentasModel();
+      $this->eventosModel = new EventosModel();
+      $this->GoogleModel = new GoogleModel();
     }
 
     public function index()
@@ -21,7 +25,7 @@ class Home extends BaseController
 
       $ventas_dia = $this->ventasModel->cuentaDia($this->session->id_tienda, date('Y-m-d'));
       $total_dia = $this->ventasModel->totalDia($this->session->id_tienda, date('Y-m-d'));
-      $productos_minimo = $this->productosModel->productosMinimo($this->session->id_tienda);
+      $eventos_pendientes = $this->eventosModel->eventosPendientes($this->session->id_tienda);
 
 
       //grafico
@@ -39,8 +43,11 @@ class Home extends BaseController
       
       }
       $string_grafico .="]";
+
+      //chequeamos conexion con google respecto del usuario
+      $google = $this->GoogleModel->checkGoogle($this->session->id_usuario);
      
-      $datos = ['total_productos' => $total_productos, 'total_dia' => $total_dia, 'ventas_dia' => $ventas_dia, 'productos_minimo' => $productos_minimo, 'string_grafico' => $string_grafico];
+      $datos = ['total_productos' => $total_productos, 'total_dia' => $total_dia, 'ventas_dia' => $ventas_dia, 'eventos_pendientes' => $eventos_pendientes, 'string_grafico' => $string_grafico, 'google' => $google];
 
 
       echo view('header');

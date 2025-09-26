@@ -11,7 +11,7 @@ class GoogleModel extends Model{
     protected $returnType     = 'array';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['credentials', 'token'];
+    protected $allowedFields = ['credentials', 'token', 'calendarId', 'id_usuario'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -53,6 +53,11 @@ class GoogleModel extends Model{
         $datos = $this->first();
 
         return $datos['token'];
+    }
+
+    public function checkGoogle($id_usuario){
+        $existe = $this->where('id_usuario', $id_usuario)->countAllResults();
+        return $existe;
     }
 }
 ?>
