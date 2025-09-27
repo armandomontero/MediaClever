@@ -55,7 +55,7 @@ class EventosModel extends Model{
 
     public function totalDia($id_tienda, $fecha){
         
-        $total = $this->select('SUM(total) AS totalDia')->where('activo', 1)->where('DATE(created_at)', $fecha)->where('id_tienda', $id_tienda)->first();
+        $total = $this->select('SUM(valor) AS totalDia')->where('state', 'realizado')->where('DATE(created_at)', $fecha)->where('id_tienda', $id_tienda)->first();
 
         return $total['totalDia'];
     }
