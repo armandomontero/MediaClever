@@ -85,6 +85,8 @@ $routes->get('/eventos/getDatosId/(:num)', 'Eventos::getDatosId/$1');
 $routes->get('/eventos/getEvento/(:num)', 'Eventos::getEvento/$1');
 $routes->post('/eventos/actualizar', 'Eventos::actualizar');
 $routes->post('/eventos/saveObs', 'Eventos::saveObs');
+$routes->post('/eventos/saveActa', 'Eventos::saveActa');
+
 
 $routes->get('/eventos/updEstado/(:num)/(:any)', 'Eventos::updEstado/$1/$2');
 $routes->get('/eventos/anula/(:num)', 'Eventos::anula/$1');
@@ -92,6 +94,7 @@ $routes->post('/eventos/notificar', 'Eventos::notificar');
 
 //eventos (archivo)
 $routes->get('/archivo/pendientes', 'Eventos::pendientes');
+$routes->get('/archivo/actas', 'Eventos::actas');
 $routes->get('/archivos/getEvento/(:num)', 'Eventos::getEventoArchivo/$1');
 $routes->post('/archivos/actualizarArchivo', 'Eventos::actualizarArchivo');
 

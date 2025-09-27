@@ -27,7 +27,9 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-12 col-md-12 bg-primary text-white p-1" for="obs"><i class="fas fa-book-open"></i> Observaciones (Cuadernillo): </div>
-                            <textarea class="form-control" name="obs" id="obs" cols="80" rows="10"><?php if ($datos->texto) {
+                            <textarea
+                            <?php if($datos->state=='Realizado'){echo 'readonly';} ?>
+                            class="form-control" name="obs" id="obs" cols="80" rows="10"><?php if ($datos->texto) {
                                                                                                         echo $datos->texto;
                                                                                                     } else {
                                                                                                     ?>
@@ -63,17 +65,27 @@ CAUSA ANTERIOR
                     </div>
                     <div class="form-group">
                         <button id="enviar" type="submit" class="btn btn-primary btn-ok"><i class="fas fa-save"></i> Guardar Datos</button>
-
-
                     </div>
 
                 </form>
+                <form method="post" action="<?= base_url() ?>eventos/saveActa">
+                    <?= csrf_field() ?>
+                    <input type="hidden" name="id_evento" id="id_evento" value="<?= $datos->id_evento ?>" />
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-12 col-md-12 bg-primary text-white p-1" for="obs"><i class="fas fa-book-open"></i> Observaciones (Cuadernillo): </div>
+                            <textarea class="form-control" cols="80" rows="15">Aca si irá el acta final... en desarrollo...</textarea>
 
-                <textarea class="form-control" cols="80" rows="15">Aca si irá el acta final... en desarrollo...</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button id="enviar" type="submit" class="btn btn-success btn-ok"><i class="fas fa-save"></i> Marcar Realizada</button>
+                    </div>
+                </form>
             </div>
             <div class="col-12 col-md-5 col-sm-12 ">
                 <div class="card bg-light ">
-                    <div  class="card-header bg-success text-light pt-1 pb-1"> <i class="fas fa-calendar-check"></i> Datos Generales</div>
+                    <div class="card-header bg-success text-light pt-1 pb-1"> <i class="fas fa-calendar-check"></i> Datos Generales</div>
                     <div class="card-body  mt-0 pt-1">
                         <table class="table table-striped table-sm mb-0">
                             <tbody>
@@ -94,15 +106,15 @@ CAUSA ANTERIOR
                                     <td class="text-xs text-right"><span class="group-text"> <img style="padding-right:5px;" width="25" src="<?= base_url() ?>img/meet_icon.png" alt="chile"></span></td>
                                     <td class="pl-2"><a target="_blank" href="<?= $datos->enlace ?>"><?= $datos->enlace ?></a></td>
                                 </tr>
-                                 <tr class="pt-2">
+                                <tr class="pt-2">
                                     <td class="text-xs text-right align-top pt-2">MATERIAS:</td>
                                     <td class="pl-2 ">
-                                       <?php foreach ($materias as $materia) { ?>
-                                             <?= $materia['nombre'] ?>
+                                        <?php foreach ($materias as $materia) { ?>
+                                            <?= $materia['nombre'] ?>
                                         <?php } ?>
                                     </td>
                                 </tr>
-                              
+
                             </tbody>
                         </table>
                     </div>
@@ -226,7 +238,7 @@ CAUSA ANTERIOR
                 <?php } ?>
 
 
-               
+
 
 
             </div>

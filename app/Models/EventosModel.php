@@ -46,6 +46,19 @@ class EventosModel extends Model{
         $total = $this->where('state', 'Agendado')->where('id_tienda', $id_tienda)->countAllResults();
     return $total;
     }
+
+    public function eventosRealizados($id_tienda){
+        $total = $this->where('state', 'Realizado')->where('id_tienda', $id_tienda)->countAllResults();
+    return $total;
+    }
+
+
+    public function totalDia($id_tienda, $fecha){
+        
+        $total = $this->select('SUM(total) AS totalDia')->where('activo', 1)->where('DATE(created_at)', $fecha)->where('id_tienda', $id_tienda)->first();
+
+        return $total['totalDia'];
+    }
 }
 
 ?>

@@ -7,10 +7,10 @@
             <div class="col-lg-4 col-md-2 mb-2">
                 <div class="card bg-primary text-white">
                     <div class="card-body ">
-                         Productos en total: <?=$total_productos?> <?=$google?> 
+                         Mediaciones Realizadas: <?=$eventos_realizados?> 
                          
                     </div>
-                    <a class="card-footer " href="<?=base_url()?>productos">Ver Detalle</a>
+                    <a class="card-footer " href="<?=base_url()?>archivo/actas">Ver Detalle</a>
                 </div >
             </div>
 

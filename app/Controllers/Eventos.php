@@ -19,7 +19,7 @@ class Eventos extends BaseController
 {
     protected $eventos;
     protected $clientes;
-     protected $clientes_eventos;
+    protected $clientes_eventos;
     protected $hijos;
     protected $materias;
     protected $eventos_materias;
@@ -85,12 +85,12 @@ class Eventos extends BaseController
     }
 
 
-        public function pendientes($activo = 1)
+    public function pendientes($activo = 1)
     {
         if (!$this->session->id_usuario) {
             exit();
         }
-                   $this->eventos->select('eventos.id AS id_evento, id_solicitante, id_solicitado, reservado, valor, enlace,
+        $this->eventos->select('eventos.id AS id_evento, id_solicitante, id_solicitado, reservado, valor, enlace,
         fecha_inicio, fecha_fin, causa, id_usuario, state, causa, solicitante.direccion AS direccion_solicitante,
          solicitante.rut AS rut_solicitante, solicitante.nombre AS nombre_solicitante, solicitante.correo AS correo_solicitante, 
          solicitante.telefono AS telefono_solicitante, solicitante.comuna AS comuna_solicitante, solicitante.region AS region_solicitante,
@@ -98,15 +98,15 @@ class Eventos extends BaseController
          solicitado.telefono AS telefono_solicitado, solicitado.comuna AS comuna_solicitado, solicitado.region AS region_solicitado,
          mediador.correo AS correo_mediador, mediador.nombre AS nombre_mediador
          ')
-                ->join('clientes AS solicitante', 'id_solicitante = solicitante.id')
-                ->join('clientes AS solicitado', 'id_solicitado = solicitado.id')
-                ->join('usuarios AS mediador', 'mediador.id = id_usuario', 'left')
-                ->where("state != 'Realizado' AND state != 'Anulado'")
-                ->where('eventos.id_tienda', $this->session->id_tienda)
-                ->orderBy('id_evento', 'desc');
-           
+            ->join('clientes AS solicitante', 'id_solicitante = solicitante.id')
+            ->join('clientes AS solicitado', 'id_solicitado = solicitado.id')
+            ->join('usuarios AS mediador', 'mediador.id = id_usuario', 'left')
+            ->where("state != 'Realizado' AND state != 'Anulado'")
+            ->where('eventos.id_tienda', $this->session->id_tienda)
+            ->orderBy('id_evento', 'desc');
 
-            $eventos = $this->eventos->findAll();
+
+        $eventos = $this->eventos->findAll();
         $data = ['titulo' => 'Pendientes', 'eventos' => $eventos];
 
         echo view('header');
@@ -115,7 +115,37 @@ class Eventos extends BaseController
     }
 
 
-        public function miAgenda($activo = 1)
+    public function actas($activo = 1)
+    {
+        if (!$this->session->id_usuario) {
+            exit();
+        }
+        $this->eventos->select('eventos.id AS id_evento, id_solicitante, id_solicitado, reservado, valor, enlace,
+        fecha_inicio, fecha_fin, causa, id_usuario, state, causa, solicitante.direccion AS direccion_solicitante,
+         solicitante.rut AS rut_solicitante, solicitante.nombre AS nombre_solicitante, solicitante.correo AS correo_solicitante, 
+         solicitante.telefono AS telefono_solicitante, solicitante.comuna AS comuna_solicitante, solicitante.region AS region_solicitante,
+         solicitado.rut AS rut_solicitado, solicitado.nombre AS nombre_solicitado, solicitado.correo AS correo_solicitado, solicitado.direccion AS direccion_solicitado,
+         solicitado.telefono AS telefono_solicitado, solicitado.comuna AS comuna_solicitado, solicitado.region AS region_solicitado,
+         mediador.correo AS correo_mediador, mediador.nombre AS nombre_mediador
+         ')
+            ->join('clientes AS solicitante', 'id_solicitante = solicitante.id')
+            ->join('clientes AS solicitado', 'id_solicitado = solicitado.id')
+            ->join('usuarios AS mediador', 'mediador.id = id_usuario', 'left')
+            ->where('state', 'Realizado')
+            ->where('eventos.id_tienda', $this->session->id_tienda)
+            ->orderBy('id_evento', 'desc');
+
+
+        $eventos = $this->eventos->findAll();
+        $data = ['titulo' => 'Actas', 'eventos' => $eventos];
+
+        echo view('header');
+        echo view('archivos/actas', $data);
+        echo view('footer');
+    }
+
+
+    public function miAgenda($activo = 1)
     {
         if (!$this->session->id_usuario) {
             exit();
@@ -231,7 +261,7 @@ class Eventos extends BaseController
             //Insertamos Evento
             $fechaInicio = $this->request->getPost('fecha_bd');
             //echo $fechaInicio;
-         
+
             $nuevaTimestamp = strtotime('+1 hours', strtotime($fechaInicio));
             $fechaFin = date('Y-m-d H:i:s', $nuevaTimestamp);
             //echo $fechaFin;
@@ -378,11 +408,11 @@ class Eventos extends BaseController
 
             //llamamos otros solicitantes
             $solicitantes = $this->clientes_eventos->getClientesEventos($id, 0);
-         
 
-             //llamamos otros solicitados
+
+            //llamamos otros solicitados
             $solicitatados = $this->clientes_eventos->getClientesEventos($id, 1);
-            
+
 
 
             //llamamos mediadores disponibles
@@ -394,15 +424,33 @@ class Eventos extends BaseController
             exit($e->getMessage());
         }
         if ($valid != null) {
-            $data = ['titulo' => 'Editar Registro', 'datos' => $evento,
-             'materias' => $materias, 'eventos_materias' => $eventos_materias, 'hijos' => $hijos, 'validation' => $valid,
-              'usuarios' => $usuarios, 'user_activo' => $user_activo, 'solicitantes' => $solicitantes, 'solicitados' => $solicitatados];
+            $data = [
+                'titulo' => 'Editar Registro',
+                'datos' => $evento,
+                'materias' => $materias,
+                'eventos_materias' => $eventos_materias,
+                'hijos' => $hijos,
+                'validation' => $valid,
+                'usuarios' => $usuarios,
+                'user_activo' => $user_activo,
+                'solicitantes' => $solicitantes,
+                'solicitados' => $solicitatados
+            ];
         } else {
 
 
-            $data = ['titulo' => 'Editar Registro', 'datos' => $evento, 'materias' => $materias, 'eventos_materias' => $eventos_materias,
-             'hijos' => $hijos, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'user_activo' => $user_activo, 'solicitantes' => $solicitantes, 
-             'solicitados' => $solicitatados];
+            $data = [
+                'titulo' => 'Editar Registro',
+                'datos' => $evento,
+                'materias' => $materias,
+                'eventos_materias' => $eventos_materias,
+                'hijos' => $hijos,
+                'mensaje' => $mensaje,
+                'usuarios' => $usuarios,
+                'user_activo' => $user_activo,
+                'solicitantes' => $solicitantes,
+                'solicitados' => $solicitatados
+            ];
         }
         echo view('header');
         if ($evento->state == 'Agendado') {
@@ -416,16 +464,20 @@ class Eventos extends BaseController
         if ($evento->state == 'Notificado') {
             echo view('eventos/sesion', $data);
         }
+
+        if ($evento->state == 'Realizado') {
+            echo view('eventos/sesion', $data);
+        }
         echo view('footer');
     }
 
 
- public function getEventoArchivo($id, $valid = null, $mensaje = null)
+    public function getEventoArchivo($id, $valid = null, $mensaje = null)
     {
         if (!$this->session->id_usuario) {
             exit();
         }
-        if($this->session->id_rol!=1){
+        if ($this->session->id_rol != 1) {
             echo 'No autorizado';
             exit();
         }
@@ -470,10 +522,10 @@ class Eventos extends BaseController
             $data = ['titulo' => 'Editar Registro', 'datos' => $evento, 'materias' => $materias, 'eventos_materias' => $eventos_materias, 'hijos' => $hijos, 'mensaje' => $mensaje, 'usuarios' => $usuarios, 'user_activo' => $user_activo];
         }
         echo view('header');
-       
-            echo view('archivos/editar', $data);
-        
-        
+
+        echo view('archivos/editar', $data);
+
+
         echo view('footer');
     }
 
@@ -597,7 +649,7 @@ Los resultados del proceso de mediación pueden ser dos:
 
 2. Las partes no logren acuerdos, por lo que en ese caso la mediación resulta frustrada, caso en el que el mediador emitirá un acta de mediación frustrada, lo que permite al interesado continuar el proceso judicial pendiente o iniciarlo en caso que la mediación sea anterior al proceso judicial.
 <br><br>
- Atentamente, '.$atte.' <br><br>
+ Atentamente, ' . $atte . ' <br><br>
  
  <br>
  <br>
@@ -779,7 +831,7 @@ Los resultados del proceso de mediación pueden ser dos:
 
 
 
- public function actualizarArchivo()
+    public function actualizarArchivo()
     {
         $id_evento = $this->request->getPost('id_evento');
         if ($this->request->getMethod() == "POST" && $this->validate($this->reglas_agendar)) {
@@ -799,7 +851,7 @@ Los resultados del proceso de mediación pueden ser dos:
                 'valor' => $this->request->getPost('valor'),
                 'region_evento' => $this->request->getPost('region1h'),
                 'comuna_evento' => $this->request->getPost('comuna1h'),
-                
+
                 'causa' => $this->request->getPost('violencia'),
                 'reservado' => $this->request->getPost('reservado'),
                 'id_usuario' => $this->request->getPost('id_usuario'),
@@ -941,7 +993,7 @@ Los resultados del proceso de mediación pueden ser dos:
 
             //Insertamos Evento
             $fechaInicio = $this->request->getPost('fecha');
-            
+
             $fechaFin = $this->request->getPost('fecha_fin');
 
             $dataInsert = [
@@ -1037,7 +1089,7 @@ Los resultados del proceso de mediación pueden ser dos:
     }
 
 
-        public function saveObs()
+    public function saveObs()
     {
         $id_evento = $this->request->getPost('id_evento');
         if ($this->request->getMethod() == "POST") {
@@ -1046,14 +1098,35 @@ Los resultados del proceso de mediación pueden ser dos:
 
 
             //actualizamos observaciones
-            
+
 
             $this->eventos->update($id_evento, [
                 'texto' => $this->request->getPost('obs')
-               
+
 
             ]);
             $mensaje = 'Datos almacenados';
+            $this->getEvento($id_evento, null, $mensaje);
+        }
+    }
+
+    public function saveActa()
+    {
+        $id_evento = $this->request->getPost('id_evento');
+        if ($this->request->getMethod() == "POST") {
+
+
+
+
+            //actualizamos observaciones
+
+
+            $this->eventos->update($id_evento, [
+                'state' => 'Realizado'
+
+
+            ]);
+            $mensaje = 'Mediación almacenada como realizada';
             $this->getEvento($id_evento, null, $mensaje);
         }
     }

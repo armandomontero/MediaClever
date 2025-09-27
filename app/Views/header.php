@@ -111,7 +111,7 @@ $user_session = session();
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Opciones:</h6>
                         <a class="collapse-item" href="<?= base_url() ?>archivo/pendientes">Pendientes</a>
-                        <a class="collapse-item" href="<?= base_url() ?>archivo">Actas</a>
+                        <a class="collapse-item" href="<?= base_url() ?>archivo/actas">Actas</a>
                         <a class="collapse-item" href="<?= base_url() ?>usuarios">Frustradas</a>
                         <a class="collapse-item" href="<?= base_url() ?>servicios">No realizadas</a>
                         <a class="collapse-item" href="<?= base_url() ?>materias">Otros Servicios</a>

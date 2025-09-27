@@ -21,11 +21,11 @@ class Home extends BaseController
 
     public function index()
     {
-      $total_productos = $this->productosModel->totalProductos($this->session->id_tienda);
 
       $ventas_dia = $this->ventasModel->cuentaDia($this->session->id_tienda, date('Y-m-d'));
       $total_dia = $this->ventasModel->totalDia($this->session->id_tienda, date('Y-m-d'));
       $eventos_pendientes = $this->eventosModel->eventosPendientes($this->session->id_tienda);
+      $eventos_realizados = $this->eventosModel->eventosRealizados($this->session->id_tienda);
 
 
       //grafico
@@ -34,7 +34,7 @@ class Home extends BaseController
         $fecha = date("Y-m-d", strtotime("-".$i." day"));
         $time = Time::parse($fecha, 'America/Santiago');
         $dia =  $time->toLocalizedString('EEE');
-        $total = $this->ventasModel->totalDia($this->session->id_tienda, $fecha);
+        $total = $this->eventosModel->totalDia($this->session->id_tienda, $fecha);
         if($total==null){
           $total = 0;
         }
@@ -47,7 +47,7 @@ class Home extends BaseController
       //chequeamos conexion con google respecto del usuario
       $google = $this->GoogleModel->checkGoogle($this->session->id_usuario);
      
-      $datos = ['total_productos' => $total_productos, 'total_dia' => $total_dia, 'ventas_dia' => $ventas_dia, 'eventos_pendientes' => $eventos_pendientes, 'string_grafico' => $string_grafico, 'google' => $google];
+      $datos = ['eventos_realizados' => $eventos_realizados, 'total_dia' => $total_dia, 'ventas_dia' => $ventas_dia, 'eventos_pendientes' => $eventos_pendientes, 'string_grafico' => $string_grafico, 'google' => $google];
 
 
       echo view('header');
