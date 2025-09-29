@@ -14,6 +14,7 @@ use App\Models\TiendasModel;
 use App\Models\UsuariosModel;
 use App\Controllers\Google;
 use App\Models\ClientesEventosModel;
+use App\Models\GoogleModel;
 
 class Eventos extends BaseController
 {
@@ -577,6 +578,7 @@ class Eventos extends BaseController
             $fecha_inicio = $fecha_i . 'T' . $hora_i;
             $fecha_fin = $fecha_f . 'T' . $hora_f;
 
+            $usuario = $this->request->getPost('id_usuario');
 
 
             $invitados['email'] = [$this->request->getPost('correo_solicitante'), $this->request->getPost('correo_solicitado'), $this->request->getPost('correo_mediador')];
@@ -584,20 +586,25 @@ class Eventos extends BaseController
             $array_correos = [$this->request->getPost('correo_solicitante'), $this->request->getPost('correo_solicitado'), $this->request->getPost('correo_mediador')];
             $descripcion = "Reunión virtual Mediación Familiar";
 
-            $google = new Google();
-            $agenda = $google->storeEventForm($fecha_inicio, $fecha_fin, $invitados, $nombre, $descripcion);
+            $googleModel = new GoogleModel();
+
+            $existe = $googleModel->checkGoogle($usuario);
+            $meet = 0;
+            if($existe>0){
+            $google = new Google();      
+            $agenda = $google->storeEventForm($fecha_inicio, $fecha_fin, $invitados, $nombre, $descripcion, $usuario );
 
             if ($agenda->hangoutLink) {
 
                 $this->eventos->update($this->request->getPost('id_evento'), [
-                    'enlace' => $agenda->hangoutLink,
-                    'state' => 'Notificado'
+                    'enlace' => $agenda->hangoutLink
                 ]);
 
                 $meet = 1;
             } else {
                 $meet = 0;
             }
+        }
 
             //ahora notificados por mail
 
@@ -675,8 +682,23 @@ Los resultados del proceso de mediación pueden ser dos:
                 exit();
                 // exit;
             }
+            if($envio == 1){
+                          $this->eventos->update($this->request->getPost('id_evento'), [
+                    
+                    'state' => 'Notificado'
+                ]);
+            }
 
+            if($envio == 1 && $meet == 1){
             $mensaje = 'La notificación ha sido enviada con éxtito y la reunión virtual ha sido generada, podrá acceder mediante el enlace indicado en la fecha programada.';
+            }
+            elseif($envio == 1 && $meet !=1){
+             $mensaje = 'La notificación ha sido enviada con éxtito, pero la reunión virtual no ha sido generada';
+
+            }
+            else{
+                 $mensaje = 'No se ha podido notificar';
+            }
             $this->getEvento($id_evento, null, $mensaje);
         }
     }

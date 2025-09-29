@@ -121,11 +121,11 @@ class Google extends ResourceController
 
 
 
-    public function storeEventForm($fecha_inicio, $fecha_fin, $invitados, $nombre, $descripcion)
+    public function storeEventForm($fecha_inicio, $fecha_fin, $invitados, $nombre, $descripcion, $usuario)
     {
 
 
-        $client = $this->__getClient();
+        $client = $this->__getClient($usuario);
         $service = new Calendar($client);
         $session = service('session');
 
@@ -201,7 +201,7 @@ class Google extends ResourceController
         // setcookie('refresh_token', $refreshToken, time() + 3600, '/');
     }
 
-    private function __getClient()
+    private function __getClient($usuario)
     {
 
 
@@ -217,7 +217,7 @@ class Google extends ResourceController
         $client->setRedirectUri($this->ruta_redirect);
         $client->setApprovalPrompt('consent');
 
-        $accessToken = json_decode($this->google->__getToken(), true);
+        $accessToken = json_decode($this->google->__getToken($usuario), true);
         $client->setAccessToken($accessToken);
 
 

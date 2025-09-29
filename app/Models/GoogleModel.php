@@ -48,8 +48,8 @@ class GoogleModel extends Model{
         return $datos['credentials'];
     }
 
-     public function __getToken(){
-        $this->select('token');   
+     public function __getToken($id_usuario){
+        $this->select('token')->where('id_usuario', $id_usuario);   
         $datos = $this->first();
 
         return $datos['token'];
