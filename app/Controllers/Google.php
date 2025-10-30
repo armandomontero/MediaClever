@@ -40,7 +40,7 @@ class Google extends ResourceController
         $session = service('session');
 
         $mail_usuario = $session->mail_usuario;
-        $datos = ['mail_usuario' => $mail_usuario];
+        $datos = ['mail_usuario' => $mail_usuario, 'id_usuario' => $session->id_usuario];
         echo view('header');
         echo view('google/index', $datos);
         echo view('footer');
@@ -57,7 +57,7 @@ class Google extends ResourceController
         return $this->respond(['link' => $authLink]);
     }
 
-    public function storeToken()
+    public function storeToken($id_usuario = NULL)
     {
         // $data = json_decode($request->getBody()->getContents());
         $data = $this->request->getJSON();
@@ -92,11 +92,15 @@ class Google extends ResourceController
         }
 
         // $this->__storeAuthToken(json_encode($token));
+        if($id_usuario){
 
+        }else{
         //aca comprobamos si ya se habia conectado a google y ya se habia creado calendario
         $session = service('session');
+        $id_usuario =  $session->id_usuario;
+    }
 
-        $existe = $this->google->where('id_usuario', $session->id_usuario)->countAllResults();
+        $existe = $this->google->where('id_usuario', $id_usuario)->countAllResults();
         if ($existe == 0) {
             $service = new Calendar($client);
             $calendar = new CalendarCalendar();
@@ -131,6 +135,9 @@ class Google extends ResourceController
 
         $calendarId = $this->google->select('calendarId')->where('id_usuario', $session->id_usuario)->first();
 
+       // echo (json_encode($invitados));
+       
+       
 
         $event = new Event([
             'summary' => $nombre,
@@ -144,9 +151,10 @@ class Google extends ResourceController
                 'dateTime' => $fecha_fin, // Example: August 25, 2025, 10:00 AM EDT
                 'timeZone' => 'America/Santiago',
             ],
-            'attendees' => [
+            'attendees' => 
                 $invitados
-            ],
+            
+            ,
             'reminders' => [
                 'useDefault' => FALSE,
                 'overrides' => [
@@ -218,13 +226,14 @@ class Google extends ResourceController
         $client->setApprovalPrompt('consent');
 
         $accessToken = json_decode($this->google->__getToken($usuario), true);
+    
         $client->setAccessToken($accessToken);
-
-
+        $client->refreshToken($client->getRefreshToken());
 
 
 
         if ($client->isAccessTokenExpired()) {
+           
             $refreshToken = $client->getRefreshToken();
             $accessToken = $client->fetchAccessTokenWithRefreshToken($refreshToken);
 

@@ -590,4 +590,9 @@
             }
         });
     <?php } ?>
+
+
+    $("#id_usuario").change(function(){
+alert(this.value);
+    });
 </script>

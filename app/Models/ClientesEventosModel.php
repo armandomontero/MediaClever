@@ -1,12 +1,15 @@
 <?php
+
 namespace App\Models;
+
 use CodeIgniter\Model;
 
-class ClientesEventosModel extends Model{
+class ClientesEventosModel extends Model
+{
     protected $table      = 'clientes_eventos';
     protected $primaryKey = 'id';
 
-    protected $useAutoIncrement = true; 
+    protected $useAutoIncrement = true;
 
     protected $returnType     = 'array';
     protected $useSoftDeletes = false;
@@ -40,10 +43,15 @@ class ClientesEventosModel extends Model{
     protected $afterDelete    = [];
 
 
-public function getClientesEventos($id_evento, $tipo){
-    $clientes = $this->select("*")->join('clientes', 'id_cliente = clientes.id')->where('id_evento', $id_evento)->where('tipo', $tipo)->orderBy('clientes.nombre', 'asc')->findAll();
-    return $clientes;
+    public function getClientesEventos($id_evento, $tipo)
+    {
+        $clientes = $this->select("*")->join('clientes', 'id_cliente = clientes.id')->where('id_evento', $id_evento)->where('tipo', $tipo)->orderBy('clientes.nombre', 'asc')->findAll();
+        return $clientes;
+    }
+
+    public function getCorreosParticipantes($id_evento)
+    {
+        $correos = $this->select('correo')->join('clientes', 'id_cliente = clientes.id')->where('id_evento', $id_evento)->findAll();
+        return $correos;
     }
 }
-
-?>
