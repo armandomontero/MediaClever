@@ -582,19 +582,8 @@ class Eventos extends BaseController
 
 
             $invitados = [['email' => $this->request->getPost('correo_solicitante')], ['email' => $this->request->getPost('correo_solicitado')], ['email' => $this->request->getPost('correo_mediador')]];
-            $array_correos = [$this->request->getPost('correo_solicitante'), $this->request->getPost('correo_solicitado'), $this->request->getPost('correo_mediador')];
-
-
-
-            //llamamos otros participantes 
-            $correos = $this->clientes_eventos->getCorreosParticipantes($id_evento);
-            foreach ($correos AS $correo){
-                array_push($invitados, ['email' => $correo['correo']]);
-                array_push($array_correos, $correo['correo']);
-            }
-
             $nombre = 'Sesión de Mediación';
-           
+            $array_correos = [$this->request->getPost('correo_solicitante'), $this->request->getPost('correo_solicitado'), $this->request->getPost('correo_mediador')];
             $descripcion = "Reunión virtual Mediación Familiar";
             
             $googleModel = new GoogleModel();

@@ -1,4 +1,8 @@
 <!-- Begin Page Content -->
+
+<link href="<?=base_url()?>wysiwyg-editor/css/froala_editor.min.css" rel="stylesheet" type="text/css">
+<script src="<?=base_url()?>wysiwyg-editor/js/froala_editor.min.js"></script>
+
 <main>
     <div class="container-fluid">
 
@@ -28,11 +32,13 @@
                         <div class="row">
                             <div class="col-12 col-md-12 bg-primary text-white p-1" for="obs"><i class="fas fa-book-open"></i> Observaciones (Cuadernillo): </div>
                             <textarea
-                            <?php if($datos->state=='Realizado'){echo 'readonly';} ?>
-                            class="form-control" name="obs" id="obs" cols="80" rows="10"><?php if ($datos->texto) {
-                                                                                                        echo $datos->texto;
-                                                                                                    } else {
-                                                                                                    ?>
+                                <?php if ($datos->state == 'Realizado') {
+                                    echo 'readonly';
+                                } ?>
+                                class="form-control" name="obs" id="obs" cols="80" rows="10"><?php if ($datos->texto) {
+                                                                                                    echo $datos->texto;
+                                                                                                } else {
+                                                                                                ?>
 FECHA :
 MATERIAS SOLICITADAS :
 MEDIADOR :
@@ -73,13 +79,26 @@ CAUSA ANTERIOR
                     <input type="hidden" name="id_evento" id="id_evento" value="<?= $datos->id_evento ?>" />
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-12 col-md-12 bg-primary text-white p-1" for="obs"><i class="fas fa-book-open"></i> Observaciones (Cuadernillo): </div>
-                            <textarea class="form-control" cols="80" rows="15">Aca si irá el acta final... en desarrollo...</textarea>
+                            <div class="col-12 col-md-12 bg-primary text-white p-1" for="acta"><i class="fas fa-book-open"></i> Acta de Mediación </div>
+                            <textarea name="acta" id="acta" class="form-control" cols="80" rows="15">Aca si irá el acta final... en desarrollo...</textarea>
 
                         </div>
                     </div>
                     <div class="form-group">
-                        <button id="enviar" type="submit" class="btn btn-success btn-ok"><i class="fas fa-save"></i> Marcar Realizada</button>
+                        <div class="row">
+                            <div class="col-6 col-sm-4">
+                                <label class="d-inline-block" for="estado_final">Estado: </label>
+                                <select required class="form-select" name="estado_final" id="estado_final">
+                                    <option value="">Selecciona</option>
+                                    <option value="Con Acuerdo">Con Acuerdo</option>
+                                    <option value="Acuerdo Parcial">Acuerdo Parcial</option>
+                                    <option value="Frustrada">Frustrada</option>
+                                </select>
+                            </div>
+                            <div class="col-4 col-sm-4">
+                                <button id="enviar" type="submit" class="btn btn-success btn-ok"><i class="fas fa-save"></i> Marcar Realizada</button>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -244,21 +263,17 @@ CAUSA ANTERIOR
             </div>
 
         </div>
-        En esta pantalla mostraremos datos pertinentes y realizaremos el acta de mediación con sus correspondientes controles
-        <br>
-        opciones barajadas:<br>
-        <ul>
-            <li>Habra acta "digital" creada en editor de sistema o acta documento adjunto una de 2</li>
-            <li>Gestion de documentos asociados a la mediacion "archivos para subir y adjuntar"</li>
-            <li>popup o enlace para ver todos los datos de la mediación y modificarlos segun necesidad</li>
-            <li>Link reunion virtual obvio</li>
-            <li>Boton para ir guardando cambios</li>
-            <li>Boton principal guardar cambios y cambiar estado a realzada</li>
-            <li>Boton frustrar</li>
-            <li>COmenzaremos con subida de archivos "acta de mediacion externa" para partir produccion</li>
-        </ul>
-        <br>
-        Mientras mostramos link a la meeting: <br>
+
 
     </div>
 </main>
+
+<script>
+
+$(function(){
+$('#acta').editable({
+inlineMode:false
+})
+});
+
+</script>

@@ -76,9 +76,6 @@ class Clientes extends BaseController
         echo view('footer');
     }
 
-
- 
-
     public function eliminados($activo = 0)
     {
         $clientes = $this->clientes->where('activo', $activo)->where('id_tienda', $this->session->id_tienda)->findAll();
