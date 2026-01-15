@@ -1178,6 +1178,7 @@ Los resultados del proceso de mediación pueden ser dos:
                 ->where('TIME(fecha_inicio) >=', $hora_i)
                 ->where('TIME(fecha_fin) <=', $hora_f)
                 ->where('reservado', 1)
+                ->where('state !=', 'Anulado')
                 ->where('id_tienda', $id_tienda)->first();
 
                 $reservas2 = $this->eventos->select('TIME(fecha_inicio) AS hora_inicio, TIME(fecha_fin) AS hora_fin')
@@ -1185,6 +1186,7 @@ Los resultados del proceso de mediación pueden ser dos:
                 ->where('TIME(fecha_inicio) <=', $hora_i)
                 ->where('TIME(fecha_fin) >=', $hora_f)
                 ->where('reservado', 1)
+                ->where('state !=', 'Anulado')
                 ->where('id_tienda', $id_tienda)->first();
 
             if (!empty($reservas)||!empty($reservas2)) {

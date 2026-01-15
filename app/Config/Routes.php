@@ -86,7 +86,7 @@ $routes->get('/eventos/getEvento/(:num)', 'Eventos::getEvento/$1');
 $routes->post('/eventos/actualizar', 'Eventos::actualizar');
 $routes->post('/eventos/saveObs', 'Eventos::saveObs');
 $routes->post('/eventos/saveActa', 'Eventos::saveActa');
-$routes->get('/eventos/getReservas/(:any)/(:num)/(:any)', 'eventos::getReservas/$1/$2/$3');
+$routes->get('/eventos/getReservas/(:any)/(:num)/(:any)', 'Eventos::getReservas/$1/$2/$3');
 
 
 
