@@ -72,12 +72,12 @@
 
 <body>
     <!-- Begin Page Content -->
-<div id="spinner" class="spinner-overlay  d-none">
-  <div class="spinner-border text-primary" role="status">
-    <span class="">Procesando...</span>
-  </div>
-   <span class="">Procesando...</span>
-</div>
+    <div id="spinner" class="spinner-overlay  d-none">
+        <div class="spinner-border text-primary" role="status">
+            <span class="">Procesando...</span>
+        </div>
+        <span class="">Procesando...</span>
+    </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light ">
         <a class="navbar-brand" href="#"><img width="" height="80" src="<?= base_url() . $config['logo'] ?>" /></a>
 
@@ -88,274 +88,345 @@
     </nav>
     <main>
         <div class="container-fluid bg-primary p-2">
+
             <div class="col-md-8 offset-md-2 bg-light p-4 border rounded">
-                               <div style="background-color: #e6f2ff; color: blue; border: 1px solid #dee2e6;" class="rounded text-sm p-3 "><i class="fas fa-info mr-2"></i>
-                        Nuestro servicio de mediación privada le permite agendar mediación en un plazo máximo de <b>48 horas</b>. Considerar que este servicio
-                        <b>no es gratuito</b> y tiene un costo asociado, un mediador se contactará para coordinar su día y hora de mediación.
+                <div style="background-color: #e6f2ff; color: blue; border: 1px solid #dee2e6;" class="rounded text-sm p-3 "><i class="fas fa-info mr-2"></i>
+                    Nuestro servicio de mediación privada le permite agendar mediación en un plazo máximo de <b>48 horas</b>. Considerar que este servicio
+                    <b>no es gratuito</b> y tiene un costo asociado, un mediador se contactará para coordinar su día y hora de mediación.
+                </div>
+                <form method="POST" name="formulario" id="formulario" action="<?= base_url() ?>eventos/agendar" autocomplete="off">
+                    <?= csrf_field() ?>
+                    <input type="hidden" name="id_tienda" id="id_tienda" value="<?= $config['id_tienda'] ?>" />
+                    <input type="hidden" name="pass_tienda" id="pass_tienda" value="<?= $pass_tienda ?>" />
+                    <input type="hidden" name="valor" id="valor" value="<?= $config['valor_servicio'] ?>" />
+                    <div class="form-group mt-4">
+                        <h5 class="text-primary">Datos Solicitante (Persona que solicita el proceso):</h5>
+                        <hr class="mt-1 mb-2">
+
+                        <div class="row">
+                            <div class="col-12 col-sm-6">
+                                <label for="nombre_solicitante">Nombre Completo<span class="text-danger">*</span> </label>
+                                <input required autofocus value="<?= set_value('nombre_solicitante') ?>" class="form-control" id="nombre_solicitante" name="nombre_solicitante" type="text" />
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label for="rut_solicitante">RUT<span class="text-danger">*</span> </label>
+                                <input required class="form-control" value="<?= set_value('rut_solicitante') ?>" id="rut_solicitante" name="rut_solicitante" type="text" />
+                            </div>
+                        </div>
                     </div>
-                    <form method="POST" name="formulario" id="formulario" action="<?= base_url() ?>eventos/agendar" autocomplete="off">
-                        <?= csrf_field() ?>
-                        <input type="hidden" name="id_tienda" id="id_tienda" value="<?= $config['id_tienda'] ?>" />
-                        <input type="hidden" name="pass_tienda" id="pass_tienda" value="<?= $pass_tienda ?>" />
-                        <input type="hidden" name="valor" id="valor" value="<?= $config['valor_servicio'] ?>" />
-                        <div class="form-group mt-4">
-                            <h5 class="text-primary">Datos Solicitante (Persona que solicita el proceso):</h5>
-                            <hr class="mt-1 mb-2">
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-12 col-sm-6">
+                                <label for="telefono_solicitante">Teléfono<span class="text-danger">*</span> </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><img style="padding-right:5px;" width="25" src="<?= base_url() ?>img/chile.png" alt="chile">+56</span>
+                                    <input required value="<?= set_value('telefono_solicitante') ?>" class="form-control" id="telefono_solicitante" name="telefono_solicitante" type="number" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label>E-Mail<span class="text-danger">*</span> </label>
+                                <input class="form-control" value="<?= set_value('correo_solicitante') ?>" id="correo_solicitante" name="correo_solicitante" type="email" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-12 col-sm-12">
+                                <label for="direccion_solicitante">Dirección </label>
+
+
+                                <input value="<?= set_value('direccion_solicitante') ?>" class="form-control" id="direccion_solicitante" name="direccion_solicitante" type="text" />
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group mb-4 mt-2">
+                        <div class="row ">
+                            <div class="col-12 col-sm-6">
+                                <label for="region">Región </label>
+                                <select onchange="mostrar(this.value, 'comuna'); getText(this, 'region1h');" required class="form-control" name="region" id="region" required>
+                                    <option value="">Selecciona</option>
+                                </select>
+                                <input type="hidden" id="region1h" name="region1h" value="" />
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label for="comuna">Comuna </label>
+                                <select onchange="getText(this, 'comuna1h');" required class="form-control" name="comuna" id="comuna">
+                                    <option value="">Selecciona</option>
+                                </select>
+                                <input type="hidden" id="comuna1h" name="comuna1h" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mt-1 mb-3">
+                    <h5 class="text-primary">Datos Solicitado:</h5>
+                    <hr class="mt-1 mb-2">
+                    <div class="form-group mt-4">
+
+
+                        <div class="row">
+                            <div class="col-12 col-sm-6">
+                                <label for="nombre_solicitado">Nombre Completo<span class="text-danger">*</span> </label>
+                                <input required autofocus value="<?= set_value('nombre_solicitado') ?>" class="form-control" id="nombre_solicitado" name="nombre_solicitado" type="text" />
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label>RUT </label>
+                                <input class="form-control rut" value="<?= set_value('rut_solicitado') ?>" id="rut_solicitado" name="rut_solicitado" type="text" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-12 col-sm-6">
+                                <label>Teléfono </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><img style="padding-right:5px;" width="25" src="<?= base_url() ?>img/chile.png" alt="chile">+56</span>
+                                    <input value="<?= set_value('telefono_solicitado') ?>" class="form-control" id="telefono_solicitado" name="telefono_solicitado" type="number" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label for="correo_solicitado">E-Mail: </label>
+                                <input class="form-control" value="<?= set_value('correo_solicitado') ?>" id="correo_solicitado" name="correo_solicitado" type="email" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-12 col-sm-12">
+                                <label for="direccion_solicitado">Dirección </label>
+
+
+                                <input value="<?= set_value('direccion_solicitado') ?>" class="form-control" id="direccion_solicitado" name="direccion_solicitado" type="text" />
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group mb-4 mt-2">
+                        <div class="row ">
+                            <div class="col-12 col-sm-6">
+                                <label>Región: </label>
+                                <select onchange="mostrar(this.value, 'comuna2'); getText(this, 'region2h');" required class="form-control" name="region2" id="region2" required>
+                                    <option value="">Selecciona</option>
+                                </select>
+                                <input type="hidden" id="region2h" name="region2h" value="" />
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <label>Comuna: </label>
+                                <select onchange="getText(this, 'comuna2h');" required class="form-control" name="comuna2" id="comuna2">
+                                    <option value="">Selecciona</option>
+                                </select>
+                                <input type="hidden" id="comuna2h" name="comuna2h" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mt-1 mb-3">
+                    <h5 class="text-primary">Datos de los beneficiarios (hijos)
+                        <input type="hidden" id="cuentaHijos" name="cuentaHijos" value="0" />
+                    </h5>
+                    <hr class="mt-1 mb-2">
+                    <?php for ($i = 0; $i <= 5; $i++) { ?>
+                        <div id="hijo<?= $i ?>"
+                            <?php if ($i != 0) {
+                                echo 'style="display: none;"';
+                            } else {
+                                echo 'style="display: block;"';
+                            } ?>
+                            class="form-group mt-4">
+
 
                             <div class="row">
-                                <div class="col-12 col-sm-6">
-                                    <label for="nombre_solicitante">Nombre Completo<span class="text-danger">*</span> </label>
-                                    <input required autofocus value="<?= set_value('nombre_solicitante') ?>" class="form-control" id="nombre_solicitante" name="nombre_solicitante" type="text" />
+
+                                <div class="col-12 col-sm-4">
+                                    <label>Nombre Completo: </label>
+                                    <input
+
+                                        value="<?= set_value('nombre' . $i) ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
                                 </div>
-                                <div class="col-12 col-sm-6">
-                                    <label for="rut_solicitante">RUT<span class="text-danger">*</span> </label>
-                                    <input required class="form-control" value="<?= set_value('rut_solicitante') ?>" id="rut_solicitante" name="rut_solicitante" type="text" />
+                                <div class="col-12 col-sm-3">
+                                    <label>RUT:</label>
+                                    <input
+
+                                        class="form-control rut" value="<?= set_value('rut' . $i) ?>" id="rut<?= $i ?>" name="rut<?= $i ?>" type="text" />
+                                </div>
+                                <div class="col-12 col-sm-3">
+                                    <label>Fecha de Nacimiento:</label>
+                                    <input onchange="calcularEdad(this, edad<?= $i ?>)"
+
+                                        class="form-control" value="<?= set_value('fecha' . $i) ?>" id="fecha<?= $i ?>" name="fecha<?= $i ?>" type="date" />
+                                </div>
+                                <div class="col-12 col-sm-2">
+                                    <label>Edad: </label>
+                                    <input readonly required class="form-control" value="" id="edad<?= $i ?>" name="edad<?= $i ?>" type="text" />
                                 </div>
                             </div>
                         </div>
+                    <?php }
+                    ?>
+                    <div class="form-group mb-4 mt-2">
+                        <div class="row ">
+                            <div class="col-12 col-sm-6">
+                                <button id="sumaHijo" class="btn btn-success" type="button"><i class="fas fa-plus"></i> Agregar Beneficiario</button>
+                            </div>
+                            <div class="col-12 col-sm-6">
 
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-12 col-sm-6">
-                                    <label for="telefono_solicitante">Teléfono<span class="text-danger">*</span> </label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><img style="padding-right:5px;" width="25" src="<?= base_url() ?>img/chile.png" alt="chile">+56</span>
-                                        <input required  value="<?= set_value('telefono_solicitante') ?>" class="form-control" id="telefono_solicitante" name="telefono_solicitante" type="number" />
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group mb-4 mt-2">
+                        <div class="row ">
+                            <div class="col-12 col-sm-6">
+                                <hr class="mt-1 mb-3">
+                                <h5 class="text-primary">Seleccione las materias a mediar
+                                </h5>
+                                <hr class="mt-1 mb-2">
+
+                                <?php $i = 0;
+                                foreach ($materias as $materia) { ?>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="materia<?= $i ?>" value="<?= $materia['id'] ?>" id="materia<?= $materia['id'] ?>" />
+                                        <label class="form-check-label" for="materia<?= $i ?>"><?= $materia['nombre'] ?></label>
                                     </div>
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <label>E-Mail<span class="text-danger">*</span> </label>
-                                    <input class="form-control" value="<?= set_value('correo_solicitante') ?>" id="correo_solicitante" name="correo_solicitante" type="email" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-12 col-sm-12">
-                                    <label for="direccion_solicitante">Dirección </label>
-
-
-                                    <input value="<?= set_value('direccion_solicitante') ?>" class="form-control" id="direccion_solicitante" name="direccion_solicitante" type="text" />
-
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="form-group mb-4 mt-2">
-                            <div class="row ">
-                                <div class="col-12 col-sm-6">
-                                    <label for="region">Región </label>
-                                    <select onchange="mostrar(this.value, 'comuna'); getText(this, 'region1h');" required class="form-control" name="region" id="region" required>
-                                        <option value="">Selecciona</option>
-                                    </select>
-                                    <input type="hidden" id="region1h" name="region1h" value="" />
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <label for="comuna">Comuna </label>
-                                    <select onchange="getText(this, 'comuna1h');" required class="form-control" name="comuna" id="comuna">
-                                        <option value="">Selecciona</option>
-                                    </select>
-                                    <input type="hidden" id="comuna1h" name="comuna1h" value="" />
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="mt-1 mb-3">
-                        <h5 class="text-primary">Datos Solicitado:</h5>
-                        <hr class="mt-1 mb-2">
-                        <div class="form-group mt-4">
-
-
-                            <div class="row">
-                                <div class="col-12 col-sm-6">
-                                    <label for="nombre_solicitado">Nombre Completo<span class="text-danger">*</span> </label>
-                                    <input required autofocus value="<?= set_value('nombre_solicitado') ?>" class="form-control" id="nombre_solicitado" name="nombre_solicitado" type="text" />
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <label>RUT </label>
-                                    <input class="form-control rut" value="<?= set_value('rut_solicitado') ?>" id="rut_solicitado" name="rut_solicitado" type="text" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-12 col-sm-6">
-                                    <label>Teléfono </label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><img style="padding-right:5px;" width="25" src="<?= base_url() ?>img/chile.png" alt="chile">+56</span>
-                                        <input  value="<?= set_value('telefono_solicitado') ?>" class="form-control" id="telefono_solicitado" name="telefono_solicitado" type="number" />
-                                    </div>
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <label for="correo_solicitado">E-Mail: </label>
-                                    <input class="form-control" value="<?= set_value('correo_solicitado') ?>" id="correo_solicitado" name="correo_solicitado" type="email" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-12 col-sm-12">
-                                    <label for="direccion_solicitado">Dirección </label>
-
-
-                                    <input value="<?= set_value('direccion_solicitado') ?>" class="form-control" id="direccion_solicitado" name="direccion_solicitado" type="text" />
-
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="form-group mb-4 mt-2">
-                            <div class="row ">
-                                <div class="col-12 col-sm-6">
-                                    <label>Región: </label>
-                                    <select onchange="mostrar(this.value, 'comuna2'); getText(this, 'region2h');" required class="form-control" name="region2" id="region2" required>
-                                        <option value="">Selecciona</option>
-                                    </select>
-                                    <input type="hidden" id="region2h" name="region2h" value="" />
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <label>Comuna: </label>
-                                    <select onchange="getText(this, 'comuna2h');" required class="form-control" name="comuna2" id="comuna2">
-                                        <option value="">Selecciona</option>
-                                    </select>
-                                    <input type="hidden" id="comuna2h" name="comuna2h" value="" />
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="mt-1 mb-3">
-                        <h5 class="text-primary">Datos de los beneficiarios (hijos)
-                            <input type="hidden" id="cuentaHijos" name="cuentaHijos" value="0" />
-                        </h5>
-                        <hr class="mt-1 mb-2">
-                        <?php for ($i = 0; $i <= 5; $i++) { ?>
-                            <div id="hijo<?= $i ?>"
-                                <?php if ($i != 0) {
-                                    echo 'style="display: none;"';
-                                } else {
-                                    echo 'style="display: block;"';
+                                <?php $i++;
                                 } ?>
-                                class="form-group mt-4">
 
 
-                                <div class="row">
-
-                                    <div class="col-12 col-sm-4">
-                                        <label>Nombre Completo: </label>
-                                        <input
-                                           
-                                             value="<?= set_value('nombre' . $i) ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
-                                    </div>
-                                    <div class="col-12 col-sm-3">
-                                        <label>RUT:</label>
-                                        <input
-                                            
-                                            class="form-control rut" value="<?= set_value('rut' . $i) ?>" id="rut<?= $i ?>" name="rut<?= $i ?>" type="text" />
-                                    </div>
-                                    <div class="col-12 col-sm-3">
-                                        <label>Fecha de Nacimiento:</label>
-                                        <input onchange="calcularEdad(this, edad<?= $i ?>)"
-                                            
-                                            class="form-control" value="<?= set_value('fecha' . $i) ?>" id="fecha<?= $i ?>" name="fecha<?= $i ?>" type="date" />
-                                    </div>
-                                    <div class="col-12 col-sm-2">
-                                        <label>Edad: </label>
-                                        <input readonly required class="form-control" value="" id="edad<?= $i ?>" name="edad<?= $i ?>" type="text" />
-                                    </div>
-                                </div>
                             </div>
-                        <?php }
-                        ?>
-                        <div class="form-group mb-4 mt-2">
-                            <div class="row ">
-                                <div class="col-12 col-sm-6">
-                                    <button id="sumaHijo" class="btn btn-success" type="button"><i class="fas fa-plus"></i> Agregar Beneficiario</button>
-                                </div>
-                                <div class="col-12 col-sm-6">
 
+                            <div class="col-12 col-sm-6">
+                                <hr class="mt-1 mb-3">
+                                <h5 class="text-primary">Indique si existe causa vigente o denuncia por violencia intrafamiliar *
+
+                                </h5>
+                                <hr class="mt-1 mb-2">
+
+                                <div class="form-radio">
+                                    <input class="form-radio-input" type="radio" required name="violencia" value="1" id="violencia1" />
+                                    <label class="form-radio-label" for="violencia1">Si</label>
+                                </div>
+                                <div class="form-radio">
+                                    <input class="form-radio-input" type="radio" name="violencia" value="0" id="violencia2" />
+                                    <label class="form-radio-label" for="violencia2">No</label>
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <hr class="mt-1 mb-3">
+                    <h5 class="text-primary">Fecha y Hora Sesión Telemática de Mediación
+                    </h5>
+                    <hr class="mt-1 mb-2">
+
+                    <div class="form-group mb-4 mt-2">
+                        <div class="row ">
+                            <div class="col-12 col-sm-4">
+                                <label>Fecha y hora de Sesión: </label>
+                               <!--  <input required class="form-control" value="" id="fecha_bd" name="fecha_bd" type="datetime-local" /> -->
+                                <?php
+                                $fechas_sin_domingos = [];
+
+                                $fecha_actual = strtotime('now'); // o cualquier otra fecha de inicio
+                                $num_dias_a_generar = 30; // Cantidad de fechas que quieres en el array
+                                $dias_generados = 0;
+                                $dias_a_sumar = 0;
+
+                                while ($dias_generados < $num_dias_a_generar) {
+                                    $fecha_a_validar = strtotime("+$dias_a_sumar days", $fecha_actual);
+                                    $dia_semana = date('w', $fecha_a_validar); // 0 = Domingo, 6 = Sábado
+                                    switch ($dia_semana) {
+                                        case 0:
+                                            $dia = 'Dom';
+                                            break;
+                                        case 1:
+                                            $dia = 'Lun';
+                                            break;
+                                        case 2:
+                                            $dia = 'Mar';
+                                            break;
+                                        case 3:
+                                            $dia = 'Mier';
+                                            break;
+                                        case 4:
+                                            $dia = 'Jue';
+                                            break;
+                                        case 5:
+                                            $dia = 'Vie';
+                                            break;
+                                        case 6:
+                                            $dia = 'Sáb';
+                                            break;
+                                    }
+
+                                    if ($dia_semana != 0) { // Si no es domingo
+                                        $fechas_sin_domingos[] = $dia . ' ' . date('d-m-Y', $fecha_a_validar);
+                                        $dias_generados++;
+                                    }
+                                    $dias_a_sumar++;
+                                }
+
+
+                               
 
 
 
-                        <div class="form-group mb-4 mt-2">
-                            <div class="row ">
-                                <div class="col-12 col-sm-6">
-                                    <hr class="mt-1 mb-3">
-                                    <h5 class="text-primary">Seleccione las materias a mediar
-                                    </h5>
-                                    <hr class="mt-1 mb-2">
 
-                                    <?php $i = 0;
-                                    foreach ($materias as $materia) { ?>
+                                ?>
+                                <select onchange="updHoras(this.value);" class="form-control" name="dia" id="dia">
+                                    <?php foreach ($fechas_sin_domingos as $fecha) {
+                                        $fecha_limpia = substr($fecha, 4);
+                                        $fecha_limpia = strtotime($fecha_limpia);
+                                        $fecha_limpia = date('Y-m-d', $fecha_limpia);
 
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="materia<?= $i ?>" value="<?= $materia['id'] ?>" id="materia<?= $materia['id'] ?>" />
-                                            <label class="form-check-label" for="materia<?= $i ?>"><?= $materia['nombre'] ?></label>
-                                        </div>
-                                    <?php $i++;
+                                        echo '<option value="' . $fecha_limpia . '">' . $fecha . '</option>';
                                     } ?>
 
+                                </select>
+                                <select required class="form-control" name="hora" id="hora">
+                                    <option value="">Seleccione una hora</option>
+                                    <?php
+                                    foreach ($reservas as $reserva) {
 
+                                        echo '<option value="' . $reserva . '">' . $reserva . '</option>';
+                                    }
+
+                                    ?>
+
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-8">
+                                <div style="background-color: #e6f2ff; color: blue; border: 1px solid #dee2e6;" class="rounded text-sm p-3 "><i class="fas fa-info mr-2"></i>
+                                    Consideraremos tu disponibilidad y haremos todo lo posible para agendar fecha y hora que se ajuste a tus necesidades.
                                 </div>
 
-                                <div class="col-12 col-sm-6">
-                                    <hr class="mt-1 mb-3">
-                                    <h5 class="text-primary">Indique si existe causa vigente o denuncia por violencia intrafamiliar *
+                            </div>
 
-                                    </h5>
-                                    <hr class="mt-1 mb-2">
+                        </div>
 
-                                    <div class="form-radio">
-                                        <input class="form-radio-input" type="radio" required name="violencia" value="1" id="violencia1" />
-                                        <label class="form-radio-label" for="violencia1">Si</label>
-                                    </div>
-                                    <div class="form-radio">
-                                        <input class="form-radio-input" type="radio" name="violencia" value="0" id="violencia2" />
-                                        <label class="form-radio-label" for="violencia2">No</label>
-                                    </div>
+                        <div class="row mt-2">
+                            <div class="col-12 col-sm-12">
+                                <div style="background-color: #e6f2ff; color: blue; border: 1px solid #dee2e6;" class="form-check mb-3 rounded text-sm p-3">
+                                    <input class="form-check-input ml-2" type="checkbox" value="" id="acepto" required="">
+                                    <label class="form-check-label ml-4" for="acepto"><b>NO AGENDES</b> sin estar en conocimiento de que el servicio de mediación está asociado a un cobro.</label>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <hr class="mt-1 mb-3">
-                        <h5 class="text-primary">Fecha y Hora Sesión Telemática de Mediación
-                        </h5>
-                        <hr class="mt-1 mb-2">
-
-                        <div class="form-group mb-4 mt-2">
-                            <div class="row ">
-                                <div class="col-12 col-sm-4">
-                                    <label>Fecha de Sesión: </label>
-                                    <input required class="form-control" value="" id="fecha_bd" name="fecha_bd" type="datetime-local" />
-                                </div>
-                                <div class="col-12 col-sm-8">
-                                 <div style="background-color: #e6f2ff; color: blue; border: 1px solid #dee2e6;" class="rounded text-sm p-3 "><i class="fas fa-info mr-2"></i>
-                        Consideraremos tu disponibilidad y haremos todo lo posible para agendar fecha y hora que se ajuste a tus necesidades.
-                                 </div>
+                    <div class="modal-footer">
+                        <button id="enviar" type="submit" class="btn btn-primary btn-ok"><i class="fas fa-calendar-check"></i> Enviar y solicitar agenda</button>
 
                     </div>
-                               
-                            </div>
-
-                            <div class="row mt-2">
-                                 <div class="col-12 col-sm-12">
-                                    <div style="background-color: #e6f2ff; color: blue; border: 1px solid #dee2e6;" class="form-check mb-3 rounded text-sm p-3">
-                                        <input class="form-check-input ml-2" type="checkbox" value="" id="acepto" required="">
-                                        <label class="form-check-label ml-4" for="acepto"><b>NO AGENDES</b> sin estar en conocimiento de que el servicio de mediación está asociado a un cobro.</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button id="enviar" type="submit" class="btn btn-primary btn-ok"><i class="fas fa-calendar-check"></i> Enviar y solicitar agenda</button>
-
-                        </div>
-                    </form>
+                </form>
 
             </div>
-            
+
 
         </div>
     </main>
@@ -478,9 +549,9 @@
 
                 slotEventOverlap: false,
 
-                 longPressDelay: 1,
-                 selectLongPressDelay: 1,
-                 nowIndicatorSnap : false,
+                longPressDelay: 1,
+                selectLongPressDelay: 1,
+                nowIndicatorSnap: false,
 
                 allDaySlot: false,
                 slotMinTime: "09:00:00",
@@ -512,8 +583,8 @@
                     endTime: '21:00', // an end time (6pm in this example)
                 },
                 displayEventEnd: true,
-                click: function(){
-alert('sa');
+                click: function() {
+                    alert('sa');
                 },
                 select: function(start, end) {
 
@@ -578,7 +649,7 @@ alert('sa');
                     //info.el.style.borderColor = 'red';
                 },
                 selectConstraint: "businessHours",
-               
+
                 defaultView: "timeGridFourDay",
                 initialView: 'timeGridFourDay',
                 views: {
@@ -590,7 +661,7 @@ alert('sa');
                     }
                 },
                 selectHelper: true
-                
+
 
 
 
@@ -784,12 +855,44 @@ alert('sa');
             document.getElementById(campoOut).value = $(campoIn).children(':selected').text();
         }
 
-          $("#enviar").click(function(){
-            if (formulario.checkValidity()) {
-$("#spinner").removeClass('d-none');
-            }
+
+        //funcion para actualizar horas reservadas
+        function updHoras(fecha) {
+
+            $.ajax({
+                url: '<?= base_url() ?>eventos/getReservas/' + fecha + '/' + '<?=$config['id_tienda']?>' + '/' + 'json',
+                dataType: 'json',
+                success: function(resultado) {
+
+                    //alert(resultado);
+var $select = $('#hora');
+
+    // 1. Limpiar todas las opciones existentes
+    $select.empty(); // o $select.find('option').remove();
+
+    // 2. Añadir una opción por defecto si es necesario
+    $select.append('<option value="">Seleccione una hora</option>');
+
+    // 3. Iterar sobre los datos JSON y añadir opciones
+    $.each(resultado, function(index, item) {
+      $select.append($('<option>', {
+        value: item,
+        text: item
+      }));
     });
-    
+
+
+                }
+            })
+
+
+        };
+
+        $("#enviar").click(function() {
+            if (formulario.checkValidity()) {
+                $("#spinner").removeClass('d-none');
+            }
+        });
     </script>
 </body>
 

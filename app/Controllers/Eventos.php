@@ -39,7 +39,9 @@ class Eventos extends BaseController
         $this->eventos_materias = new EventosMaterias();
         $this->materias = new MateriasModel();
         $this->usuarios = new UsuariosModel();
+        helper('tiempo');
         helper(['form']);
+
 
         $this->reglas = [
             'nombre' => [
@@ -167,7 +169,15 @@ class Eventos extends BaseController
         $datos_tienda = $tienda->where('id', $id_tienda)->where('pass', $pass_tienda)->where('activo', 1)->first();
 
 
+
+
+
         if ($datos_tienda) {
+
+            //Obtenemos fechas reservadas
+            $reservas = $this->getReservas(date('Y-m-d'), $id_tienda);
+
+
             $eventos = $this->eventos->where('reservado', 1)->where('id_tienda', $id_tienda)->findAll();
             $config = new ConfiguracionModel();
             $datos_config = $config->where('id_tienda', $id_tienda)->first();
@@ -175,7 +185,7 @@ class Eventos extends BaseController
             //llamamos materias
             $materias = $this->materias->where('activo', 1)->where("id_tienda = " . $id_tienda . " OR id = 1")->orderBy('orden', 'asc')->findAll();
 
-            $data = ['config' => $datos_config, 'materias' => $materias, 'eventos' => $eventos, 'pass_tienda' => $pass_tienda, 'mensaje' => $mensaje];
+            $data = ['config' => $datos_config, 'materias' => $materias, 'eventos' => $eventos, 'pass_tienda' => $pass_tienda, 'mensaje' => $mensaje, 'reservas' => $reservas];
 
             echo view('eventos/agenda', $data);
         } else {
@@ -260,7 +270,9 @@ class Eventos extends BaseController
 
 
             //Insertamos Evento
-            $fechaInicio = $this->request->getPost('fecha_bd');
+            $fechaSesion = $this->request->getPost('dia');
+            $horaInicio = $this->request->getPost('hora');
+            $fechaInicio = $fechaSesion.' '.$horaInicio;
             //echo $fechaInicio;
 
             $nuevaTimestamp = strtotime('+1 hours', strtotime($fechaInicio));
@@ -585,26 +597,26 @@ class Eventos extends BaseController
             $nombre = 'Sesión de Mediación';
             $array_correos = [$this->request->getPost('correo_solicitante'), $this->request->getPost('correo_solicitado'), $this->request->getPost('correo_mediador')];
             $descripcion = "Reunión virtual Mediación Familiar";
-            
+
             $googleModel = new GoogleModel();
 
             $existe = $googleModel->checkGoogle($usuario);
             $meet = 0;
-            if($existe>0){
-            $google = new Google();      
-            $agenda = $google->storeEventForm($fecha_inicio, $fecha_fin, $invitados, $nombre, $descripcion, $usuario );
+            if ($existe > 0) {
+                $google = new Google();
+                $agenda = $google->storeEventForm($fecha_inicio, $fecha_fin, $invitados, $nombre, $descripcion, $usuario);
 
-            if ($agenda->hangoutLink) {
+                if ($agenda->hangoutLink) {
 
-                $this->eventos->update($this->request->getPost('id_evento'), [
-                    'enlace' => $agenda->hangoutLink
-                ]);
+                    $this->eventos->update($this->request->getPost('id_evento'), [
+                        'enlace' => $agenda->hangoutLink
+                    ]);
 
-                $meet = 1;
-            } else {
-                $meet = 0;
+                    $meet = 1;
+                } else {
+                    $meet = 0;
+                }
             }
-        }
 
             //ahora notificados por mail
 
@@ -682,22 +694,19 @@ Los resultados del proceso de mediación pueden ser dos:
                 exit();
                 // exit;
             }
-            if($envio == 1){
-                          $this->eventos->update($this->request->getPost('id_evento'), [
-                    
+            if ($envio == 1) {
+                $this->eventos->update($this->request->getPost('id_evento'), [
+
                     'state' => 'Notificado'
                 ]);
             }
 
-            if($envio == 1 && $meet == 1){
-            $mensaje = 'La notificación ha sido enviada con éxtito y la reunión virtual ha sido generada, podrá acceder mediante el enlace indicado en la fecha programada.';
-            }
-            elseif($envio == 1 && $meet !=1){
-             $mensaje = 'La notificación ha sido enviada con éxtito, pero la reunión virtual no ha sido generada';
-
-            }
-            else{
-                 $mensaje = 'No se ha podido notificar';
+            if ($envio == 1 && $meet == 1) {
+                $mensaje = 'La notificación ha sido enviada con éxtito y la reunión virtual ha sido generada, podrá acceder mediante el enlace indicado en la fecha programada.';
+            } elseif ($envio == 1 && $meet != 1) {
+                $mensaje = 'La notificación ha sido enviada con éxtito, pero la reunión virtual no ha sido generada';
+            } else {
+                $mensaje = 'No se ha podido notificar';
             }
             $this->getEvento($id_evento, null, $mensaje);
         }
@@ -1151,5 +1160,48 @@ Los resultados del proceso de mediación pueden ser dos:
             $mensaje = 'Mediación almacenada como realizada';
             $this->getEvento($id_evento, null, $mensaje);
         }
+    }
+
+
+    public function getReservas($fecha, $id_tienda, $tipo = null)
+    {
+
+
+        $times = create_time_range('8:00', '20:00', '1 hour');
+
+        $returnData = array();
+        foreach ($times as $time) {
+            $hora_i = $time;
+            $hora_f = date('H:i:s', strtotime('+1 hour', strtotime($hora_i)));
+            $reservas = $this->eventos->select('TIME(fecha_inicio) AS hora_inicio, TIME(fecha_fin) AS hora_fin')
+                ->where('DATE(fecha_inicio)', $fecha)
+                ->where('TIME(fecha_inicio) >=', $hora_i)
+                ->where('TIME(fecha_fin) <=', $hora_f)
+                ->where('reservado', 1)
+                ->where('id_tienda', $id_tienda)->first();
+
+                $reservas2 = $this->eventos->select('TIME(fecha_inicio) AS hora_inicio, TIME(fecha_fin) AS hora_fin')
+                ->where('DATE(fecha_inicio)', $fecha)
+                ->where('TIME(fecha_inicio) <=', $hora_i)
+                ->where('TIME(fecha_fin) >=', $hora_f)
+                ->where('reservado', 1)
+                ->where('id_tienda', $id_tienda)->first();
+
+            if (!empty($reservas)||!empty($reservas2)) {
+/*                if($reservas['hora_inicio']==$hora_i and $reservas['hora_fin']==$hora_f){
+
+               }else{
+                array_push($returnData, $reservas['hora_inicio'] . '-' .$reservas['hora_fin']);
+               } */
+            } else {
+                array_push($returnData, $time);
+            }
+        }
+if($tipo=='json'){
+return json_encode($returnData);
+}
+else{
+        return $returnData;
+}
     }
 }

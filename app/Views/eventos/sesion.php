@@ -1,7 +1,7 @@
 <!-- Begin Page Content -->
 
-<link href="<?=base_url()?>wysiwyg-editor/css/froala_editor.min.css" rel="stylesheet" type="text/css">
-<script src="<?=base_url()?>wysiwyg-editor/js/froala_editor.min.js"></script>
+<link href='https://cdn.jsdelivr.net/npm/froala-editor@4.0.10/css/froala_editor.pkgd.min.css' rel='stylesheet' type='text/css' />
+<script type='text/javascript' src='https://cdn.jsdelivr.net/npm/froala-editor@4.0.10/js/froala_editor.pkgd.min.js'></script>
 
 <main>
     <div class="container-fluid">
@@ -80,7 +80,7 @@ CAUSA ANTERIOR
                     <div class="form-group">
                         <div class="row">
                             <div class="col-12 col-md-12 bg-primary text-white p-1" for="acta"><i class="fas fa-book-open"></i> Acta de Mediación </div>
-                            <textarea name="acta" id="acta" class="form-control" cols="80" rows="15">Aca si irá el acta final... en desarrollo...</textarea>
+                            <div id="acta"></div>
 
                         </div>
                     </div>
@@ -268,12 +268,6 @@ CAUSA ANTERIOR
     </div>
 </main>
 
-<script>
-
-$(function(){
-$('#acta').editable({
-inlineMode:false
-})
-});
-
-</script>
+<script> 
+      var editor = new FroalaEditor('#acta');
+    </script>
