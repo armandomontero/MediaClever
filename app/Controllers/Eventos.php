@@ -1167,7 +1167,7 @@ Los resultados del proceso de mediación pueden ser dos:
     {
 
 
-        $times = create_time_range('8:00', '20:00', '1 hour');
+        $times = create_time_range('09:00', '20:00', '1 hour');
 
         $returnData = array();
         foreach ($times as $time) {
