@@ -92,12 +92,14 @@ $routes->get('/eventos/getReservas/(:any)/(:num)/(:any)', 'Eventos::getReservas/
 
 $routes->get('/eventos/updEstado/(:num)/(:any)', 'Eventos::updEstado/$1/$2');
 $routes->get('/eventos/anula/(:num)', 'Eventos::anula/$1');
+$routes->get('/eventos/deriva/(:num)', 'Eventos::deriva/$1');
 $routes->post('/eventos/notificar', 'Eventos::notificar');
 
 //eventos (archivo)
 $routes->get('/archivo/pendientes', 'Eventos::pendientes');
 $routes->get('/archivo/actas', 'Eventos::actas');
 $routes->get('/archivo/anuladas', 'Eventos::anuladas');
+$routes->get('/archivo/derivadas', 'Eventos::derivadas');
 $routes->get('/archivos/getEvento/(:num)', 'Eventos::getEventoArchivo/$1');
 $routes->post('/archivos/actualizarArchivo', 'Eventos::actualizarArchivo');
 

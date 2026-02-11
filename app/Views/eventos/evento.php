@@ -362,7 +362,8 @@
                 </div>
 
                 <div class="modal-footer">
-               <a data-toggle="modal" data-target="#modal-confirma" href="#" data-href="<?= base_url() ?>eventos/anula/<?=$datos->id_evento?>" id="editar" class="btn mr-auto btn-danger"><i class="fas fa-ban"></i> Anular</a>
+               <a data-toggle="modal" data-target="#modal-confirma" href="#" data-href="<?= base_url() ?>eventos/anula/<?=$datos->id_evento?>" id="anular" class="btn mr-auto btn-danger"><i class="fas fa-ban"></i> Anular</a>
+               <a data-toggle="modal"  data-target="#modal-deriva" href="#" data-href="<?= base_url() ?>eventos/deriva/<?=$datos->id_evento?>" id="derivar" class="btn mr-auto btn-warning"><i class="fas fa-share"></i> Derivar</a>
 
                     <button type="submit" class="btn btn-success btn-ok"><i class="fas fa-check-double"></i> Confirmar y Guardar Datos</button>
                     <a href="<?= base_url() ?>eventos" class="btn btn-primary btn-ok"><i class="fas fa-calendar-check"></i> Volver al Calendario</a>
@@ -390,6 +391,28 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <a type="button" class="btn btn-danger btn-ok">Anular</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal deriva -->
+<div class="modal fade" id="modal-deriva" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Derivar Servicio</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>¿Está seguro que desea derivar el servicio?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <a href="<?= base_url() ?>eventos/deriva/<?=$datos->id_evento?>" type="button" class="btn btn-warning btn-ok">Derivar</a>
             </div>
         </div>
     </div>

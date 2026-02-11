@@ -114,6 +114,7 @@ $user_session = session();
                         <a class="collapse-item" href="<?= base_url() ?>archivo/actas">Actas</a>
                         <a class="collapse-item" href="<?= base_url() ?>usuarios">Frustradas</a>
                         <a class="collapse-item" href="<?= base_url() ?>archivo/anuladas">Anuladas</a>
+                        <a class="collapse-item" href="<?= base_url() ?>archivo/derivadas">Derivadas</a>
                         <a class="collapse-item" href="<?= base_url() ?>materias">Otros Servicios</a>
                     </div>
                 </div>

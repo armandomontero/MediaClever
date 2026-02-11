@@ -356,6 +356,7 @@
                             <select class="form-control" name="estado" id="estado">
                                 <option <?php if($datos->state == 'Agendado'){echo 'selected';} ?> value="Agendado">Agendado</option>
                                 <option <?php if($datos->state == 'Anulado'){echo 'selected';} ?> value="Anulado">Anulado</option>
+                                <option <?php if($datos->state == 'Derivado'){echo 'selected';} ?> value="Derivado">Derivado</option>
                                 <option <?php if($datos->state == 'Revisado'){echo 'selected';} ?> value="Revisado">Revisado</option>
                                 <option <?php if($datos->state == 'Notificado'){echo 'selected';} ?> value="Notificado">Notificado</option>
                                
