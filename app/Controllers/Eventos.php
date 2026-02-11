@@ -148,6 +148,37 @@ class Eventos extends BaseController
     }
 
 
+    public function anuladas($activo = 1)
+    {
+        if (!$this->session->id_usuario) {
+            exit();
+        }
+        $this->eventos->select('eventos.id AS id_evento, id_solicitante, id_solicitado, reservado, valor, enlace,
+        fecha_inicio, fecha_fin, causa, id_usuario, state, causa, solicitante.direccion AS direccion_solicitante,
+         solicitante.rut AS rut_solicitante, solicitante.nombre AS nombre_solicitante, solicitante.correo AS correo_solicitante, 
+         solicitante.telefono AS telefono_solicitante, solicitante.comuna AS comuna_solicitante, solicitante.region AS region_solicitante,
+         solicitado.rut AS rut_solicitado, solicitado.nombre AS nombre_solicitado, solicitado.correo AS correo_solicitado, solicitado.direccion AS direccion_solicitado,
+         solicitado.telefono AS telefono_solicitado, solicitado.comuna AS comuna_solicitado, solicitado.region AS region_solicitado,
+         mediador.correo AS correo_mediador, mediador.nombre AS nombre_mediador
+         ')
+            ->join('clientes AS solicitante', 'id_solicitante = solicitante.id')
+            ->join('clientes AS solicitado', 'id_solicitado = solicitado.id')
+            ->join('usuarios AS mediador', 'mediador.id = id_usuario', 'left')
+            ->where('state', 'Anulado')
+            ->where('eventos.id_tienda', $this->session->id_tienda)
+            ->orderBy('id_evento', 'desc');
+
+
+        $eventos = $this->eventos->findAll();
+        $data = ['titulo' => 'Anuladas', 'eventos' => $eventos];
+
+        echo view('header');
+        echo view('archivos/anuladas', $data);
+        echo view('footer');
+    }
+
+
+
     public function miAgenda($activo = 1)
     {
         if (!$this->session->id_usuario) {

@@ -347,7 +347,7 @@
                                 <label class="form-radio-label" for="reservado1">Si</label>
                             </div>
                             <div class="form-radio">
-                                <input class="form-radio-input" <?php if ($datos->reservado == 0 || $datos->state == 'Agendado') {
+                                <input class="form-radio-input" <?php if ($datos->reservado == 0 && $datos->state != 'Agendado') {
                                                                     echo 'checked';
                                                                 } ?> type="radio" name="reservado" value="0" id="reservado2" />
                                 <label class="form-radio-label" for="reservado2">No</label>
