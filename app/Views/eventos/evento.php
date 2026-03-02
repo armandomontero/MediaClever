@@ -61,7 +61,7 @@
                         <div class="col-12 col-sm-5">
 
                             <label for="direccion_solicitante">Dirección<span class="text-danger">*</span> </label>
-                            <input  value="<?= $datos->direccion_solicitante ?>" class="form-control" id="direccion_solicitante" name="direccion_solicitante" type="text" />
+                            <input value="<?= $datos->direccion_solicitante ?>" class="form-control" id="direccion_solicitante" name="direccion_solicitante" type="text" />
                         </div>
 
                         <div class="col-12 col-sm-4">
@@ -88,7 +88,7 @@
 
 
 
-<!-- Datos solicitado-->
+                <!-- Datos solicitado-->
 
                 <div class="form-group mb-4 mt-2">
                     <div class="row ">
@@ -133,7 +133,7 @@
                         <div class="col-12 col-sm-5">
 
                             <label>Dirección</label>
-                            <input  value="<?= $datos->direccion_solicitado ?>" class="form-control" id="direccion_solicitado" name="direccion_solicitado" type="text" />
+                            <input value="<?= $datos->direccion_solicitado ?>" class="form-control" id="direccion_solicitado" name="direccion_solicitado" type="text" />
                         </div>
 
 
@@ -158,8 +158,8 @@
 
                 <div class="form-group mb-4 mt-2">
                     <div class="row ">
- <div class="col-12 col-sm-6">
-                            <a href="<?=base_url()?>clientes/participantes/<?=$datos->id_evento?>" id="otrosParticipantes" class="btn btn-primary" type="button"><i class="fas fa-users"></i> Otros Participantes</a>
+                        <div class="col-12 col-sm-6">
+                            <a href="<?= base_url() ?>clientes/participantes/<?= $datos->id_evento ?>" id="otrosParticipantes" class="btn btn-primary" type="button"><i class="fas fa-users"></i> Otros Participantes</a>
                         </div>
                     </div>
                 </div>
@@ -182,19 +182,19 @@
                             <div class="col-12 col-sm-4">
                                 <label>Nombre Completo: </label>
                                 <input
-                                   
-                                     value="<?= strtoupper($hijo['nombre']) ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
+
+                                    value="<?= strtoupper($hijo['nombre']) ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
                             </div>
                             <div class="col-12 col-sm-3">
                                 <label>RUT:</label>
                                 <input
-                                   
+
                                     class="form-control rut" value="<?= $hijo['rut'] ?>" id="rut<?= $i ?>" name="rut<?= $i ?>" type="text" />
                             </div>
                             <div class="col-12 col-sm-3">
                                 <label>Fecha de Nacimiento:</label>
                                 <input onchange="calcularEdad(this, edad<?= $i ?>)"
-                                   
+
                                     class="form-control" value="<?= $hijo['fecha_nac'] ?>" id="fecha<?= $i ?>" name="fecha<?= $i ?>" type="date" />
                             </div>
                             <div class="col-12 col-sm-2">
@@ -219,19 +219,19 @@
                             <div class="col-12 col-sm-4">
                                 <label>Nombre Completo: </label>
                                 <input
-                                   
-                                     value="<?= set_value('nombre' . $i) ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
+
+                                    value="<?= set_value('nombre' . $i) ?>" class="form-control" id="nombre<?= $i ?>" name="nombre<?= $i ?>" type="text" />
                             </div>
                             <div class="col-12 col-sm-3">
                                 <label>RUT:</label>
                                 <input
-                                   
+
                                     class="form-control rut" value="<?= set_value('rut' . $i) ?>" id="rut<?= $i ?>" name="rut<?= $i ?>" type="text" />
                             </div>
                             <div class="col-12 col-sm-3">
                                 <label>Fecha de Nacimiento:</label>
                                 <input onchange="calcularEdad(this, edad<?= $i ?>)"
-                                    
+
                                     class="form-control" value="<?= set_value('fecha' . $i) ?>" id="fecha<?= $i ?>" name="fecha<?= $i ?>" type="date" />
                             </div>
                             <div class="col-12 col-sm-2">
@@ -362,8 +362,7 @@
                 </div>
 
                 <div class="modal-footer">
-               <a data-toggle="modal" data-target="#modal-confirma" href="#" data-href="<?= base_url() ?>eventos/anula/<?=$datos->id_evento?>" id="anular" class="btn mr-auto btn-danger"><i class="fas fa-ban"></i> Anular</a>
-               <a data-toggle="modal"  data-target="#modal-deriva" href="#" data-href="<?= base_url() ?>eventos/deriva/<?=$datos->id_evento?>" id="derivar" class="btn mr-auto btn-warning"><i class="fas fa-share"></i> Derivar</a>
+                    <a data-toggle="modal" data-target="#modal-confirma" href="#" data-href="<?= base_url() ?>eventos/anula/<?= $datos->id_evento ?>" id="anular" class="btn mr-auto btn-danger"><i class="fas fa-ban"></i> Anular</a>
 
                     <button type="submit" class="btn btn-success btn-ok"><i class="fas fa-check-double"></i> Confirmar y Guardar Datos</button>
                     <a href="<?= base_url() ?>eventos" class="btn btn-primary btn-ok"><i class="fas fa-calendar-check"></i> Volver al Calendario</a>
@@ -407,13 +406,24 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <p>¿Está seguro que desea derivar el servicio?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <a href="<?= base_url() ?>eventos/deriva/<?=$datos->id_evento?>" type="button" class="btn btn-warning btn-ok">Derivar</a>
-            </div>
+            <form method="POST" action="<?= base_url() ?>eventos/derivar" autocomplete="off">
+                <div class="modal-body">
+
+                    <?= csrf_field() ?>
+
+                    <input type="hidden" name="id_evento" id="id_evento" value="<?= $datos->id_evento ?>" />
+                    <div class="row">
+                        <div class="col-12 col-sm-12">
+                            <label class="control-label">Email Mediador Asignado<span class="text-danger">*</span> </label>
+                            <input class="form-control" required type="email" name="mail_deriva" id="mail_deriva" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit"   class="btn btn-warning btn-ok">Derivar</button>
+            </form>
         </div>
     </div>
 </div>
@@ -615,7 +625,7 @@
     <?php } ?>
 
 
-    $("#id_usuario").change(function(){
-alert(this.value);
+    $("#id_usuario").change(function() {
+        alert(this.value);
     });
 </script>

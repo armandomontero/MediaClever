@@ -334,7 +334,7 @@ class Eventos extends BaseController
             //Insertamos Evento
             $fechaSesion = $this->request->getPost('dia');
             $horaInicio = $this->request->getPost('hora');
-            $fechaInicio = $fechaSesion.' '.$horaInicio;
+            $fechaInicio = $fechaSesion . ' ' . $horaInicio;
             //echo $fechaInicio;
 
             $nuevaTimestamp = strtotime('+1 hours', strtotime($fechaInicio));
@@ -630,6 +630,156 @@ class Eventos extends BaseController
 
         $this->eventos->update($id, [
             'state' => 'Derivado'
+        ]);
+        return redirect()->to(base_url() . 'eventos');
+    }
+
+
+    public function derivar()
+    {
+        //rescatamos variables
+        $id = $this->request->getPost('id_evento');
+        $mail_deriva = $this->request->getPost('mail_deriva');
+
+        //definimos mails
+        $array_correos = [$mail_deriva];
+
+        //llamamos datos de configuracion
+        $config = new ConfiguracionModel();
+        $datos_config = $config->where('id_tienda', $this->session->id_tienda)->first();
+        $atte = $datos_config['nombre'];
+
+
+        //llamamos datos del evento
+
+        //datos del evento
+        $this->eventos->select('eventos.id AS id_evento, id_solicitante, id_solicitado, reservado, valor, enlace, texto, 
+        fecha_inicio, fecha_fin, causa, id_usuario, state, causa, solicitante.direccion AS direccion_solicitante,
+         solicitante.rut AS rut_solicitante, solicitante.nombre AS nombre_solicitante, solicitante.correo AS correo_solicitante, 
+         solicitante.telefono AS telefono_solicitante, solicitante.comuna AS comuna_solicitante, solicitante.region AS region_solicitante,
+         solicitado.rut AS rut_solicitado, solicitado.nombre AS nombre_solicitado, solicitado.correo AS correo_solicitado, solicitado.direccion AS direccion_solicitado,
+         solicitado.telefono AS telefono_solicitado, solicitado.comuna AS comuna_solicitado, solicitado.region AS region_solicitado,
+         mediador.correo AS correo_mediador, mediador.nombre AS nombre_mediador, mediador.registro AS registro_mediador
+         ')
+            ->join('clientes AS solicitante', 'id_solicitante = solicitante.id')
+            ->join('clientes AS solicitado', 'id_solicitado = solicitado.id')
+            ->join('usuarios AS mediador', 'mediador.id = id_usuario', 'left');
+        $this->eventos->where('eventos.id', $id);
+
+        $evento = $this->eventos->get()->getRow();
+
+        //lamamos hijos
+        $hijos = $this->hijos->where('id_evento', $id)->findAll();
+
+        $lista_hijos = '';
+        $i = 0;
+        foreach ($hijos as $hijo) {
+            $i++;
+            $lista_hijos = $lista_hijos . $i . '- ' . $hijo['nombre'] . '<br>';
+        };
+
+
+
+        //llamamos otros solicitantes
+        $solicitantes = $this->clientes_eventos->getClientesEventos($id, 0);
+
+
+        //llamamos otros solicitados
+        $solicitatados = $this->clientes_eventos->getClientesEventos($id, 1);
+        $Timestamp = strtotime($evento->fecha_inicio);
+        $nuevaTimestamp = strtotime('+1 hours', $Timestamp);
+        $fecha_fin = date('Y-m-d  H:i:s', $nuevaTimestamp);
+        //$fecha_inicio = date('Y-m-d H:i:s', strtotime($this->request->getPost('fecha')));
+
+        $fecha_i = date('Y-m-d', $Timestamp);
+        $fecha_f = date('Y-m-d', $nuevaTimestamp);
+        $fecha_iES = date('d-m-Y', $nuevaTimestamp);
+        $hora_i = date('H:i:s', $Timestamp);
+        $hora_f = date('H:i:s', $nuevaTimestamp);
+
+
+
+        $nombre_solicitante = $this->request->getPost('nombre_solicitante');
+        $nombre_solicitado = $this->request->getPost('nombre_solicitado');
+
+
+
+
+        //llamamos materias y creamos html con ellas
+        $materias = $this->materias->select("*")->join('eventos_materias', 'id_materia = materias.id')->where('id_evento', $id)->orderBy('orden', 'asc')->findAll();
+
+        $lista_materias = '';
+        $i = 0;
+        foreach ($materias as $materia) {
+            $i++;
+            $lista_materias = $lista_materias . $i . '- ' . $materia['nombre'] . '<br>';
+        };
+        $cuerpo = 'Estimado/a mediador/a:
+ 
+ <br><br>
+Junto con saludar,  adjunto  los antecedentes para iniciar el proceso de mediación gestionado por ' . $atte . '. A continuación, se detallan los datos necesarios para realizar la notificación respectiva:
+
+<br><br>
+Fecha agendada: ' . $fecha_iES . ' a las ' . $hora_i . ' horas.
+<br><br>
+Datos Solicitante: <br>
+NOMBRE: ' . $evento->nombre_solicitante . 
+'<br>RUT: ' . $evento->rut_solicitante .'
+<br>TELEFONO: ' . $evento->telefono_solicitante .'
+<br>EMAIL: ' . $evento->correo_solicitante .'
+
+<br><br>
+Datos Solicitado(s): <br>
+NOMBRE: ' . $evento->nombre_solicitado. 
+'<br>RUT: ' . $evento->rut_solicitado .'
+<br>TELEFONO: ' . $evento->telefono_solicitado .'
+<br>EMAIL: ' . $evento->correo_solicitado .'
+<br><br>
+Antecedentes de los beneficiarios hijos:<br>
+' . $lista_hijos . '
+
+<br><br>
+Materias Solicitadas: <br>
+' . $lista_materias . '
+
+<br><br>
+Solicito confirmar asistencia a la brevedad 
+<br><br>
+
+Quedamos a la espera de la confirmación de recepción de los antecedentes. Ante cualquier duda  sobre los antecedentes, no dudes en contactarnos.
+<br>
+
+<br><br>
+ Atentamente, ' . $atte . ' <br><br>
+ 
+ <br>
+ <br>
+ El contenido de este correo electrónico es confidencial y está destinado únicamente para los destinatarios especificados en el mensaje. Está estrictamente prohibido compartir cualquier parte de este mensaje con terceros sin el consentimiento del remitente. Si recibió este mensaje por error, por favor responda a este mensaje y proceda a su eliminación, para que podamos asegurarnos de que dicho error no ocurra en el futuro.';
+
+        $email = \Config\Services::email();
+        $email->setFrom('notificamediacionchile@gmail.com', 'Sistema Mediación');
+        $email->setTo($array_correos);
+        $email->setSubject(' Derivación de mediación Familiar ');
+
+        $email->setMessage($cuerpo);
+        $email->setMailType('html');
+        $email->setReplyTo('notificamediacionchile@gmail.com');
+        if ($email->send()) {
+            // Correo enviado correctamente
+            $enviado = 'OK';
+            $envio = 1;
+        } else {
+            // Error al enviar el correo
+            $enviado =  'Error al enviar el correo: ' . $email->printDebugger();
+            $envio = 0;
+            print_r($enviado);
+            exit();
+            // exit;
+        }
+
+        $this->eventos->update($id, [
+            'state' => 'Derivado',
+            'mail_deriva' => $mail_deriva
         ]);
         return redirect()->to(base_url() . 'eventos');
     }
@@ -1253,7 +1403,7 @@ Los resultados del proceso de mediación pueden ser dos:
                 ->where('state !=', 'Anulado')
                 ->where('id_tienda', $id_tienda)->first();
 
-                $reservas2 = $this->eventos->select('TIME(fecha_inicio) AS hora_inicio, TIME(fecha_fin) AS hora_fin')
+            $reservas2 = $this->eventos->select('TIME(fecha_inicio) AS hora_inicio, TIME(fecha_fin) AS hora_fin')
                 ->where('DATE(fecha_inicio)', $fecha)
                 ->where('TIME(fecha_inicio) <=', $hora_i)
                 ->where('TIME(fecha_fin) >=', $hora_f)
@@ -1261,8 +1411,8 @@ Los resultados del proceso de mediación pueden ser dos:
                 ->where('state !=', 'Anulado')
                 ->where('id_tienda', $id_tienda)->first();
 
-            if (!empty($reservas)||!empty($reservas2)) {
-/*                if($reservas['hora_inicio']==$hora_i and $reservas['hora_fin']==$hora_f){
+            if (!empty($reservas) || !empty($reservas2)) {
+                /*                if($reservas['hora_inicio']==$hora_i and $reservas['hora_fin']==$hora_f){
 
                }else{
                 array_push($returnData, $reservas['hora_inicio'] . '-' .$reservas['hora_fin']);
@@ -1271,11 +1421,10 @@ Los resultados del proceso de mediación pueden ser dos:
                 array_push($returnData, $time);
             }
         }
-if($tipo=='json'){
-return json_encode($returnData);
-}
-else{
-        return $returnData;
-}
+        if ($tipo == 'json') {
+            return json_encode($returnData);
+        } else {
+            return $returnData;
+        }
     }
 }

@@ -355,6 +355,9 @@
                 <div class="modal-footer">
                     
                     <a href="<?= base_url() ?>eventos/updEstado/<?=$datos->id_evento?>/Agendado" id="editar" class="btn mr-auto btn-warning"><i class="far fa-pencil"></i> Volver y Editar</a>
+                                       <a data-toggle="modal" data-target="#modal-deriva" href="#" data-href="<?= base_url() ?>eventos/deriva/<?= $datos->id_evento ?>" id="derivar" class="btn mr-auto btn-warning"><i class="fas fa-share"></i> Derivar</a>
+
+                   
                     <button id="enviar" type="submit" class="btn btn-success btn-ok"><i class="fas fa-envelope"></i> Notificar Mediación</button>
                     <a href="<?= base_url() ?>eventos" class="btn btn-primary btn-ok"><i class="fas fa-calendar-check"></i> Volver al Calendario</a>
 
@@ -370,6 +373,39 @@
    <span class="">Procesando...</span>
 </div>
 </main>
+
+
+<!-- Modal deriva -->
+<div class="modal fade" id="modal-deriva" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Derivar Servicio</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="<?= base_url() ?>eventos/derivar" autocomplete="off">
+                <div class="modal-body">
+
+                    <?= csrf_field() ?>
+
+                    <input type="hidden" name="id_evento" id="id_evento" value="<?= $datos->id_evento ?>" />
+                    <div class="row">
+                        <div class="col-12 col-sm-12">
+                            <label class="control-label">Email Mediador Asignado<span class="text-danger">*</span> </label>
+                            <input class="form-control" required type="email" name="mail_deriva" id="mail_deriva" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit"   class="btn btn-warning btn-ok">Derivar</button>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- rut chileno -->
 <script src="<?= base_url() ?>js/jquery.rut.js"></script>

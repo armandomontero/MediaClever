@@ -93,6 +93,7 @@ $routes->get('/eventos/getReservas/(:any)/(:num)/(:any)', 'Eventos::getReservas/
 $routes->get('/eventos/updEstado/(:num)/(:any)', 'Eventos::updEstado/$1/$2');
 $routes->get('/eventos/anula/(:num)', 'Eventos::anula/$1');
 $routes->get('/eventos/deriva/(:num)', 'Eventos::deriva/$1');
+$routes->post('/eventos/derivar', 'Eventos::derivar');
 $routes->post('/eventos/notificar', 'Eventos::notificar');
 
 //eventos (archivo)

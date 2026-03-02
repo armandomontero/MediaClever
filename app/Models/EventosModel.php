@@ -12,7 +12,7 @@ class EventosModel extends Model{
     protected $useSoftDeletes = false;
 
     protected $allowedFields = ['fecha_inicio', 'fecha_fin', 'id_solicitante', 'id_solicitado', 'id_servicio', 'valor', 'region_evento', 
-    'comuna_evento', 'causa', 'id_usuario', 'state', 'reservado',
+    'comuna_evento', 'causa', 'id_usuario', 'state', 'mail_deriva', 'reservado',
     'enlace', 'texto', 'firma_solicitante', 'firma_solicitado', 'id_tienda'];
 
     protected bool $allowEmptyInserts = false;
